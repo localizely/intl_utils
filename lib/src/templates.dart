@@ -41,7 +41,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<$className> {
 
   List<Locale> get supportedLocales {
     return const <Locale>[
-      ${locales.map((locale) => locale.contains('_') ? 'Locale(\'${locale.split('_')[0]}\', \'${locale.split('_')[1]}\')' : 'Locale(\'${locale.split('_')[0]}\', \'\')').join(', ')}
+      ${locales.map((locale) => locale.contains('_') ? 'Locale(\'${locale.split('_')[0]}\', \'${locale.split('_')[1]}\')' : 'Locale(\'${locale.split('_')[0]}\', \'\')').join(', ')},
     ];
   }
 

@@ -9,7 +9,7 @@ packages:
     source: hosted
     version: "0.38.5"
   args:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: args
       url: "https://pub.dartlang.org"
