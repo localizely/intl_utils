@@ -249,24 +249,37 @@ class Label {
   }
 
   String _generateArgumentContent(List<BaseElement> data) {
-    var content = data.map((item) {
-      switch (item.type) {
-        case Type.literal:
-          {
-            return item.value;
+    var content = data
+        .asMap()
+        .map((index, item) {
+          switch (item.type) {
+            case Type.literal:
+              {
+                return MapEntry(index, item.value);
+              }
+            case Type.argument:
+              {
+                return MapEntry(
+                    index, isArgumentBracingRequired(data, index) ? '\${${item.value}}' : '\$${item.value}');
+              }
+            default:
+              {
+                return MapEntry(index, '');
+              }
           }
-        case Type.argument:
-          {
-            return '\$${item.value}';
-          }
-        default:
-          {
-            return '';
-          }
-      }
-    }).join();
+        })
+        .values
+        .join();
 
     return content;
+  }
+
+  /// Arguments that are immediately followed by alphanumeric character or underscore should be wrapped within curly-braces.
+  bool isArgumentBracingRequired(List<BaseElement> data, int index) {
+    return data.length > 1 &&
+        index < (data.length - 1) &&
+        data[index + 1].type == Type.literal &&
+        data[index + 1].value.startsWith(RegExp('[a-zA-Z0-9_]'));
   }
 
   String _generatePluralOptions(PluralElement element) {
@@ -386,25 +399,31 @@ class Label {
   }
 
   String _generatePluralOrSelectOptionMessage(option) {
-    var isValid = _validatePluralOrSelectOption(option.value);
+    var data = option.value;
+    var isValid = _validatePluralOrSelectOption(data);
 
     return isValid
-        ? option.value.map((item) {
-            switch (item.type) {
-              case Type.literal:
-                {
-                  return item.value;
-                }
-              case Type.argument:
-                {
-                  return '\$${item.value}';
-                }
-              default:
-                {
-                  return '';
-                }
-            }
-          }).join()
+        ? data
+            .asMap()
+            .map((index, item) {
+              switch (item.type) {
+                case Type.literal:
+                  {
+                    return MapEntry(index, item.value);
+                  }
+                case Type.argument:
+                  {
+                    return MapEntry(
+                        index, isArgumentBracingRequired(data, index) ? '\${${item.value}}' : '\$${item.value}');
+                  }
+                default:
+                  {
+                    return MapEntry(index, '');
+                  }
+              }
+            })
+            .values
+            .join()
         : _getRawPluralOrSelectOption(option);
   }
 

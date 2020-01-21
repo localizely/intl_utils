@@ -494,6 +494,261 @@ void main() {
           ].join('\n'));
     });
 
+    test('Test argument dart getter when placeholder is sticked at the beginning with the text', () {
+      var label = Label('labelName', 'Argument message: before{name} after.');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(dynamic name) {',
+            '    return Intl.message(',
+            '      \'Argument message: before\$name after.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [name],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test argument dart getter when placeholder is sticked at the beginning with the underscore sign', () {
+      var label = Label('labelName', 'Argument message: before _{name} .');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(dynamic name) {',
+            '    return Intl.message(',
+            '      \'Argument message: before _\$name .\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [name],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test argument dart getter when placeholder is sticked at the beginning with the number', () {
+      var label = Label('labelName', 'Argument message: before 357{name} .');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(dynamic name) {',
+            '    return Intl.message(',
+            '      \'Argument message: before 357\$name .\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [name],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test argument dart getter when placeholder is sticked at the beginning with the dash sign', () {
+      var label = Label('labelName', 'Argument message: before -{name} .');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(dynamic name) {',
+            '    return Intl.message(',
+            '      \'Argument message: before -\$name .\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [name],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test argument dart getter when placeholder is sticked at the beginning with the dot sign', () {
+      var label = Label('labelName', 'Argument message: before .{name} .');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(dynamic name) {',
+            '    return Intl.message(',
+            '      \'Argument message: before .\$name .\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [name],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test argument dart getter when placeholder is sticked at the beginning with the ampersand sign', () {
+      var label = Label('labelName', 'Argument message: before &{name} .');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(dynamic name) {',
+            '    return Intl.message(',
+            '      \'Argument message: before &\$name .\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [name],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test argument dart getter when placeholder is sticked at the beginning with the dollar sign', () {
+      var label = Label('labelName', 'Argument message: before \${name} .');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(dynamic name) {',
+            '    return Intl.message(',
+            '      \'Argument message: before \\\$\$name .\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [name],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test argument dart getter when placeholder is sticked at the ending with the text', () {
+      var label = Label('labelName', 'Argument message: before {name}after.');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(dynamic name) {',
+            '    return Intl.message(',
+            '      \'Argument message: before \${name}after.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [name],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test argument dart getter when placeholder is sticked at the ending with the underscore sign', () {
+      var label = Label('labelName', 'Argument message: before {name}_.');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(dynamic name) {',
+            '    return Intl.message(',
+            '      \'Argument message: before \${name}_.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [name],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test argument dart getter when placeholder is sticked at the ending with the number', () {
+      var label = Label('labelName', 'Argument message: before {name}357.');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(dynamic name) {',
+            '    return Intl.message(',
+            '      \'Argument message: before \${name}357.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [name],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test argument dart getter when placeholder is sticked at the ending with the dash sign', () {
+      var label = Label('labelName', 'Argument message: before {name}-.');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(dynamic name) {',
+            '    return Intl.message(',
+            '      \'Argument message: before \$name-.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [name],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test argument dart getter when placeholder is sticked at the ending with the dot sign', () {
+      var label = Label('labelName', 'Argument message: before {name}.');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(dynamic name) {',
+            '    return Intl.message(',
+            '      \'Argument message: before \$name.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [name],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test argument dart getter when placeholder is sticked at the ending with the ampersand sign', () {
+      var label = Label('labelName', 'Argument message: before {name}&.');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(dynamic name) {',
+            '    return Intl.message(',
+            '      \'Argument message: before \$name&.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [name],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test argument dart getter when placeholder is sticked at the ending with the dollar sign', () {
+      var label = Label('labelName', 'Argument message: before {name}\$.');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(dynamic name) {',
+            '    return Intl.message(',
+            '      \'Argument message: before \$name\\\$.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [name],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test argument dart getter when placeholder is sticked at the beginning and on the ending with the text', () {
+      var label = Label('labelName', 'Argument message: before{name}after.');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(dynamic name) {',
+            '    return Intl.message(',
+            '      \'Argument message: before\${name}after.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [name],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
     test('Test argument dart getter when description has new line set', () {
       var label = Label('labelName', 'Argument message {name}.', description: 'Description with \n new line', placeholders: ['name']);
 
@@ -677,6 +932,108 @@ void main() {
             '      few: \'few \\\$ message\',',
             '      many: \'many \\\$ message\',',
             '      other: \'other \\\$ message\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [count],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test plural dart getter when content has placeholder which is sticked at the ending with the text for all plural forms', () {
+      var label = Label('labelName',
+          '{count, plural, zero {zero {count}abc} one {one {count}abc} two {two {count}abc} few {few {count}abc} many {many {count}abc} other {other {count}abc}}',
+          placeholders: ['count']);
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(dynamic count) {',
+            '    return Intl.plural(',
+            '      count,',
+            '      zero: \'zero \${count}abc\',',
+            '      one: \'one \${count}abc\',',
+            '      two: \'two \${count}abc\',',
+            '      few: \'few \${count}abc\',',
+            '      many: \'many \${count}abc\',',
+            '      other: \'other \${count}abc\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [count],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test plural dart getter when content has placeholder which is sticked at the ending with the underscore sign for all plural forms', () {
+      var label = Label('labelName',
+          '{count, plural, zero {zero {count}_ .} one {one {count}_ .} two {two {count}_ .} few {few {count}_ .} many {many {count}_ .} other {other {count}_ .}}',
+          placeholders: ['count']);
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(dynamic count) {',
+            '    return Intl.plural(',
+            '      count,',
+            '      zero: \'zero \${count}_ .\',',
+            '      one: \'one \${count}_ .\',',
+            '      two: \'two \${count}_ .\',',
+            '      few: \'few \${count}_ .\',',
+            '      many: \'many \${count}_ .\',',
+            '      other: \'other \${count}_ .\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [count],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test plural dart getter when content has placeholder which is sticked at the ending with the number for all plural forms', () {
+      var label = Label('labelName',
+          '{count, plural, zero {zero {count}357 .} one {one {count}357 .} two {two {count}357 .} few {few {count}357 .} many {many {count}357 .} other {other {count}357 .}}',
+          placeholders: ['count']);
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(dynamic count) {',
+            '    return Intl.plural(',
+            '      count,',
+            '      zero: \'zero \${count}357 .\',',
+            '      one: \'one \${count}357 .\',',
+            '      two: \'two \${count}357 .\',',
+            '      few: \'few \${count}357 .\',',
+            '      many: \'many \${count}357 .\',',
+            '      other: \'other \${count}357 .\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [count],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test(
+        'Test plural dart getter when content has placeholder which is sticked at the beginning and at the ending with the text for all plural forms',
+        () {
+      var label = Label('labelName',
+          '{count, plural, zero {zero before{count}after.} one {one before{count}after.} two {two before{count}after.} few {few before{count}after.} many {many before{count}after.} other {other before{count}after.}}',
+          placeholders: ['count']);
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(dynamic count) {',
+            '    return Intl.plural(',
+            '      count,',
+            '      zero: \'zero before\${count}after.\',',
+            '      one: \'one before\${count}after.\',',
+            '      two: \'two before\${count}after.\',',
+            '      few: \'few before\${count}after.\',',
+            '      many: \'many before\${count}after.\',',
+            '      other: \'other before\${count}after.\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
             '      args: [count],',
@@ -951,6 +1308,89 @@ void main() {
             '      male: \'male \\\$ message\',',
             '      female: \'female \\\$ message\',',
             '      other: \'other \\\$ message\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [gender],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test gender dart getter when content has placeholder which is sticked at the ending with the text for all gender forms', () {
+      var label = Label('labelName', '{gender, select, male {male {gender}abc} female {female {gender}abc} other {other {gender}abc}}');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(dynamic gender) {',
+            '    return Intl.gender(',
+            '      gender,',
+            '      male: \'male \${gender}abc\',',
+            '      female: \'female \${gender}abc\',',
+            '      other: \'other \${gender}abc\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [gender],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test gender dart getter when content has placeholder which is sticked at the ending with the underscore sign for all gender forms', () {
+      var label = Label('labelName', '{gender, select, male {male {gender}_} female {female {gender}_} other {other {gender}_}}');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(dynamic gender) {',
+            '    return Intl.gender(',
+            '      gender,',
+            '      male: \'male \${gender}_\',',
+            '      female: \'female \${gender}_\',',
+            '      other: \'other \${gender}_\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [gender],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test gender dart getter when content has placeholder which is sticked at the ending with the number for all gender forms', () {
+      var label = Label('labelName', '{gender, select, male {male {gender}357 .} female {female {gender}357 .} other {other {gender}357 .}}');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(dynamic gender) {',
+            '    return Intl.gender(',
+            '      gender,',
+            '      male: \'male \${gender}357 .\',',
+            '      female: \'female \${gender}357 .\',',
+            '      other: \'other \${gender}357 .\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [gender],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test(
+        'Test gender dart getter when content has placeholder which is sticked at the beginning and at the ending with the text for all gender forms',
+        () {
+      var label = Label(
+          'labelName', '{gender, select, male {male before{gender}after} female {female before{gender}after} other {other before{gender}after}}');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(dynamic gender) {',
+            '    return Intl.gender(',
+            '      gender,',
+            '      male: \'male before\${gender}after\',',
+            '      female: \'female before\${gender}after\',',
+            '      other: \'other before\${gender}after\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
             '      args: [gender],',
