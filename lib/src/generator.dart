@@ -13,6 +13,7 @@ import 'package:intl_utils/src/intl_translation_helper.dart';
 class Generator {
   Directory rootDir;
   String className;
+  String mainLocale;
 
   Generator() {
     rootDir = Directory.current;
@@ -46,17 +47,26 @@ class Generator {
     var className = config != null ? config['class_name'] : null;
     if (className != null) {
       var isValid = validateClassName(className);
-      if (!isValid) {
+      if (isValid) {
+        this.className = className;
+      } else {
         warning("Config parameter 'class_name' requires valid 'UpperCamelCase' value.");
-        return;
       }
-
-      this.className = className;
+    }
+    var mainLocale = config != null ? config['main_locale'] : null;
+    if (mainLocale != null) {
+      var isValid = validateLocale(mainLocale);
+      if (isValid) {
+        this.mainLocale = mainLocale;
+      } else {
+        warning("Config parameter 'main_locale' requires value which complies with ISO-639-1 and ISO-3166-1 (e.g. 'en', 'en_GB').");
+      }
     }
   }
 
   Future<void> _updateL10nDir() async {
-    var mainArbFilePath = path.join(rootDir.path, 'lib', 'l10n', 'intl_en.arb');
+    var mainLocale = this.mainLocale ?? defaultMainLocale;
+    var mainArbFilePath = path.join(rootDir.path, 'lib', 'l10n', 'intl_${mainLocale}.arb');
     var mainArbFile = File(mainArbFilePath);
 
     if (!mainArbFile.existsSync()) {
@@ -95,7 +105,8 @@ class Generator {
   }
 
   List<Label> _getLabelsFromMainArbFile() {
-    var mainArbFilePath = path.join(rootDir.path, 'lib', 'l10n', 'intl_en.arb');
+    var mainLocale = this.mainLocale ?? defaultMainLocale;
+    var mainArbFilePath = path.join(rootDir.path, 'lib', 'l10n', 'intl_${mainLocale}.arb');
     var mainArbFile = File(mainArbFilePath);
     var content = mainArbFile.readAsStringSync();
     var decodedContent = json.decode(content) as Map<String, dynamic>;

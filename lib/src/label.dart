@@ -260,7 +260,7 @@ class Label {
             case Type.argument:
               {
                 return MapEntry(
-                    index, isArgumentBracingRequired(data, index) ? '\${${item.value}}' : '\$${item.value}');
+                    index, _isArgumentBracingRequired(data, index) ? '\${${item.value}}' : '\$${item.value}');
               }
             default:
               {
@@ -275,7 +275,7 @@ class Label {
   }
 
   /// Arguments that are immediately followed by alphanumeric character or underscore should be wrapped within curly-braces.
-  bool isArgumentBracingRequired(List<BaseElement> data, int index) {
+  bool _isArgumentBracingRequired(List<BaseElement> data, int index) {
     return data.length > 1 &&
         index < (data.length - 1) &&
         data[index + 1].type == Type.literal &&
@@ -414,7 +414,7 @@ class Label {
                 case Type.argument:
                   {
                     return MapEntry(
-                        index, isArgumentBracingRequired(data, index) ? '\${${item.value}}' : '\$${item.value}');
+                        index, _isArgumentBracingRequired(data, index) ? '\${${item.value}}' : '\$${item.value}');
                   }
                 default:
                   {

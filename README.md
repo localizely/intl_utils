@@ -16,6 +16,7 @@ Add package configuration to your `pubspec.yaml` file. Here is a full configurat
 flutter_intl:
   <b>enabled: true</b> # Required. Must be set to true to activate the package. Default: false
   class_name: S # Optional. Sets the name for the generated localization class. Default: S
+  main_locale: en # Optional. Sets the main locale used for generating localization files. Provided value should comply with ISO-639-1 and ISO-3166-1 (e.g. "en", "en_GB"). Default: en
 </pre>
 
 ### Add ARB files
@@ -33,4 +34,3 @@ To generate boilerplate code for localization, run the `generate` program inside
       pub run intl_utils:generate
 
 This will produce files inside `lib/generated` directory.
-
