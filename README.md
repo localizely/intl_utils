@@ -4,7 +4,7 @@ Dart package that creates a binding between your translations from .arb files an
 
 ## Usage
 
-You can use this package directly (ie for Continuous Integration tools or via CLI) or leave it to [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=localizely.flutter-intl) or IntelliJ/Android Studio plugins to run it automatically whenever you modify ARB files.
+You can use this package directly (ie for Continuous Integration tools or via CLI) or leave it to [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=localizely.flutter-intl) or [IntelliJ/Android Studio](https://plugins.jetbrains.com/plugin/13666-flutter-intl) plugins to run it automatically whenever you modify ARB files.
 
 Follow these steps to get started:
 
