@@ -5,7 +5,19 @@ bool validateClassName(dynamic value) {
 }
 
 bool validateLocale(dynamic value) {
-  return (value is String) && (RegExp(r'^[a-z]{2}(_[A-Z]{2})?$').hasMatch(value));
+  return (value is String) && (RegExp(r'^[a-z]{2}(_[A-Z][a-z]{3})?(_[A-Z]{2})?$').hasMatch(value));
+}
+
+bool isLangScriptCountryLocale(String locale) {
+  return RegExp(r'^[a-z]{2}_[A-Z][a-z]{3}_[A-Z]{2}$').hasMatch(locale);
+}
+
+bool isLangScriptLocale(String locale) {
+  return RegExp(r'^[a-z]{2}_[A-Z][a-z]{3}$').hasMatch(locale);
+}
+
+bool isLangCountryLocale(String locale) {
+  return RegExp(r'^[a-z]{2}_[A-Z]{2}$').hasMatch(locale);
 }
 
 void info(String message) {

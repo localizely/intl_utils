@@ -1,4 +1,5 @@
 import 'package:intl_utils/src/label.dart';
+import 'package:intl_utils/src/utils.dart';
 
 String generateL10nDartFileContent(String className, List<Label> labels, List<String> locales) {
   return """
@@ -19,7 +20,7 @@ class $className {
     AppLocalizationDelegate();
 
   static Future<$className> load(Locale locale) {
-    final String name = locale.countryCode.isEmpty ? locale.languageCode : locale.toString();
+    final String name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
     final String localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
@@ -41,7 +42,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<$className> {
 
   List<Locale> get supportedLocales {
     return const <Locale>[
-      ${locales.map((locale) => locale.contains('_') ? 'Locale(\'${locale.split('_')[0]}\', \'${locale.split('_')[1]}\')' : 'Locale(\'${locale.split('_')[0]}\', \'\')').join(', ')},
+      ${locales.map((locale) => _generateLocale(locale)).join(', ')},
     ];
   }
 
@@ -65,4 +66,18 @@ class AppLocalizationDelegate extends LocalizationsDelegate<$className> {
 }
 """
       .trim();
+}
+
+String _generateLocale(String locale) {
+  var parts = locale.split('_');
+
+  if (isLangScriptCountryLocale(locale)) {
+    return 'Locale.fromSubtags(languageCode: \'${parts[0]}\', scriptCode: \'${parts[1]}\', countryCode: \'${parts[2]}\')';
+  } else if (isLangScriptLocale(locale)) {
+    return 'Locale.fromSubtags(languageCode: \'${parts[0]}\', scriptCode: \'${parts[1]}\')';
+  } else if (isLangCountryLocale(locale)) {
+    return 'Locale.fromSubtags(languageCode: \'${parts[0]}\', countryCode: \'${parts[1]}\')';
+  } else {
+    return 'Locale.fromSubtags(languageCode: \'${parts[0]}\')';
+  }
 }

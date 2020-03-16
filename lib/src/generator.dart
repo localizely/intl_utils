@@ -59,7 +59,7 @@ class Generator {
       if (isValid) {
         this.mainLocale = mainLocale;
       } else {
-        warning("Config parameter 'main_locale' requires value which complies with ISO-639-1 and ISO-3166-1 (e.g. 'en', 'en_GB').");
+        warning("Config parameter 'main_locale' requires value consisted of language code and optional script and country codes separated with underscore (e.g. 'en', 'en_GB', 'zh_Hans', 'zh_Hans_CN').");
       }
     }
   }
