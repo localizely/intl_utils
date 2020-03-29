@@ -85,7 +85,7 @@ class Generator {
 
     var className = this.className ?? defaultClassName;
     var labels = _getLabelsFromMainArbFile();
-    var locales = _getAvailableLocales();
+    var locales = _orderAvailableLocales(_getAvailableLocales());
     var content = generateL10nDartFileContent(className, labels, locales);
     await l10nDartFile.writeAsString(content);
 
@@ -140,6 +140,15 @@ class Generator {
         .toList();
 
     return locales;
+  }
+
+  List<String> _orderAvailableLocales(List<String> locales) {
+    var mainLocale = this.mainLocale ?? defaultMainLocale;
+
+    var index = locales.indexOf(mainLocale);
+    return index != -1
+        ? [locales.elementAt(index), ...locales.sublist(0, index), ...locales.sublist(index + 1)]
+        : locales;
   }
 
   Future<void> _generateDartFiles() async {
