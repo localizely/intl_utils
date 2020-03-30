@@ -1,7 +1,7 @@
-enum Type { literal, argument, plural, gender, select }
+enum ElementType { literal, argument, plural, gender, select }
 
 class BaseElement {
-  Type type;
+  ElementType type;
   String value;
 
   BaseElement(this.type, this.value);
@@ -15,27 +15,27 @@ class Option {
 }
 
 class LiteralElement extends BaseElement {
-  LiteralElement(String value) : super(Type.literal, value);
+  LiteralElement(String value) : super(ElementType.literal, value);
 }
 
 class ArgumentElement extends BaseElement {
-  ArgumentElement(String value) : super(Type.argument, value);
+  ArgumentElement(String value) : super(ElementType.argument, value);
 }
 
 class GenderElement extends BaseElement {
   List<Option> options;
 
-  GenderElement(String value, this.options) : super(Type.gender, value);
+  GenderElement(String value, this.options) : super(ElementType.gender, value);
 }
 
 class PluralElement extends BaseElement {
   List<Option> options;
 
-  PluralElement(String value, this.options) : super(Type.plural, value);
+  PluralElement(String value, this.options) : super(ElementType.plural, value);
 }
 
 class SelectElement extends BaseElement {
   List<Option> options;
 
-  SelectElement(String value, this.options) : super(Type.select, value);
+  SelectElement(String value, this.options) : super(ElementType.select, value);
 }

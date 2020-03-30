@@ -13,6 +13,28 @@ class ValidationException implements Exception {
   ValidationException([this.message]);
 }
 
+class Argument {
+  Type type;
+  String name;
+
+  Argument(this.type, this.name);
+
+  bool isObject() => type == Object;
+
+  bool isString() => type == String;
+
+  bool isNum() => type == num;
+
+  @override
+  String toString() => '$type $name';
+
+  @override
+  bool operator == (obj) => obj is Argument && obj.name == name;
+
+  @override
+  int get hashCode => name.hashCode;
+}
+
 class Label {
   String name;
   String content;
@@ -53,40 +75,44 @@ class Label {
         case ContentType.argument:
           {
             return [
-              '  String $name(${args.map((arg) => 'dynamic $arg').join(', ')}) {',
+              '  String $name(${_generateDartMethodParameters(args)}) {',
               '    return Intl.message(',
               '      \'${_generateArgumentContent(parsedContent)}\',',
               '      name: \'$name\',',
               '      desc: \'$description\',',
-              '      args: [${args.join(', ')}],',
+              '      args: [${_generateDartMethodArgs(args)}],',
               '    );',
               '  }'
             ].join('\n');
           }
         case ContentType.plural:
           {
+            var pluralArg = args.firstWhere((arg) => arg.isNum()).name;
+
             return [
-              '  String $name(${args.map((arg) => 'dynamic $arg').join(', ')}) {',
+              '  String $name(${_generateDartMethodParameters(args)}) {',
               '    return Intl.plural(',
-              '      ${args[0]},',
+              '      ${pluralArg},',
               _generatePluralOptions(parsedContent[0]),
               '      name: \'$name\',',
               '      desc: \'$description\',',
-              '      args: [${args.join(', ')}],',
+              '      args: [${_generateDartMethodArgs(args)}],',
               '    );',
               '  }'
             ].join('\n');
           }
         case ContentType.gender:
           {
+            var genderArg = args.firstWhere((arg) => arg.isString()).name;
+
             return [
-              '  String $name(${args.map((arg) => 'dynamic $arg').join(', ')}) {',
+              '  String $name(${_generateDartMethodParameters(args)}) {',
               '    return Intl.gender(',
-              '      ${args[0]},',
+              '      ${genderArg},',
               _generateGenderOptions(parsedContent[0]),
               '      name: \'$name\',',
               '      desc: \'$description\',',
-              '      args: [${args.join(', ')}],',
+              '      args: [${_generateDartMethodArgs(args)}],',
               '    );',
               '  }'
             ].join('\n');
@@ -97,12 +123,12 @@ class Label {
             warning("The '${name}' key has an unsupported content type.");
 
             return [
-              '  String ${args.isNotEmpty ? '${name}(${args.map((arg) => 'dynamic $arg').join(', ')})' : 'get ${name}'} {',
+              '  String ${args.isNotEmpty ? '${name}(${_generateDartMethodParameters(args)})' : 'get ${name}'} {',
               '    return Intl.message(',
               '      \'${content}\',',
               '      name: \'${name}\',',
               '      desc: \'${description}\',',
-              '      args: [${args.join(', ')}],',
+              '      args: [${_generateDartMethodArgs(args)}],',
               '    );',
               '  }'
             ].join('\n');
@@ -117,7 +143,11 @@ class Label {
     }
   }
 
-  bool _validate(String name, String content, List<String> args) {
+  String _generateDartMethodParameters(List<Argument> args) => args.map((arg) => '$arg').join(', ');
+
+  String _generateDartMethodArgs(List<Argument> args) => args.map((arg) => arg.name).join(', ');
+
+  bool _validate(String name, String content, List<Argument> args) {
     var variableRegex = RegExp(r'^[a-zA-Z_][a-zA-Z0-9_]*$');
     var placeholderRegex = RegExp('\$[a-zA-Z_][a-zA-Z0-9_]*');
 
@@ -127,8 +157,8 @@ class Label {
     }
 
     for (var arg in args) {
-      if (!variableRegex.hasMatch(arg)) {
-        warning("The '${name}' key will be ignored as its placeholder '${arg}' does not follow naming convention.");
+      if (!variableRegex.hasMatch(arg.name)) {
+        warning("The '${name}' key will be ignored as its placeholder '${arg.name}' does not follow naming convention.");
         return false;
       }
     }
@@ -141,78 +171,95 @@ class Label {
   }
 
   /// union of meta args and extracted args from the message with preserved order
-  List<String> _getArgs(List<String> placeholders, List<BaseElement> data) {
-    var metaArgs = placeholders ?? <String>[];
-    var extractedArgs = <String>[];
+  List<Argument> _getArgs(List<String> placeholders, List<BaseElement> data) {
+    var args = placeholders != null
+        ? placeholders.map((placeholder) => Argument(Object, placeholder)).toList()
+        : <Argument>[];
 
-    data.where((item) => [Type.argument, Type.plural, Type.gender, Type.select].contains(item.type)).forEach((item) {
-      extractedArgs.add(item.value);
-
-      switch (item.type) {
-        case Type.plural:
-          {
-            extractedArgs.addAll(_getPluralOptionsArgs(item));
-            break;
+    data.where((item) => [ElementType.argument, ElementType.plural, ElementType.gender, ElementType.select].contains(item.type))
+        .forEach((item) {
+          switch (item.type) {
+            case ElementType.argument:
+              {
+                _updateArgsData(args, [Argument(Object, item.value)]);
+                break;
+              }
+            case ElementType.plural:
+              {
+                _updateArgsData(args, [Argument(num, item.value)]);
+                _updateArgsData(args, _getPluralOptionsArgs(item));
+                break;
+              }
+            case ElementType.gender:
+              {
+                _updateArgsData(args, [Argument(String, item.value)]);
+                _updateArgsData(args, _getGenderOptionsArgs(item));
+                break;
+              }
+            case ElementType.select:
+              {
+                _updateArgsData(args, [Argument(Object, item.value)]);
+                _updateArgsData(args, _getSelectOptionsArgs(item));
+                break;
+              }
+            default:
+              {}
           }
-        case Type.gender:
-          {
-            extractedArgs.addAll(_getGenderOptionsArgs(item));
-            break;
-          }
-        case Type.select:
-          {
-            extractedArgs.addAll(_getSelectOptionsArgs(item));
-            break;
-          }
-        default:
-          {}
-      }
     });
 
-    var args = <String>[...metaArgs, ...extractedArgs];
-
-    return LinkedHashSet<String>.from(args).toList();
+    return LinkedHashSet<Argument>.from(args).toList();
   }
 
-  List<String> _getPluralOptionsArgs(PluralElement pluralElement) {
-    var args = <String>[];
+  void _updateArgsData(List<Argument> existingArgs, List<Argument> newArgs) {
+    newArgs.forEach((newArg) {
+      var index = existingArgs.indexOf(newArg);
+      if (index != -1 && existingArgs.elementAt(index).isObject()) {
+        existingArgs.elementAt(index).type = newArg.type;
+      } else {
+        existingArgs.add(newArg);
+      }
+    });
+  }
+
+  List<Argument> _getPluralOptionsArgs(PluralElement pluralElement) {
+    var args = <Argument>[];
 
     pluralElement.options
         .where((option) => ['=0', 'zero', '=1', 'one', '=2', 'two', 'few', 'many', 'other'].contains(option.name))
         .forEach((option) => args.addAll(_getArgumentOrPluralOrSelectArgs(option.value)));
 
-    return LinkedHashSet<String>.from(args).toList();
+    return LinkedHashSet<Argument>.from(args).toList();
   }
 
-  List<String> _getGenderOptionsArgs(GenderElement genderElement) {
-    var args = <String>[];
+  List<Argument> _getGenderOptionsArgs(GenderElement genderElement) {
+    var args = <Argument>[];
 
     genderElement.options
         .where((option) => ['female', 'male', 'other'].contains(option.name))
         .forEach((option) => args.addAll(_getArgumentOrPluralOrSelectArgs(option.value)));
 
-    return LinkedHashSet<String>.from(args).toList();
+    return LinkedHashSet<Argument>.from(args).toList();
   }
 
-  List<String> _getSelectOptionsArgs(SelectElement selectElement) {
-    var args = <String>[];
+  List<Argument> _getSelectOptionsArgs(SelectElement selectElement) {
+    var args = <Argument>[];
 
     selectElement.options.forEach((option) => args.addAll(_getArgumentOrPluralOrSelectArgs(option.value)));
 
-    return LinkedHashSet<String>.from(args).toList();
+    return LinkedHashSet<Argument>.from(args).toList();
   }
 
-  List<String> _getArgumentOrPluralOrSelectArgs(List<BaseElement> data) {
-    var args = <String>[];
+  List<Argument> _getArgumentOrPluralOrSelectArgs(List<BaseElement> data) {
+    var args = <Argument>[];
 
-    data.where((item) => [Type.argument, Type.plural, Type.gender, Type.select].contains(item.type)).forEach((item) {
-      args.add(item.value);
+    data.where((item) => [ElementType.argument, ElementType.plural, ElementType.gender, ElementType.select].contains(item.type)).forEach((item) {
+      args.add(Argument(Object, item.value));
     });
 
     return args;
   }
 
-  ContentType _getContentType(List<BaseElement> data, List<String> args) {
+  ContentType _getContentType(List<BaseElement> data, List<Argument> args) {
     if (_isLiteral(data) && args.isEmpty) {
       return ContentType.literal;
     } else if (_isArgument(data) && args.isNotEmpty) {
@@ -228,24 +275,24 @@ class Label {
 
   bool _isLiteral(List<BaseElement> data) {
     return (data.isNotEmpty &&
-        data.map((BaseElement item) => item.type == Type.literal).reduce((bool acc, bool curr) => acc && curr));
+        data.map((BaseElement item) => item.type == ElementType.literal).reduce((bool acc, bool curr) => acc && curr));
   }
 
   bool _isArgument(List<BaseElement> data) {
     return (data.isNotEmpty &&
         data
-            .map((item) => [Type.argument, Type.literal].contains(item.type))
+            .map((item) => [ElementType.argument, ElementType.literal].contains(item.type))
             .reduce((bool acc, bool curr) => acc && curr));
   }
 
   bool _isPlural(List<BaseElement> data) {
     return (data.isNotEmpty &&
-        data.map((item) => item.type == Type.plural).reduce((bool acc, bool curr) => acc && curr));
+        data.map((item) => item.type == ElementType.plural).reduce((bool acc, bool curr) => acc && curr));
   }
 
   bool _isGender(List<BaseElement> data) {
     return (data.isNotEmpty &&
-        data.map((item) => item.type == Type.gender).reduce((bool acc, bool curr) => acc && curr));
+        data.map((item) => item.type == ElementType.gender).reduce((bool acc, bool curr) => acc && curr));
   }
 
   String _generateArgumentContent(List<BaseElement> data) {
@@ -253,11 +300,11 @@ class Label {
         .asMap()
         .map((index, item) {
           switch (item.type) {
-            case Type.literal:
+            case ElementType.literal:
               {
                 return MapEntry(index, item.value);
               }
-            case Type.argument:
+            case ElementType.argument:
               {
                 return MapEntry(
                     index, _isArgumentBracingRequired(data, index) ? '\${${item.value}}' : '\$${item.value}');
@@ -278,7 +325,7 @@ class Label {
   bool _isArgumentBracingRequired(List<BaseElement> data, int index) {
     return data.length > 1 &&
         index < (data.length - 1) &&
-        data[index + 1].type == Type.literal &&
+        data[index + 1].type == ElementType.literal &&
         data[index + 1].value.startsWith(RegExp('[a-zA-Z0-9_]'));
   }
 
@@ -407,11 +454,11 @@ class Label {
             .asMap()
             .map((index, item) {
               switch (item.type) {
-                case Type.literal:
+                case ElementType.literal:
                   {
                     return MapEntry(index, item.value);
                   }
-                case Type.argument:
+                case ElementType.argument:
                   {
                     return MapEntry(
                         index, _isArgumentBracingRequired(data, index) ? '\${${item.value}}' : '\$${item.value}');
@@ -429,7 +476,7 @@ class Label {
 
   /// current implementation only supports trivial plural and gender options (literal and argument messages)
   bool _validatePluralOrSelectOption(List<BaseElement> data) {
-    return data.map((item) => [Type.literal, Type.argument].contains(item.type)).reduce((acc, curr) => acc && curr);
+    return data.map((item) => [ElementType.literal, ElementType.argument].contains(item.type)).reduce((acc, curr) => acc && curr);
   }
 
   String _getRawPluralOrSelectOption(Option option) {

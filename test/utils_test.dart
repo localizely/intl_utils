@@ -1,4 +1,5 @@
 import 'package:test/test.dart';
+
 import 'package:intl_utils/src/utils.dart';
 
 void main() {

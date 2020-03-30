@@ -1,4 +1,5 @@
 import 'package:test/test.dart';
+
 import 'package:intl_utils/src/parser.dart';
 import 'package:intl_utils/src/message_format.dart';
 
@@ -9,7 +10,7 @@ void main() {
 
       expect(response.length, 1);
       expect(response[0].runtimeType, LiteralElement);
-      expect(response[0].type, Type.literal);
+      expect(response[0].type, ElementType.literal);
       expect(response[0].value, '');
     });
 
@@ -18,7 +19,7 @@ void main() {
 
       expect(response.length, 1);
       expect(response[0].runtimeType, LiteralElement);
-      expect(response[0].type, Type.literal);
+      expect(response[0].type, ElementType.literal);
       expect(response[0].value, 'This is some content.');
     });
 
@@ -27,7 +28,7 @@ void main() {
 
       expect(response.length, 1);
       expect(response[0].runtimeType, LiteralElement);
-      expect(response[0].type, Type.literal);
+      expect(response[0].type, ElementType.literal);
       expect(response[0].value, 'Special characters: ,./?\\[]!@#\$%^&*()_+-=');
     });
   });
@@ -38,7 +39,7 @@ void main() {
 
       expect(response.length, 1);
       expect(response[0].runtimeType, ArgumentElement);
-      expect(response[0].type, Type.argument);
+      expect(response[0].type, ElementType.argument);
       expect(response[0].value, 'firstName');
     });
 
@@ -48,15 +49,15 @@ void main() {
       expect(response.length, 3);
 
       expect(response[0].runtimeType, LiteralElement);
-      expect(response[0].type, Type.literal);
+      expect(response[0].type, ElementType.literal);
       expect(response[0].value, 'Hi my name is ');
 
       expect(response[1].runtimeType, ArgumentElement);
-      expect(response[1].type, Type.argument);
+      expect(response[1].type, ElementType.argument);
       expect(response[1].value, 'firstName');
 
       expect(response[2].runtimeType, LiteralElement);
-      expect(response[2].type, Type.literal);
+      expect(response[2].type, ElementType.literal);
       expect(response[2].value, '!');
     });
 
@@ -66,15 +67,15 @@ void main() {
       expect(response.length, 3);
 
       expect(response[0].runtimeType, LiteralElement);
-      expect(response[0].type, Type.literal);
+      expect(response[0].type, ElementType.literal);
       expect(response[0].value, 'Link: https://example.com?user=');
 
       expect(response[1].runtimeType, ArgumentElement);
-      expect(response[1].type, Type.argument);
+      expect(response[1].type, ElementType.argument);
       expect(response[1].value, 'username');
 
       expect(response[2].runtimeType, LiteralElement);
-      expect(response[2].type, Type.literal);
+      expect(response[2].type, ElementType.literal);
       expect(response[2].value, '&test=yes');
     });
 
@@ -84,31 +85,31 @@ void main() {
       expect(response.length, 7);
 
       expect(response[0].runtimeType, LiteralElement);
-      expect(response[0].type, Type.literal);
+      expect(response[0].type, ElementType.literal);
       expect(response[0].value, 'My name is ');
 
       expect(response[1].runtimeType, ArgumentElement);
-      expect(response[1].type, Type.argument);
+      expect(response[1].type, ElementType.argument);
       expect(response[1].value, 'lastName');
 
       expect(response[2].runtimeType, LiteralElement);
-      expect(response[2].type, Type.literal);
+      expect(response[2].type, ElementType.literal);
       expect(response[2].value, ', ');
 
       expect(response[3].runtimeType, ArgumentElement);
-      expect(response[3].type, Type.argument);
+      expect(response[3].type, ElementType.argument);
       expect(response[3].value, 'firstName');
 
       expect(response[4].runtimeType, LiteralElement);
-      expect(response[4].type, Type.literal);
+      expect(response[4].type, ElementType.literal);
       expect(response[4].value, ' ');
 
       expect(response[5].runtimeType, ArgumentElement);
-      expect(response[5].type, Type.argument);
+      expect(response[5].type, ElementType.argument);
       expect(response[5].value, 'lastName');
 
       expect(response[6].runtimeType, LiteralElement);
-      expect(response[6].type, Type.literal);
+      expect(response[6].type, ElementType.literal);
       expect(response[6].value, '!');
     });
   });
@@ -120,44 +121,44 @@ void main() {
 
       expect(response.length, 1);
       expect(response[0].runtimeType, PluralElement);
-      expect(response[0].type, Type.plural);
+      expect(response[0].type, ElementType.plural);
       expect(response[0].value, 'count');
       expect((response[0] as PluralElement).options.length, 6);
 
       expect((response[0] as PluralElement).options[0].name, 'zero');
       expect((response[0] as PluralElement).options[0].value.length, 1);
       expect((response[0] as PluralElement).options[0].value[0].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[0].value[0].type, Type.literal);
+      expect((response[0] as PluralElement).options[0].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[0].value[0].value, 'zero message');
 
       expect((response[0] as PluralElement).options[1].name, 'one');
       expect((response[0] as PluralElement).options[1].value.length, 1);
       expect((response[0] as PluralElement).options[1].value[0].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[1].value[0].type, Type.literal);
+      expect((response[0] as PluralElement).options[1].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[1].value[0].value, 'one message');
 
       expect((response[0] as PluralElement).options[2].name, 'two');
       expect((response[0] as PluralElement).options[2].value.length, 1);
       expect((response[0] as PluralElement).options[2].value[0].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[2].value[0].type, Type.literal);
+      expect((response[0] as PluralElement).options[2].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[2].value[0].value, 'two message');
 
       expect((response[0] as PluralElement).options[3].name, 'few');
       expect((response[0] as PluralElement).options[3].value.length, 1);
       expect((response[0] as PluralElement).options[3].value[0].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[3].value[0].type, Type.literal);
+      expect((response[0] as PluralElement).options[3].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[3].value[0].value, 'few message');
 
       expect((response[0] as PluralElement).options[4].name, 'many');
       expect((response[0] as PluralElement).options[4].value.length, 1);
       expect((response[0] as PluralElement).options[4].value[0].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[4].value[0].type, Type.literal);
+      expect((response[0] as PluralElement).options[4].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[4].value[0].value, 'many message');
 
       expect((response[0] as PluralElement).options[5].name, 'other');
       expect((response[0] as PluralElement).options[5].value.length, 1);
       expect((response[0] as PluralElement).options[5].value[0].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[5].value[0].type, Type.literal);
+      expect((response[0] as PluralElement).options[5].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[5].value[0].value, 'other message');
     });
 
@@ -167,44 +168,44 @@ void main() {
 
       expect(response.length, 1);
       expect(response[0].runtimeType, PluralElement);
-      expect(response[0].type, Type.plural);
+      expect(response[0].type, ElementType.plural);
       expect(response[0].value, 'count');
       expect((response[0] as PluralElement).options.length, 6);
 
       expect((response[0] as PluralElement).options[0].name, 'zero');
       expect((response[0] as PluralElement).options[0].value.length, 1);
       expect((response[0] as PluralElement).options[0].value[0].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[0].value[0].type, Type.literal);
+      expect((response[0] as PluralElement).options[0].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[0].value[0].value, 'zero message');
 
       expect((response[0] as PluralElement).options[1].name, 'one');
       expect((response[0] as PluralElement).options[1].value.length, 1);
       expect((response[0] as PluralElement).options[1].value[0].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[1].value[0].type, Type.literal);
+      expect((response[0] as PluralElement).options[1].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[1].value[0].value, 'one message');
 
       expect((response[0] as PluralElement).options[2].name, 'two');
       expect((response[0] as PluralElement).options[2].value.length, 1);
       expect((response[0] as PluralElement).options[2].value[0].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[2].value[0].type, Type.literal);
+      expect((response[0] as PluralElement).options[2].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[2].value[0].value, 'two message');
 
       expect((response[0] as PluralElement).options[3].name, 'few');
       expect((response[0] as PluralElement).options[3].value.length, 1);
       expect((response[0] as PluralElement).options[3].value[0].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[3].value[0].type, Type.literal);
+      expect((response[0] as PluralElement).options[3].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[3].value[0].value, 'few message');
 
       expect((response[0] as PluralElement).options[4].name, 'many');
       expect((response[0] as PluralElement).options[4].value.length, 1);
       expect((response[0] as PluralElement).options[4].value[0].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[4].value[0].type, Type.literal);
+      expect((response[0] as PluralElement).options[4].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[4].value[0].value, 'many message');
 
       expect((response[0] as PluralElement).options[5].name, 'other');
       expect((response[0] as PluralElement).options[5].value.length, 1);
       expect((response[0] as PluralElement).options[5].value[0].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[5].value[0].type, Type.literal);
+      expect((response[0] as PluralElement).options[5].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[5].value[0].value, 'other message');
     });
 
@@ -216,44 +217,44 @@ void main() {
 
       expect(response.length, 1);
       expect(response[0].runtimeType, PluralElement);
-      expect(response[0].type, Type.plural);
+      expect(response[0].type, ElementType.plural);
       expect(response[0].value, 'count');
       expect((response[0] as PluralElement).options.length, 6);
 
       expect((response[0] as PluralElement).options[0].name, '=0');
       expect((response[0] as PluralElement).options[0].value.length, 1);
       expect((response[0] as PluralElement).options[0].value[0].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[0].value[0].type, Type.literal);
+      expect((response[0] as PluralElement).options[0].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[0].value[0].value, '=0 message');
 
       expect((response[0] as PluralElement).options[1].name, '=1');
       expect((response[0] as PluralElement).options[1].value.length, 1);
       expect((response[0] as PluralElement).options[1].value[0].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[1].value[0].type, Type.literal);
+      expect((response[0] as PluralElement).options[1].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[1].value[0].value, '=1 message');
 
       expect((response[0] as PluralElement).options[2].name, '=2');
       expect((response[0] as PluralElement).options[2].value.length, 1);
       expect((response[0] as PluralElement).options[2].value[0].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[2].value[0].type, Type.literal);
+      expect((response[0] as PluralElement).options[2].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[2].value[0].value, '=2 message');
 
       expect((response[0] as PluralElement).options[3].name, 'few');
       expect((response[0] as PluralElement).options[3].value.length, 1);
       expect((response[0] as PluralElement).options[3].value[0].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[3].value[0].type, Type.literal);
+      expect((response[0] as PluralElement).options[3].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[3].value[0].value, 'few message');
 
       expect((response[0] as PluralElement).options[4].name, 'many');
       expect((response[0] as PluralElement).options[4].value.length, 1);
       expect((response[0] as PluralElement).options[4].value[0].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[4].value[0].type, Type.literal);
+      expect((response[0] as PluralElement).options[4].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[4].value[0].value, 'many message');
 
       expect((response[0] as PluralElement).options[5].name, 'other');
       expect((response[0] as PluralElement).options[5].value.length, 1);
       expect((response[0] as PluralElement).options[5].value[0].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[5].value[0].type, Type.literal);
+      expect((response[0] as PluralElement).options[5].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[5].value[0].value, 'other message');
     });
 
@@ -263,80 +264,80 @@ void main() {
 
       expect(response.length, 1);
       expect(response[0].runtimeType, PluralElement);
-      expect(response[0].type, Type.plural);
+      expect(response[0].type, ElementType.plural);
       expect(response[0].value, 'count');
       expect((response[0] as PluralElement).options.length, 6);
 
       expect((response[0] as PluralElement).options[0].name, 'zero');
       expect((response[0] as PluralElement).options[0].value.length, 3);
       expect((response[0] as PluralElement).options[0].value[0].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[0].value[0].type, Type.literal);
+      expect((response[0] as PluralElement).options[0].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[0].value[0].value, 'zero message with ');
       expect((response[0] as PluralElement).options[0].value[1].runtimeType, ArgumentElement);
-      expect((response[0] as PluralElement).options[0].value[1].type, Type.argument);
+      expect((response[0] as PluralElement).options[0].value[1].type, ElementType.argument);
       expect((response[0] as PluralElement).options[0].value[1].value, 'name');
       expect((response[0] as PluralElement).options[0].value[2].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[0].value[2].type, Type.literal);
+      expect((response[0] as PluralElement).options[0].value[2].type, ElementType.literal);
       expect((response[0] as PluralElement).options[0].value[2].value, ' placeholder.');
 
       expect((response[0] as PluralElement).options[1].name, 'one');
       expect((response[0] as PluralElement).options[1].value.length, 3);
       expect((response[0] as PluralElement).options[1].value[0].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[1].value[0].type, Type.literal);
+      expect((response[0] as PluralElement).options[1].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[1].value[0].value, 'one message with ');
       expect((response[0] as PluralElement).options[1].value[1].runtimeType, ArgumentElement);
-      expect((response[0] as PluralElement).options[1].value[1].type, Type.argument);
+      expect((response[0] as PluralElement).options[1].value[1].type, ElementType.argument);
       expect((response[0] as PluralElement).options[1].value[1].value, 'name');
       expect((response[0] as PluralElement).options[1].value[2].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[1].value[2].type, Type.literal);
+      expect((response[0] as PluralElement).options[1].value[2].type, ElementType.literal);
       expect((response[0] as PluralElement).options[1].value[2].value, ' placeholder.');
 
       expect((response[0] as PluralElement).options[2].name, 'two');
       expect((response[0] as PluralElement).options[2].value.length, 3);
       expect((response[0] as PluralElement).options[2].value[0].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[2].value[0].type, Type.literal);
+      expect((response[0] as PluralElement).options[2].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[2].value[0].value, 'two message with ');
       expect((response[0] as PluralElement).options[2].value[1].runtimeType, ArgumentElement);
-      expect((response[0] as PluralElement).options[2].value[1].type, Type.argument);
+      expect((response[0] as PluralElement).options[2].value[1].type, ElementType.argument);
       expect((response[0] as PluralElement).options[2].value[1].value, 'name');
       expect((response[0] as PluralElement).options[2].value[2].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[2].value[2].type, Type.literal);
+      expect((response[0] as PluralElement).options[2].value[2].type, ElementType.literal);
       expect((response[0] as PluralElement).options[2].value[2].value, ' placeholder.');
 
       expect((response[0] as PluralElement).options[3].name, 'few');
       expect((response[0] as PluralElement).options[3].value.length, 3);
       expect((response[0] as PluralElement).options[3].value[0].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[3].value[0].type, Type.literal);
+      expect((response[0] as PluralElement).options[3].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[3].value[0].value, 'few message with ');
       expect((response[0] as PluralElement).options[3].value[1].runtimeType, ArgumentElement);
-      expect((response[0] as PluralElement).options[3].value[1].type, Type.argument);
+      expect((response[0] as PluralElement).options[3].value[1].type, ElementType.argument);
       expect((response[0] as PluralElement).options[3].value[1].value, 'name');
       expect((response[0] as PluralElement).options[3].value[2].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[3].value[2].type, Type.literal);
+      expect((response[0] as PluralElement).options[3].value[2].type, ElementType.literal);
       expect((response[0] as PluralElement).options[3].value[2].value, ' placeholder.');
 
       expect((response[0] as PluralElement).options[4].name, 'many');
       expect((response[0] as PluralElement).options[4].value.length, 3);
       expect((response[0] as PluralElement).options[4].value[0].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[4].value[0].type, Type.literal);
+      expect((response[0] as PluralElement).options[4].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[4].value[0].value, 'many message with ');
       expect((response[0] as PluralElement).options[4].value[1].runtimeType, ArgumentElement);
-      expect((response[0] as PluralElement).options[4].value[1].type, Type.argument);
+      expect((response[0] as PluralElement).options[4].value[1].type, ElementType.argument);
       expect((response[0] as PluralElement).options[4].value[1].value, 'name');
       expect((response[0] as PluralElement).options[4].value[2].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[4].value[2].type, Type.literal);
+      expect((response[0] as PluralElement).options[4].value[2].type, ElementType.literal);
       expect((response[0] as PluralElement).options[4].value[2].value, ' placeholder.');
 
       expect((response[0] as PluralElement).options[5].name, 'other');
       expect((response[0] as PluralElement).options[5].value.length, 3);
       expect((response[0] as PluralElement).options[5].value[0].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[5].value[0].type, Type.literal);
+      expect((response[0] as PluralElement).options[5].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[5].value[0].value, 'other message with ');
       expect((response[0] as PluralElement).options[5].value[1].runtimeType, ArgumentElement);
-      expect((response[0] as PluralElement).options[5].value[1].type, Type.argument);
+      expect((response[0] as PluralElement).options[5].value[1].type, ElementType.argument);
       expect((response[0] as PluralElement).options[5].value[1].value, 'name');
       expect((response[0] as PluralElement).options[5].value[2].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[5].value[2].type, Type.literal);
+      expect((response[0] as PluralElement).options[5].value[2].type, ElementType.literal);
       expect((response[0] as PluralElement).options[5].value[2].value, ' placeholder.');
     });
 
@@ -346,98 +347,98 @@ void main() {
 
       expect(response.length, 1);
       expect(response[0].runtimeType, PluralElement);
-      expect(response[0].type, Type.plural);
+      expect(response[0].type, ElementType.plural);
       expect(response[0].value, 'count');
       expect((response[0] as PluralElement).options.length, 6);
 
       expect((response[0] as PluralElement).options[0].name, '=0');
       expect((response[0] as PluralElement).options[0].value.length, 4);
       expect((response[0] as PluralElement).options[0].value[0].runtimeType, ArgumentElement);
-      expect((response[0] as PluralElement).options[0].value[0].type, Type.argument);
+      expect((response[0] as PluralElement).options[0].value[0].type, ElementType.argument);
       expect((response[0] as PluralElement).options[0].value[0].value, 'firstName');
       expect((response[0] as PluralElement).options[0].value[1].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[0].value[1].type, Type.literal);
+      expect((response[0] as PluralElement).options[0].value[1].type, ElementType.literal);
       expect((response[0] as PluralElement).options[0].value[1].value, ' ');
       expect((response[0] as PluralElement).options[0].value[2].runtimeType, ArgumentElement);
-      expect((response[0] as PluralElement).options[0].value[2].type, Type.argument);
+      expect((response[0] as PluralElement).options[0].value[2].type, ElementType.argument);
       expect((response[0] as PluralElement).options[0].value[2].value, 'lastName');
       expect((response[0] as PluralElement).options[0].value[3].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[0].value[3].type, Type.literal);
+      expect((response[0] as PluralElement).options[0].value[3].type, ElementType.literal);
       expect((response[0] as PluralElement).options[0].value[3].value, ': zero message');
 
       expect((response[0] as PluralElement).options[1].name, '=1');
       expect((response[0] as PluralElement).options[1].value.length, 4);
       expect((response[0] as PluralElement).options[1].value[0].runtimeType, ArgumentElement);
-      expect((response[0] as PluralElement).options[1].value[0].type, Type.argument);
+      expect((response[0] as PluralElement).options[1].value[0].type, ElementType.argument);
       expect((response[0] as PluralElement).options[1].value[0].value, 'firstName');
       expect((response[0] as PluralElement).options[1].value[1].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[1].value[1].type, Type.literal);
+      expect((response[0] as PluralElement).options[1].value[1].type, ElementType.literal);
       expect((response[0] as PluralElement).options[1].value[1].value, ' ');
       expect((response[0] as PluralElement).options[1].value[2].runtimeType, ArgumentElement);
-      expect((response[0] as PluralElement).options[1].value[2].type, Type.argument);
+      expect((response[0] as PluralElement).options[1].value[2].type, ElementType.argument);
       expect((response[0] as PluralElement).options[1].value[2].value, 'lastName');
       expect((response[0] as PluralElement).options[1].value[3].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[1].value[3].type, Type.literal);
+      expect((response[0] as PluralElement).options[1].value[3].type, ElementType.literal);
       expect((response[0] as PluralElement).options[1].value[3].value, ': one message');
 
       expect((response[0] as PluralElement).options[2].name, '=2');
       expect((response[0] as PluralElement).options[2].value.length, 4);
       expect((response[0] as PluralElement).options[2].value[0].runtimeType, ArgumentElement);
-      expect((response[0] as PluralElement).options[2].value[0].type, Type.argument);
+      expect((response[0] as PluralElement).options[2].value[0].type, ElementType.argument);
       expect((response[0] as PluralElement).options[2].value[0].value, 'firstName');
       expect((response[0] as PluralElement).options[2].value[1].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[2].value[1].type, Type.literal);
+      expect((response[0] as PluralElement).options[2].value[1].type, ElementType.literal);
       expect((response[0] as PluralElement).options[2].value[1].value, ' ');
       expect((response[0] as PluralElement).options[2].value[2].runtimeType, ArgumentElement);
-      expect((response[0] as PluralElement).options[2].value[2].type, Type.argument);
+      expect((response[0] as PluralElement).options[2].value[2].type, ElementType.argument);
       expect((response[0] as PluralElement).options[2].value[2].value, 'lastName');
       expect((response[0] as PluralElement).options[2].value[3].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[2].value[3].type, Type.literal);
+      expect((response[0] as PluralElement).options[2].value[3].type, ElementType.literal);
       expect((response[0] as PluralElement).options[2].value[3].value, ': two message');
 
       expect((response[0] as PluralElement).options[3].name, 'few');
       expect((response[0] as PluralElement).options[3].value.length, 4);
       expect((response[0] as PluralElement).options[3].value[0].runtimeType, ArgumentElement);
-      expect((response[0] as PluralElement).options[3].value[0].type, Type.argument);
+      expect((response[0] as PluralElement).options[3].value[0].type, ElementType.argument);
       expect((response[0] as PluralElement).options[3].value[0].value, 'firstName');
       expect((response[0] as PluralElement).options[3].value[1].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[3].value[1].type, Type.literal);
+      expect((response[0] as PluralElement).options[3].value[1].type, ElementType.literal);
       expect((response[0] as PluralElement).options[3].value[1].value, ' ');
       expect((response[0] as PluralElement).options[3].value[2].runtimeType, ArgumentElement);
-      expect((response[0] as PluralElement).options[3].value[2].type, Type.argument);
+      expect((response[0] as PluralElement).options[3].value[2].type, ElementType.argument);
       expect((response[0] as PluralElement).options[3].value[2].value, 'lastName');
       expect((response[0] as PluralElement).options[3].value[3].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[3].value[3].type, Type.literal);
+      expect((response[0] as PluralElement).options[3].value[3].type, ElementType.literal);
       expect((response[0] as PluralElement).options[3].value[3].value, ': few message');
 
       expect((response[0] as PluralElement).options[4].name, 'many');
       expect((response[0] as PluralElement).options[4].value.length, 4);
       expect((response[0] as PluralElement).options[4].value[0].runtimeType, ArgumentElement);
-      expect((response[0] as PluralElement).options[4].value[0].type, Type.argument);
+      expect((response[0] as PluralElement).options[4].value[0].type, ElementType.argument);
       expect((response[0] as PluralElement).options[4].value[0].value, 'firstName');
       expect((response[0] as PluralElement).options[4].value[1].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[4].value[1].type, Type.literal);
+      expect((response[0] as PluralElement).options[4].value[1].type, ElementType.literal);
       expect((response[0] as PluralElement).options[4].value[1].value, ' ');
       expect((response[0] as PluralElement).options[4].value[2].runtimeType, ArgumentElement);
-      expect((response[0] as PluralElement).options[4].value[2].type, Type.argument);
+      expect((response[0] as PluralElement).options[4].value[2].type, ElementType.argument);
       expect((response[0] as PluralElement).options[4].value[2].value, 'lastName');
       expect((response[0] as PluralElement).options[4].value[3].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[4].value[3].type, Type.literal);
+      expect((response[0] as PluralElement).options[4].value[3].type, ElementType.literal);
       expect((response[0] as PluralElement).options[4].value[3].value, ': many message');
 
       expect((response[0] as PluralElement).options[5].name, 'other');
       expect((response[0] as PluralElement).options[5].value.length, 4);
       expect((response[0] as PluralElement).options[5].value[0].runtimeType, ArgumentElement);
-      expect((response[0] as PluralElement).options[5].value[0].type, Type.argument);
+      expect((response[0] as PluralElement).options[5].value[0].type, ElementType.argument);
       expect((response[0] as PluralElement).options[5].value[0].value, 'firstName');
       expect((response[0] as PluralElement).options[5].value[1].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[5].value[1].type, Type.literal);
+      expect((response[0] as PluralElement).options[5].value[1].type, ElementType.literal);
       expect((response[0] as PluralElement).options[5].value[1].value, ' ');
       expect((response[0] as PluralElement).options[5].value[2].runtimeType, ArgumentElement);
-      expect((response[0] as PluralElement).options[5].value[2].type, Type.argument);
+      expect((response[0] as PluralElement).options[5].value[2].type, ElementType.argument);
       expect((response[0] as PluralElement).options[5].value[2].value, 'lastName');
       expect((response[0] as PluralElement).options[5].value[3].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[5].value[3].type, Type.literal);
+      expect((response[0] as PluralElement).options[5].value[3].type, ElementType.literal);
       expect((response[0] as PluralElement).options[5].value[3].value, ': other message');
     });
 
@@ -447,14 +448,14 @@ void main() {
 
       expect(response.length, 1);
       expect(response[0].runtimeType, PluralElement);
-      expect(response[0].type, Type.plural);
+      expect(response[0].type, ElementType.plural);
       expect(response[0].value, 'count');
       expect((response[0] as PluralElement).options.length, 2);
 
       expect((response[0] as PluralElement).options[0].name, 'one');
       expect((response[0] as PluralElement).options[0].value.length, 2);
       expect((response[0] as PluralElement).options[0].value[0].runtimeType, GenderElement);
-      expect((response[0] as PluralElement).options[0].value[0].type, Type.gender);
+      expect((response[0] as PluralElement).options[0].value[0].type, ElementType.gender);
       expect((response[0] as PluralElement).options[0].value[0].value, 'gender');
       expect(((response[0] as PluralElement).options[0].value[0] as GenderElement).options.length, 3);
       expect(((response[0] as PluralElement).options[0].value[0] as GenderElement).options[0].name, 'female');
@@ -462,7 +463,7 @@ void main() {
       expect(((response[0] as PluralElement).options[0].value[0] as GenderElement).options[0].value[0].runtimeType,
           LiteralElement);
       expect(
-          ((response[0] as PluralElement).options[0].value[0] as GenderElement).options[0].value[0].type, Type.literal);
+          ((response[0] as PluralElement).options[0].value[0] as GenderElement).options[0].value[0].type, ElementType.literal);
       expect(
           ((response[0] as PluralElement).options[0].value[0] as GenderElement).options[0].value[0].value, 'Girl has');
       expect(((response[0] as PluralElement).options[0].value[0] as GenderElement).options[1].name, 'male');
@@ -470,7 +471,7 @@ void main() {
       expect(((response[0] as PluralElement).options[0].value[0] as GenderElement).options[1].value[0].runtimeType,
           LiteralElement);
       expect(
-          ((response[0] as PluralElement).options[0].value[0] as GenderElement).options[1].value[0].type, Type.literal);
+          ((response[0] as PluralElement).options[0].value[0] as GenderElement).options[1].value[0].type, ElementType.literal);
       expect(
           ((response[0] as PluralElement).options[0].value[0] as GenderElement).options[1].value[0].value, 'Boy has');
       expect(((response[0] as PluralElement).options[0].value[0] as GenderElement).options[2].name, 'other');
@@ -478,17 +479,17 @@ void main() {
       expect(((response[0] as PluralElement).options[0].value[0] as GenderElement).options[2].value[0].runtimeType,
           LiteralElement);
       expect(
-          ((response[0] as PluralElement).options[0].value[0] as GenderElement).options[2].value[0].type, Type.literal);
+          ((response[0] as PluralElement).options[0].value[0] as GenderElement).options[2].value[0].type, ElementType.literal);
       expect(((response[0] as PluralElement).options[0].value[0] as GenderElement).options[2].value[0].value,
           'Person has');
       expect((response[0] as PluralElement).options[0].value[1].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[0].value[1].type, Type.literal);
+      expect((response[0] as PluralElement).options[0].value[1].type, ElementType.literal);
       expect((response[0] as PluralElement).options[0].value[1].value, ' one item');
 
       expect((response[0] as PluralElement).options[1].name, 'other');
       expect((response[0] as PluralElement).options[1].value.length, 4);
       expect((response[0] as PluralElement).options[1].value[0].runtimeType, GenderElement);
-      expect((response[0] as PluralElement).options[1].value[0].type, Type.gender);
+      expect((response[0] as PluralElement).options[1].value[0].type, ElementType.gender);
       expect((response[0] as PluralElement).options[1].value[0].value, 'gender');
       expect(((response[0] as PluralElement).options[1].value[0] as GenderElement).options.length, 3);
       expect(((response[0] as PluralElement).options[1].value[0] as GenderElement).options[0].name, 'female');
@@ -496,7 +497,7 @@ void main() {
       expect(((response[0] as PluralElement).options[1].value[0] as GenderElement).options[0].value[0].runtimeType,
           LiteralElement);
       expect(
-          ((response[0] as PluralElement).options[1].value[0] as GenderElement).options[0].value[0].type, Type.literal);
+          ((response[0] as PluralElement).options[1].value[0] as GenderElement).options[0].value[0].type, ElementType.literal);
       expect(
           ((response[0] as PluralElement).options[1].value[0] as GenderElement).options[0].value[0].value, 'Girl has');
       expect(((response[0] as PluralElement).options[1].value[0] as GenderElement).options[1].name, 'male');
@@ -504,7 +505,7 @@ void main() {
       expect(((response[0] as PluralElement).options[1].value[0] as GenderElement).options[1].value[0].runtimeType,
           LiteralElement);
       expect(
-          ((response[0] as PluralElement).options[1].value[0] as GenderElement).options[1].value[0].type, Type.literal);
+          ((response[0] as PluralElement).options[1].value[0] as GenderElement).options[1].value[0].type, ElementType.literal);
       expect(
           ((response[0] as PluralElement).options[1].value[0] as GenderElement).options[1].value[0].value, 'Boy has');
       expect(((response[0] as PluralElement).options[1].value[0] as GenderElement).options[2].name, 'other');
@@ -512,17 +513,17 @@ void main() {
       expect(((response[0] as PluralElement).options[1].value[0] as GenderElement).options[2].value[0].runtimeType,
           LiteralElement);
       expect(
-          ((response[0] as PluralElement).options[1].value[0] as GenderElement).options[2].value[0].type, Type.literal);
+          ((response[0] as PluralElement).options[1].value[0] as GenderElement).options[2].value[0].type, ElementType.literal);
       expect(((response[0] as PluralElement).options[1].value[0] as GenderElement).options[2].value[0].value,
           'Person has');
       expect((response[0] as PluralElement).options[1].value[1].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[1].value[1].type, Type.literal);
+      expect((response[0] as PluralElement).options[1].value[1].type, ElementType.literal);
       expect((response[0] as PluralElement).options[1].value[1].value, ' ');
       expect((response[0] as PluralElement).options[1].value[2].runtimeType, ArgumentElement);
-      expect((response[0] as PluralElement).options[1].value[2].type, Type.argument);
+      expect((response[0] as PluralElement).options[1].value[2].type, ElementType.argument);
       expect((response[0] as PluralElement).options[1].value[2].value, 'count');
       expect((response[0] as PluralElement).options[1].value[3].runtimeType, LiteralElement);
-      expect((response[0] as PluralElement).options[1].value[3].type, Type.literal);
+      expect((response[0] as PluralElement).options[1].value[3].type, ElementType.literal);
       expect((response[0] as PluralElement).options[1].value[3].value, ' items');
     });
   });
@@ -533,26 +534,26 @@ void main() {
 
       expect(response.length, 1);
       expect(response[0].runtimeType, GenderElement);
-      expect(response[0].type, Type.gender);
+      expect(response[0].type, ElementType.gender);
       expect(response[0].value, 'gender');
       expect((response[0] as GenderElement).options.length, 3);
 
       expect((response[0] as GenderElement).options[0].name, 'female');
       expect((response[0] as GenderElement).options[0].value.length, 1);
       expect((response[0] as GenderElement).options[0].value[0].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[0].value[0].type, Type.literal);
+      expect((response[0] as GenderElement).options[0].value[0].type, ElementType.literal);
       expect((response[0] as GenderElement).options[0].value[0].value, 'Hi woman!');
 
       expect((response[0] as GenderElement).options[1].name, 'male');
       expect((response[0] as GenderElement).options[1].value.length, 1);
       expect((response[0] as GenderElement).options[1].value[0].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[1].value[0].type, Type.literal);
+      expect((response[0] as GenderElement).options[1].value[0].type, ElementType.literal);
       expect((response[0] as GenderElement).options[1].value[0].value, 'Hi man!');
 
       expect((response[0] as GenderElement).options[2].name, 'other');
       expect((response[0] as GenderElement).options[2].value.length, 1);
       expect((response[0] as GenderElement).options[2].value[0].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[2].value[0].type, Type.literal);
+      expect((response[0] as GenderElement).options[2].value[0].type, ElementType.literal);
       expect((response[0] as GenderElement).options[2].value[0].value, 'Hi there!');
     });
 
@@ -561,26 +562,26 @@ void main() {
 
       expect(response.length, 1);
       expect(response[0].runtimeType, GenderElement);
-      expect(response[0].type, Type.gender);
+      expect(response[0].type, ElementType.gender);
       expect(response[0].value, 'gender');
       expect((response[0] as GenderElement).options.length, 3);
 
       expect((response[0] as GenderElement).options[0].name, 'female');
       expect((response[0] as GenderElement).options[0].value.length, 1);
       expect((response[0] as GenderElement).options[0].value[0].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[0].value[0].type, Type.literal);
+      expect((response[0] as GenderElement).options[0].value[0].type, ElementType.literal);
       expect((response[0] as GenderElement).options[0].value[0].value, 'Hi woman!');
 
       expect((response[0] as GenderElement).options[1].name, 'male');
       expect((response[0] as GenderElement).options[1].value.length, 1);
       expect((response[0] as GenderElement).options[1].value[0].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[1].value[0].type, Type.literal);
+      expect((response[0] as GenderElement).options[1].value[0].type, ElementType.literal);
       expect((response[0] as GenderElement).options[1].value[0].value, 'Hi man!');
 
       expect((response[0] as GenderElement).options[2].name, 'other');
       expect((response[0] as GenderElement).options[2].value.length, 1);
       expect((response[0] as GenderElement).options[2].value[0].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[2].value[0].type, Type.literal);
+      expect((response[0] as GenderElement).options[2].value[0].type, ElementType.literal);
       expect((response[0] as GenderElement).options[2].value[0].value, 'Hi there!');
     });
 
@@ -590,44 +591,44 @@ void main() {
 
       expect(response.length, 1);
       expect(response[0].runtimeType, GenderElement);
-      expect(response[0].type, Type.gender);
+      expect(response[0].type, ElementType.gender);
       expect(response[0].value, 'gender');
       expect((response[0] as GenderElement).options.length, 3);
 
       expect((response[0] as GenderElement).options[0].name, 'female');
       expect((response[0] as GenderElement).options[0].value.length, 3);
       expect((response[0] as GenderElement).options[0].value[0].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[0].value[0].type, Type.literal);
+      expect((response[0] as GenderElement).options[0].value[0].type, ElementType.literal);
       expect((response[0] as GenderElement).options[0].value[0].value, 'Miss ');
       expect((response[0] as GenderElement).options[0].value[1].runtimeType, ArgumentElement);
-      expect((response[0] as GenderElement).options[0].value[1].type, Type.argument);
+      expect((response[0] as GenderElement).options[0].value[1].type, ElementType.argument);
       expect((response[0] as GenderElement).options[0].value[1].value, 'firstName');
       expect((response[0] as GenderElement).options[0].value[2].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[0].value[2].type, Type.literal);
+      expect((response[0] as GenderElement).options[0].value[2].type, ElementType.literal);
       expect((response[0] as GenderElement).options[0].value[2].value, '.');
 
       expect((response[0] as GenderElement).options[1].name, 'male');
       expect((response[0] as GenderElement).options[1].value.length, 3);
       expect((response[0] as GenderElement).options[1].value[0].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[1].value[0].type, Type.literal);
+      expect((response[0] as GenderElement).options[1].value[0].type, ElementType.literal);
       expect((response[0] as GenderElement).options[1].value[0].value, 'Mister ');
       expect((response[0] as GenderElement).options[1].value[1].runtimeType, ArgumentElement);
-      expect((response[0] as GenderElement).options[1].value[1].type, Type.argument);
+      expect((response[0] as GenderElement).options[1].value[1].type, ElementType.argument);
       expect((response[0] as GenderElement).options[1].value[1].value, 'firstName');
       expect((response[0] as GenderElement).options[1].value[2].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[1].value[2].type, Type.literal);
+      expect((response[0] as GenderElement).options[1].value[2].type, ElementType.literal);
       expect((response[0] as GenderElement).options[1].value[2].value, '.');
 
       expect((response[0] as GenderElement).options[2].name, 'other');
       expect((response[0] as GenderElement).options[2].value.length, 3);
       expect((response[0] as GenderElement).options[2].value[0].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[2].value[0].type, Type.literal);
+      expect((response[0] as GenderElement).options[2].value[0].type, ElementType.literal);
       expect((response[0] as GenderElement).options[2].value[0].value, 'User ');
       expect((response[0] as GenderElement).options[2].value[1].runtimeType, ArgumentElement);
-      expect((response[0] as GenderElement).options[2].value[1].type, Type.argument);
+      expect((response[0] as GenderElement).options[2].value[1].type, ElementType.argument);
       expect((response[0] as GenderElement).options[2].value[1].value, 'firstName');
       expect((response[0] as GenderElement).options[2].value[2].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[2].value[2].type, Type.literal);
+      expect((response[0] as GenderElement).options[2].value[2].type, ElementType.literal);
       expect((response[0] as GenderElement).options[2].value[2].value, '.');
     });
 
@@ -637,80 +638,80 @@ void main() {
 
       expect(response.length, 1);
       expect(response[0].runtimeType, GenderElement);
-      expect(response[0].type, Type.gender);
+      expect(response[0].type, ElementType.gender);
       expect(response[0].value, 'gender');
       expect((response[0] as GenderElement).options.length, 3);
 
       expect((response[0] as GenderElement).options[0].name, 'female');
       expect((response[0] as GenderElement).options[0].value.length, 7);
       expect((response[0] as GenderElement).options[0].value[0].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[0].value[0].type, Type.literal);
+      expect((response[0] as GenderElement).options[0].value[0].type, ElementType.literal);
       expect((response[0] as GenderElement).options[0].value[0].value, 'Miss ');
       expect((response[0] as GenderElement).options[0].value[1].runtimeType, ArgumentElement);
-      expect((response[0] as GenderElement).options[0].value[1].type, Type.argument);
+      expect((response[0] as GenderElement).options[0].value[1].type, ElementType.argument);
       expect((response[0] as GenderElement).options[0].value[1].value, 'firstName');
       expect((response[0] as GenderElement).options[0].value[2].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[0].value[2].type, Type.literal);
+      expect((response[0] as GenderElement).options[0].value[2].type, ElementType.literal);
       expect((response[0] as GenderElement).options[0].value[2].value, ' ');
       expect((response[0] as GenderElement).options[0].value[3].runtimeType, ArgumentElement);
-      expect((response[0] as GenderElement).options[0].value[3].type, Type.argument);
+      expect((response[0] as GenderElement).options[0].value[3].type, ElementType.argument);
       expect((response[0] as GenderElement).options[0].value[3].value, 'lastName');
       expect((response[0] as GenderElement).options[0].value[4].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[0].value[4].type, Type.literal);
+      expect((response[0] as GenderElement).options[0].value[4].type, ElementType.literal);
       expect((response[0] as GenderElement).options[0].value[4].value, ' from ');
       expect((response[0] as GenderElement).options[0].value[5].runtimeType, ArgumentElement);
-      expect((response[0] as GenderElement).options[0].value[5].type, Type.argument);
+      expect((response[0] as GenderElement).options[0].value[5].type, ElementType.argument);
       expect((response[0] as GenderElement).options[0].value[5].value, 'address');
       expect((response[0] as GenderElement).options[0].value[6].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[0].value[6].type, Type.literal);
+      expect((response[0] as GenderElement).options[0].value[6].type, ElementType.literal);
       expect((response[0] as GenderElement).options[0].value[6].value, '.');
 
       expect((response[0] as GenderElement).options[1].name, 'male');
       expect((response[0] as GenderElement).options[1].value.length, 7);
       expect((response[0] as GenderElement).options[1].value[0].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[1].value[0].type, Type.literal);
+      expect((response[0] as GenderElement).options[1].value[0].type, ElementType.literal);
       expect((response[0] as GenderElement).options[1].value[0].value, 'Mister ');
       expect((response[0] as GenderElement).options[1].value[1].runtimeType, ArgumentElement);
-      expect((response[0] as GenderElement).options[1].value[1].type, Type.argument);
+      expect((response[0] as GenderElement).options[1].value[1].type, ElementType.argument);
       expect((response[0] as GenderElement).options[1].value[1].value, 'firstName');
       expect((response[0] as GenderElement).options[1].value[2].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[1].value[2].type, Type.literal);
+      expect((response[0] as GenderElement).options[1].value[2].type, ElementType.literal);
       expect((response[0] as GenderElement).options[1].value[2].value, ' ');
       expect((response[0] as GenderElement).options[1].value[3].runtimeType, ArgumentElement);
-      expect((response[0] as GenderElement).options[1].value[3].type, Type.argument);
+      expect((response[0] as GenderElement).options[1].value[3].type, ElementType.argument);
       expect((response[0] as GenderElement).options[1].value[3].value, 'lastName');
       expect((response[0] as GenderElement).options[1].value[4].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[1].value[4].type, Type.literal);
+      expect((response[0] as GenderElement).options[1].value[4].type, ElementType.literal);
       expect((response[0] as GenderElement).options[1].value[4].value, ' from ');
       expect((response[0] as GenderElement).options[1].value[5].runtimeType, ArgumentElement);
-      expect((response[0] as GenderElement).options[1].value[5].type, Type.argument);
+      expect((response[0] as GenderElement).options[1].value[5].type, ElementType.argument);
       expect((response[0] as GenderElement).options[1].value[5].value, 'address');
       expect((response[0] as GenderElement).options[1].value[6].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[1].value[6].type, Type.literal);
+      expect((response[0] as GenderElement).options[1].value[6].type, ElementType.literal);
       expect((response[0] as GenderElement).options[1].value[6].value, '.');
 
       expect((response[0] as GenderElement).options[2].name, 'other');
       expect((response[0] as GenderElement).options[2].value.length, 7);
       expect((response[0] as GenderElement).options[2].value[0].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[2].value[0].type, Type.literal);
+      expect((response[0] as GenderElement).options[2].value[0].type, ElementType.literal);
       expect((response[0] as GenderElement).options[2].value[0].value, 'User ');
       expect((response[0] as GenderElement).options[2].value[1].runtimeType, ArgumentElement);
-      expect((response[0] as GenderElement).options[2].value[1].type, Type.argument);
+      expect((response[0] as GenderElement).options[2].value[1].type, ElementType.argument);
       expect((response[0] as GenderElement).options[2].value[1].value, 'firstName');
       expect((response[0] as GenderElement).options[2].value[2].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[2].value[2].type, Type.literal);
+      expect((response[0] as GenderElement).options[2].value[2].type, ElementType.literal);
       expect((response[0] as GenderElement).options[2].value[2].value, ' ');
       expect((response[0] as GenderElement).options[2].value[3].runtimeType, ArgumentElement);
-      expect((response[0] as GenderElement).options[2].value[3].type, Type.argument);
+      expect((response[0] as GenderElement).options[2].value[3].type, ElementType.argument);
       expect((response[0] as GenderElement).options[2].value[3].value, 'lastName');
       expect((response[0] as GenderElement).options[2].value[4].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[2].value[4].type, Type.literal);
+      expect((response[0] as GenderElement).options[2].value[4].type, ElementType.literal);
       expect((response[0] as GenderElement).options[2].value[4].value, ' from ');
       expect((response[0] as GenderElement).options[2].value[5].runtimeType, ArgumentElement);
-      expect((response[0] as GenderElement).options[2].value[5].type, Type.argument);
+      expect((response[0] as GenderElement).options[2].value[5].type, ElementType.argument);
       expect((response[0] as GenderElement).options[2].value[5].value, 'address');
       expect((response[0] as GenderElement).options[2].value[6].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[2].value[6].type, Type.literal);
+      expect((response[0] as GenderElement).options[2].value[6].type, ElementType.literal);
       expect((response[0] as GenderElement).options[2].value[6].value, '.');
     });
 
@@ -720,17 +721,17 @@ void main() {
 
       expect(response.length, 1);
       expect(response[0].runtimeType, GenderElement);
-      expect(response[0].type, Type.gender);
+      expect(response[0].type, ElementType.gender);
       expect(response[0].value, 'gender');
       expect((response[0] as GenderElement).options.length, 3);
 
       expect((response[0] as GenderElement).options[0].name, 'female');
       expect((response[0] as GenderElement).options[0].value.length, 2);
       expect((response[0] as GenderElement).options[0].value[0].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[0].value[0].type, Type.literal);
+      expect((response[0] as GenderElement).options[0].value[0].type, ElementType.literal);
       expect((response[0] as GenderElement).options[0].value[0].value, 'She has ');
       expect((response[0] as GenderElement).options[0].value[1].runtimeType, PluralElement);
-      expect((response[0] as GenderElement).options[0].value[1].type, Type.plural);
+      expect((response[0] as GenderElement).options[0].value[1].type, ElementType.plural);
       expect((response[0] as GenderElement).options[0].value[1].value, 'count');
       expect(((response[0] as GenderElement).options[0].value[1] as PluralElement).options.length, 2);
       expect(((response[0] as GenderElement).options[0].value[1] as PluralElement).options[0].name, 'one');
@@ -738,7 +739,7 @@ void main() {
       expect(((response[0] as GenderElement).options[0].value[1] as PluralElement).options[0].value[0].runtimeType,
           LiteralElement);
       expect(
-          ((response[0] as GenderElement).options[0].value[1] as PluralElement).options[0].value[0].type, Type.literal);
+          ((response[0] as GenderElement).options[0].value[1] as PluralElement).options[0].value[0].type, ElementType.literal);
       expect(
           ((response[0] as GenderElement).options[0].value[1] as PluralElement).options[0].value[0].value, 'one apple');
       expect(((response[0] as GenderElement).options[0].value[1] as PluralElement).options[1].name, 'other');
@@ -746,22 +747,22 @@ void main() {
       expect(((response[0] as GenderElement).options[0].value[1] as PluralElement).options[1].value[0].runtimeType,
           ArgumentElement);
       expect(((response[0] as GenderElement).options[0].value[1] as PluralElement).options[1].value[0].type,
-          Type.argument);
+          ElementType.argument);
       expect(((response[0] as GenderElement).options[0].value[1] as PluralElement).options[1].value[0].value, 'count');
       expect(((response[0] as GenderElement).options[0].value[1] as PluralElement).options[1].value[1].runtimeType,
           LiteralElement);
       expect(
-          ((response[0] as GenderElement).options[0].value[1] as PluralElement).options[1].value[1].type, Type.literal);
+          ((response[0] as GenderElement).options[0].value[1] as PluralElement).options[1].value[1].type, ElementType.literal);
       expect(
           ((response[0] as GenderElement).options[0].value[1] as PluralElement).options[1].value[1].value, ' apples');
 
       expect((response[0] as GenderElement).options[1].name, 'male');
       expect((response[0] as GenderElement).options[1].value.length, 2);
       expect((response[0] as GenderElement).options[1].value[0].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[1].value[0].type, Type.literal);
+      expect((response[0] as GenderElement).options[1].value[0].type, ElementType.literal);
       expect((response[0] as GenderElement).options[1].value[0].value, 'He has ');
       expect((response[0] as GenderElement).options[1].value[1].runtimeType, PluralElement);
-      expect((response[0] as GenderElement).options[1].value[1].type, Type.plural);
+      expect((response[0] as GenderElement).options[1].value[1].type, ElementType.plural);
       expect((response[0] as GenderElement).options[1].value[1].value, 'count');
       expect(((response[0] as GenderElement).options[1].value[1] as PluralElement).options.length, 2);
       expect(((response[0] as GenderElement).options[1].value[1] as PluralElement).options[0].name, 'one');
@@ -769,7 +770,7 @@ void main() {
       expect(((response[0] as GenderElement).options[1].value[1] as PluralElement).options[0].value[0].runtimeType,
           LiteralElement);
       expect(
-          ((response[0] as GenderElement).options[1].value[1] as PluralElement).options[0].value[0].type, Type.literal);
+          ((response[0] as GenderElement).options[1].value[1] as PluralElement).options[0].value[0].type, ElementType.literal);
       expect(
           ((response[0] as GenderElement).options[1].value[1] as PluralElement).options[0].value[0].value, 'one apple');
       expect(((response[0] as GenderElement).options[1].value[1] as PluralElement).options[1].name, 'other');
@@ -777,22 +778,22 @@ void main() {
       expect(((response[0] as GenderElement).options[1].value[1] as PluralElement).options[1].value[0].runtimeType,
           ArgumentElement);
       expect(((response[0] as GenderElement).options[1].value[1] as PluralElement).options[1].value[0].type,
-          Type.argument);
+          ElementType.argument);
       expect(((response[0] as GenderElement).options[1].value[1] as PluralElement).options[1].value[0].value, 'count');
       expect(((response[0] as GenderElement).options[1].value[1] as PluralElement).options[1].value[1].runtimeType,
           LiteralElement);
       expect(
-          ((response[0] as GenderElement).options[1].value[1] as PluralElement).options[1].value[1].type, Type.literal);
+          ((response[0] as GenderElement).options[1].value[1] as PluralElement).options[1].value[1].type, ElementType.literal);
       expect(
           ((response[0] as GenderElement).options[1].value[1] as PluralElement).options[1].value[1].value, ' apples');
 
       expect((response[0] as GenderElement).options[2].name, 'other');
       expect((response[0] as GenderElement).options[2].value.length, 2);
       expect((response[0] as GenderElement).options[2].value[0].runtimeType, LiteralElement);
-      expect((response[0] as GenderElement).options[2].value[0].type, Type.literal);
+      expect((response[0] as GenderElement).options[2].value[0].type, ElementType.literal);
       expect((response[0] as GenderElement).options[2].value[0].value, 'Person has ');
       expect((response[0] as GenderElement).options[2].value[1].runtimeType, PluralElement);
-      expect((response[0] as GenderElement).options[2].value[1].type, Type.plural);
+      expect((response[0] as GenderElement).options[2].value[1].type, ElementType.plural);
       expect((response[0] as GenderElement).options[2].value[1].value, 'count');
       expect(((response[0] as GenderElement).options[2].value[1] as PluralElement).options.length, 2);
       expect(((response[0] as GenderElement).options[2].value[1] as PluralElement).options[0].name, 'one');
@@ -800,7 +801,7 @@ void main() {
       expect(((response[0] as GenderElement).options[2].value[1] as PluralElement).options[0].value[0].runtimeType,
           LiteralElement);
       expect(
-          ((response[0] as GenderElement).options[2].value[1] as PluralElement).options[0].value[0].type, Type.literal);
+          ((response[0] as GenderElement).options[2].value[1] as PluralElement).options[0].value[0].type, ElementType.literal);
       expect(
           ((response[0] as GenderElement).options[2].value[1] as PluralElement).options[0].value[0].value, 'one apple');
       expect(((response[0] as GenderElement).options[2].value[1] as PluralElement).options[1].name, 'other');
@@ -808,12 +809,12 @@ void main() {
       expect(((response[0] as GenderElement).options[2].value[1] as PluralElement).options[1].value[0].runtimeType,
           ArgumentElement);
       expect(((response[0] as GenderElement).options[2].value[1] as PluralElement).options[1].value[0].type,
-          Type.argument);
+          ElementType.argument);
       expect(((response[0] as GenderElement).options[2].value[1] as PluralElement).options[1].value[0].value, 'count');
       expect(((response[0] as GenderElement).options[2].value[1] as PluralElement).options[1].value[1].runtimeType,
           LiteralElement);
       expect(
-          ((response[0] as GenderElement).options[2].value[1] as PluralElement).options[1].value[1].type, Type.literal);
+          ((response[0] as GenderElement).options[2].value[1] as PluralElement).options[1].value[1].type, ElementType.literal);
       expect(
           ((response[0] as GenderElement).options[2].value[1] as PluralElement).options[1].value[1].value, ' apples');
     });
@@ -826,26 +827,26 @@ void main() {
 
       expect(response.length, 1);
       expect(response[0].runtimeType, SelectElement);
-      expect(response[0].type, Type.select);
+      expect(response[0].type, ElementType.select);
       expect(response[0].value, 'choice');
       expect((response[0] as SelectElement).options.length, 3);
 
       expect((response[0] as SelectElement).options[0].name, 'foo');
       expect((response[0] as SelectElement).options[0].value.length, 1);
       expect((response[0] as SelectElement).options[0].value[0].runtimeType, LiteralElement);
-      expect((response[0] as SelectElement).options[0].value[0].type, Type.literal);
+      expect((response[0] as SelectElement).options[0].value[0].type, ElementType.literal);
       expect((response[0] as SelectElement).options[0].value[0].value, 'This is foo option');
 
       expect((response[0] as SelectElement).options[1].name, 'bar');
       expect((response[0] as SelectElement).options[1].value.length, 1);
       expect((response[0] as SelectElement).options[1].value[0].runtimeType, LiteralElement);
-      expect((response[0] as SelectElement).options[1].value[0].type, Type.literal);
+      expect((response[0] as SelectElement).options[1].value[0].type, ElementType.literal);
       expect((response[0] as SelectElement).options[1].value[0].value, 'This is bar option');
 
       expect((response[0] as SelectElement).options[2].name, 'baz');
       expect((response[0] as SelectElement).options[2].value.length, 1);
       expect((response[0] as SelectElement).options[2].value[0].runtimeType, LiteralElement);
-      expect((response[0] as SelectElement).options[2].value[0].type, Type.literal);
+      expect((response[0] as SelectElement).options[2].value[0].type, ElementType.literal);
       expect((response[0] as SelectElement).options[2].value[0].value, 'This is baz option');
     });
 
@@ -855,26 +856,26 @@ void main() {
 
       expect(response.length, 1);
       expect(response[0].runtimeType, SelectElement);
-      expect(response[0].type, Type.select);
+      expect(response[0].type, ElementType.select);
       expect(response[0].value, 'choice');
       expect((response[0] as SelectElement).options.length, 3);
 
       expect((response[0] as SelectElement).options[0].name, 'foo');
       expect((response[0] as SelectElement).options[0].value.length, 1);
       expect((response[0] as SelectElement).options[0].value[0].runtimeType, LiteralElement);
-      expect((response[0] as SelectElement).options[0].value[0].type, Type.literal);
+      expect((response[0] as SelectElement).options[0].value[0].type, ElementType.literal);
       expect((response[0] as SelectElement).options[0].value[0].value, 'This is foo option');
 
       expect((response[0] as SelectElement).options[1].name, 'bar');
       expect((response[0] as SelectElement).options[1].value.length, 1);
       expect((response[0] as SelectElement).options[1].value[0].runtimeType, LiteralElement);
-      expect((response[0] as SelectElement).options[1].value[0].type, Type.literal);
+      expect((response[0] as SelectElement).options[1].value[0].type, ElementType.literal);
       expect((response[0] as SelectElement).options[1].value[0].value, 'This is bar option');
 
       expect((response[0] as SelectElement).options[2].name, 'baz');
       expect((response[0] as SelectElement).options[2].value.length, 1);
       expect((response[0] as SelectElement).options[2].value[0].runtimeType, LiteralElement);
-      expect((response[0] as SelectElement).options[2].value[0].type, Type.literal);
+      expect((response[0] as SelectElement).options[2].value[0].type, ElementType.literal);
       expect((response[0] as SelectElement).options[2].value[0].value, 'This is baz option');
     });
 
@@ -884,44 +885,44 @@ void main() {
 
       expect(response.length, 1);
       expect(response[0].runtimeType, SelectElement);
-      expect(response[0].type, Type.select);
+      expect(response[0].type, ElementType.select);
       expect(response[0].value, 'choice');
       expect((response[0] as SelectElement).options.length, 3);
 
       expect((response[0] as SelectElement).options[0].name, 'foo');
       expect((response[0] as SelectElement).options[0].value.length, 3);
       expect((response[0] as SelectElement).options[0].value[0].runtimeType, LiteralElement);
-      expect((response[0] as SelectElement).options[0].value[0].type, Type.literal);
+      expect((response[0] as SelectElement).options[0].value[0].type, ElementType.literal);
       expect((response[0] as SelectElement).options[0].value[0].value, 'This is foo option with ');
       expect((response[0] as SelectElement).options[0].value[1].runtimeType, ArgumentElement);
-      expect((response[0] as SelectElement).options[0].value[1].type, Type.argument);
+      expect((response[0] as SelectElement).options[0].value[1].type, ElementType.argument);
       expect((response[0] as SelectElement).options[0].value[1].value, 'name');
       expect((response[0] as SelectElement).options[0].value[2].runtimeType, LiteralElement);
-      expect((response[0] as SelectElement).options[0].value[2].type, Type.literal);
+      expect((response[0] as SelectElement).options[0].value[2].type, ElementType.literal);
       expect((response[0] as SelectElement).options[0].value[2].value, ' placeholder');
 
       expect((response[0] as SelectElement).options[1].name, 'bar');
       expect((response[0] as SelectElement).options[1].value.length, 3);
       expect((response[0] as SelectElement).options[1].value[0].runtimeType, LiteralElement);
-      expect((response[0] as SelectElement).options[1].value[0].type, Type.literal);
+      expect((response[0] as SelectElement).options[1].value[0].type, ElementType.literal);
       expect((response[0] as SelectElement).options[1].value[0].value, 'This is bar option with ');
       expect((response[0] as SelectElement).options[1].value[1].runtimeType, ArgumentElement);
-      expect((response[0] as SelectElement).options[1].value[1].type, Type.argument);
+      expect((response[0] as SelectElement).options[1].value[1].type, ElementType.argument);
       expect((response[0] as SelectElement).options[1].value[1].value, 'name');
       expect((response[0] as SelectElement).options[1].value[2].runtimeType, LiteralElement);
-      expect((response[0] as SelectElement).options[1].value[2].type, Type.literal);
+      expect((response[0] as SelectElement).options[1].value[2].type, ElementType.literal);
       expect((response[0] as SelectElement).options[1].value[2].value, ' placeholder');
 
       expect((response[0] as SelectElement).options[2].name, 'baz');
       expect((response[0] as SelectElement).options[2].value.length, 3);
       expect((response[0] as SelectElement).options[2].value[0].runtimeType, LiteralElement);
-      expect((response[0] as SelectElement).options[2].value[0].type, Type.literal);
+      expect((response[0] as SelectElement).options[2].value[0].type, ElementType.literal);
       expect((response[0] as SelectElement).options[2].value[0].value, 'This is baz option with ');
       expect((response[0] as SelectElement).options[2].value[1].runtimeType, ArgumentElement);
-      expect((response[0] as SelectElement).options[2].value[1].type, Type.argument);
+      expect((response[0] as SelectElement).options[2].value[1].type, ElementType.argument);
       expect((response[0] as SelectElement).options[2].value[1].value, 'name');
       expect((response[0] as SelectElement).options[2].value[2].runtimeType, LiteralElement);
-      expect((response[0] as SelectElement).options[2].value[2].type, Type.literal);
+      expect((response[0] as SelectElement).options[2].value[2].type, ElementType.literal);
       expect((response[0] as SelectElement).options[2].value[2].value, ' placeholder');
     });
 
@@ -931,53 +932,53 @@ void main() {
 
       expect(response.length, 1);
       expect(response[0].runtimeType, SelectElement);
-      expect(response[0].type, Type.select);
+      expect(response[0].type, ElementType.select);
       expect(response[0].value, 'choice');
       expect((response[0] as SelectElement).options.length, 3);
 
       expect((response[0] as SelectElement).options[0].name, 'foo');
       expect((response[0] as SelectElement).options[0].value.length, 4);
       expect((response[0] as SelectElement).options[0].value[0].runtimeType, LiteralElement);
-      expect((response[0] as SelectElement).options[0].value[0].type, Type.literal);
+      expect((response[0] as SelectElement).options[0].value[0].type, ElementType.literal);
       expect((response[0] as SelectElement).options[0].value[0].value, 'Foo: ');
       expect((response[0] as SelectElement).options[0].value[1].runtimeType, ArgumentElement);
-      expect((response[0] as SelectElement).options[0].value[1].type, Type.argument);
+      expect((response[0] as SelectElement).options[0].value[1].type, ElementType.argument);
       expect((response[0] as SelectElement).options[0].value[1].value, 'firstName');
       expect((response[0] as SelectElement).options[0].value[2].runtimeType, LiteralElement);
-      expect((response[0] as SelectElement).options[0].value[2].type, Type.literal);
+      expect((response[0] as SelectElement).options[0].value[2].type, ElementType.literal);
       expect((response[0] as SelectElement).options[0].value[2].value, ' ');
       expect((response[0] as SelectElement).options[0].value[3].runtimeType, ArgumentElement);
-      expect((response[0] as SelectElement).options[0].value[3].type, Type.argument);
+      expect((response[0] as SelectElement).options[0].value[3].type, ElementType.argument);
       expect((response[0] as SelectElement).options[0].value[3].value, 'lastName');
 
       expect((response[0] as SelectElement).options[1].name, 'bar');
       expect((response[0] as SelectElement).options[1].value.length, 4);
       expect((response[0] as SelectElement).options[1].value[0].runtimeType, LiteralElement);
-      expect((response[0] as SelectElement).options[1].value[0].type, Type.literal);
+      expect((response[0] as SelectElement).options[1].value[0].type, ElementType.literal);
       expect((response[0] as SelectElement).options[1].value[0].value, 'Bar: ');
       expect((response[0] as SelectElement).options[1].value[1].runtimeType, ArgumentElement);
-      expect((response[0] as SelectElement).options[1].value[1].type, Type.argument);
+      expect((response[0] as SelectElement).options[1].value[1].type, ElementType.argument);
       expect((response[0] as SelectElement).options[1].value[1].value, 'firstName');
       expect((response[0] as SelectElement).options[1].value[2].runtimeType, LiteralElement);
-      expect((response[0] as SelectElement).options[1].value[2].type, Type.literal);
+      expect((response[0] as SelectElement).options[1].value[2].type, ElementType.literal);
       expect((response[0] as SelectElement).options[1].value[2].value, ' ');
       expect((response[0] as SelectElement).options[1].value[3].runtimeType, ArgumentElement);
-      expect((response[0] as SelectElement).options[1].value[3].type, Type.argument);
+      expect((response[0] as SelectElement).options[1].value[3].type, ElementType.argument);
       expect((response[0] as SelectElement).options[1].value[3].value, 'lastName');
 
       expect((response[0] as SelectElement).options[2].name, 'baz');
       expect((response[0] as SelectElement).options[2].value.length, 4);
       expect((response[0] as SelectElement).options[2].value[0].runtimeType, LiteralElement);
-      expect((response[0] as SelectElement).options[2].value[0].type, Type.literal);
+      expect((response[0] as SelectElement).options[2].value[0].type, ElementType.literal);
       expect((response[0] as SelectElement).options[2].value[0].value, 'Baz: ');
       expect((response[0] as SelectElement).options[2].value[1].runtimeType, ArgumentElement);
-      expect((response[0] as SelectElement).options[2].value[1].type, Type.argument);
+      expect((response[0] as SelectElement).options[2].value[1].type, ElementType.argument);
       expect((response[0] as SelectElement).options[2].value[1].value, 'firstName');
       expect((response[0] as SelectElement).options[2].value[2].runtimeType, LiteralElement);
-      expect((response[0] as SelectElement).options[2].value[2].type, Type.literal);
+      expect((response[0] as SelectElement).options[2].value[2].type, ElementType.literal);
       expect((response[0] as SelectElement).options[2].value[2].value, ' ');
       expect((response[0] as SelectElement).options[2].value[3].runtimeType, ArgumentElement);
-      expect((response[0] as SelectElement).options[2].value[3].type, Type.argument);
+      expect((response[0] as SelectElement).options[2].value[3].type, ElementType.argument);
       expect((response[0] as SelectElement).options[2].value[3].value, 'lastName');
     });
   });

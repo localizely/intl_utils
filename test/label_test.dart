@@ -1,4 +1,5 @@
 import 'package:test/test.dart';
+
 import 'package:intl_utils/src/label.dart';
 
 void main() {
@@ -295,7 +296,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic name) {',
+            '  String labelName(Object name) {',
             '    return Intl.message(',
             '      \'Argument message \$name.\',',
             '      name: \'labelName\',',
@@ -312,7 +313,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic name) {',
+            '  String labelName(Object name) {',
             '    return Intl.message(',
             '      \'Argument message\',',
             '      name: \'labelName\',',
@@ -329,7 +330,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic name) {',
+            '  String labelName(Object name) {',
             '    return Intl.message(',
             '      \'Argument message \$name.\',',
             '      name: \'labelName\',',
@@ -346,7 +347,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic firstName, dynamic lastName) {',
+            '  String labelName(Object firstName, Object lastName) {',
             '    return Intl.message(',
             '      \'Argument message \$firstName \$lastName.\',',
             '      name: \'labelName\',',
@@ -363,7 +364,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic lastName, dynamic firstName) {',
+            '  String labelName(Object lastName, Object firstName) {',
             '    return Intl.message(',
             '      \'Argument message \$firstName \$lastName.\',',
             '      name: \'labelName\',',
@@ -380,7 +381,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic firstName, dynamic lastName, dynamic address) {',
+            '  String labelName(Object firstName, Object lastName, Object address) {',
             '    return Intl.message(',
             '      \'Argument message \$firstName \$lastName \$address, \$firstName \$lastName.\',',
             '      name: \'labelName\',',
@@ -398,7 +399,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic firstName, dynamic lastName, dynamic address) {',
+            '  String labelName(Object firstName, Object lastName, Object address) {',
             '    return Intl.message(',
             '      \'Argument message \$firstName \$lastName \$address, \$firstName \$lastName.\',',
             '      name: \'labelName\',',
@@ -415,7 +416,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic firstName, dynamic lastName, dynamic address) {',
+            '  String labelName(Object firstName, Object lastName, Object address) {',
             '    return Intl.message(',
             '      \'Argument message \$firstName \$lastName \$address, \$firstName \$lastName.\',',
             '      name: \'labelName\',',
@@ -432,7 +433,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic address, dynamic firstName, dynamic lastName) {',
+            '  String labelName(Object address, Object firstName, Object lastName) {',
             '    return Intl.message(',
             '      \'Argument message \$firstName \$lastName \$address, \$firstName \$lastName.\',',
             '      name: \'labelName\',',
@@ -449,7 +450,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic name) {',
+            '  String labelName(Object name) {',
             '    return Intl.message(',
             '      \'Argument message \\n \$name.\',',
             '      name: \'labelName\',',
@@ -466,7 +467,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic name) {',
+            '  String labelName(Object name) {',
             '    return Intl.message(',
             '      \'Argument message \\\' \$name.\',',
             '      name: \'labelName\',',
@@ -483,7 +484,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic name) {',
+            '  String labelName(Object name) {',
             '    return Intl.message(',
             '      \'Argument message \\\$ \$name.\',',
             '      name: \'labelName\',',
@@ -500,7 +501,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic name) {',
+            '  String labelName(Object name) {',
             '    return Intl.message(',
             '      \'Argument message: before\$name after.\',',
             '      name: \'labelName\',',
@@ -517,7 +518,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic name) {',
+            '  String labelName(Object name) {',
             '    return Intl.message(',
             '      \'Argument message: before _\$name .\',',
             '      name: \'labelName\',',
@@ -534,7 +535,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic name) {',
+            '  String labelName(Object name) {',
             '    return Intl.message(',
             '      \'Argument message: before 357\$name .\',',
             '      name: \'labelName\',',
@@ -551,7 +552,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic name) {',
+            '  String labelName(Object name) {',
             '    return Intl.message(',
             '      \'Argument message: before -\$name .\',',
             '      name: \'labelName\',',
@@ -568,7 +569,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic name) {',
+            '  String labelName(Object name) {',
             '    return Intl.message(',
             '      \'Argument message: before .\$name .\',',
             '      name: \'labelName\',',
@@ -585,7 +586,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic name) {',
+            '  String labelName(Object name) {',
             '    return Intl.message(',
             '      \'Argument message: before &\$name .\',',
             '      name: \'labelName\',',
@@ -602,7 +603,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic name) {',
+            '  String labelName(Object name) {',
             '    return Intl.message(',
             '      \'Argument message: before \\\$\$name .\',',
             '      name: \'labelName\',',
@@ -619,7 +620,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic name) {',
+            '  String labelName(Object name) {',
             '    return Intl.message(',
             '      \'Argument message: before \${name}after.\',',
             '      name: \'labelName\',',
@@ -636,7 +637,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic name) {',
+            '  String labelName(Object name) {',
             '    return Intl.message(',
             '      \'Argument message: before \${name}_.\',',
             '      name: \'labelName\',',
@@ -653,7 +654,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic name) {',
+            '  String labelName(Object name) {',
             '    return Intl.message(',
             '      \'Argument message: before \${name}357.\',',
             '      name: \'labelName\',',
@@ -670,7 +671,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic name) {',
+            '  String labelName(Object name) {',
             '    return Intl.message(',
             '      \'Argument message: before \$name-.\',',
             '      name: \'labelName\',',
@@ -687,7 +688,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic name) {',
+            '  String labelName(Object name) {',
             '    return Intl.message(',
             '      \'Argument message: before \$name.\',',
             '      name: \'labelName\',',
@@ -704,7 +705,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic name) {',
+            '  String labelName(Object name) {',
             '    return Intl.message(',
             '      \'Argument message: before \$name&.\',',
             '      name: \'labelName\',',
@@ -721,7 +722,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic name) {',
+            '  String labelName(Object name) {',
             '    return Intl.message(',
             '      \'Argument message: before \$name\\\$.\',',
             '      name: \'labelName\',',
@@ -738,7 +739,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic name) {',
+            '  String labelName(Object name) {',
             '    return Intl.message(',
             '      \'Argument message: before\${name}after.\',',
             '      name: \'labelName\',',
@@ -755,7 +756,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic name) {',
+            '  String labelName(Object name) {',
             '    return Intl.message(',
             '      \'Argument message \$name.\',',
             '      name: \'labelName\',',
@@ -772,7 +773,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic name) {',
+            '  String labelName(Object name) {',
             '    return Intl.message(',
             '      \'Argument message \$name.\',',
             '      name: \'labelName\',',
@@ -789,7 +790,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic name) {',
+            '  String labelName(Object name) {',
             '    return Intl.message(',
             '      \'Argument message \$name.\',',
             '      name: \'labelName\',',
@@ -808,7 +809,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic count) {',
+            '  String labelName(num count) {',
             '    return Intl.plural(',
             '      count,',
             '      one: \'one item\',',
@@ -827,7 +828,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic count) {',
+            '  String labelName(num count) {',
             '    return Intl.plural(',
             '      count,',
             '      one: \'one item\',',
@@ -848,7 +849,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic count) {',
+            '  String labelName(num count) {',
             '    return Intl.plural(',
             '      count,',
             '      zero: \'zero message\',',
@@ -873,7 +874,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic count) {',
+            '  String labelName(num count) {',
             '    return Intl.plural(',
             '      count,',
             '      zero: \'zero \\n message\',',
@@ -898,7 +899,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic count) {',
+            '  String labelName(num count) {',
             '    return Intl.plural(',
             '      count,',
             '      zero: \'zero \\\' message\',',
@@ -923,7 +924,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic count) {',
+            '  String labelName(num count) {',
             '    return Intl.plural(',
             '      count,',
             '      zero: \'zero \\\$ message\',',
@@ -948,7 +949,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic count) {',
+            '  String labelName(num count) {',
             '    return Intl.plural(',
             '      count,',
             '      zero: \'zero \${count}abc\',',
@@ -973,7 +974,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic count) {',
+            '  String labelName(num count) {',
             '    return Intl.plural(',
             '      count,',
             '      zero: \'zero \${count}_ .\',',
@@ -998,7 +999,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic count) {',
+            '  String labelName(num count) {',
             '    return Intl.plural(',
             '      count,',
             '      zero: \'zero \${count}357 .\',',
@@ -1025,7 +1026,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic count) {',
+            '  String labelName(num count) {',
             '    return Intl.plural(',
             '      count,',
             '      zero: \'zero before\${count}after.\',',
@@ -1049,7 +1050,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic count) {',
+            '  String labelName(num count) {',
             '    return Intl.plural(',
             '      count,',
             '      one: \'one message\',',
@@ -1069,7 +1070,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic count) {',
+            '  String labelName(num count) {',
             '    return Intl.plural(',
             '      count,',
             '      one: \'one message\',',
@@ -1089,7 +1090,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic count) {',
+            '  String labelName(num count) {',
             '    return Intl.plural(',
             '      count,',
             '      one: \'one message\',',
@@ -1108,7 +1109,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic count, dynamic name) {',
+            '  String labelName(num count, Object name) {',
             '    return Intl.plural(',
             '      count,',
             '      one: \'\$name has one item\',',
@@ -1129,7 +1130,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic cats, dynamic birds) {',
+            '  String labelName(num cats, Object birds) {',
             '    return Intl.plural(',
             '      cats,',
             '      one: \'one cat runs {birds, plural, one {one bird.} other {{birds} birds.}}\',',
@@ -1150,7 +1151,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic cats, dynamic gender) {',
+            '  String labelName(num cats, Object gender) {',
             '    return Intl.plural(',
             '      cats,',
             '      one: \'one cat runs {gender, select, male {one man} female {one woman} other {one person}}\',',
@@ -1163,7 +1164,6 @@ void main() {
           ].join('\n'));
     });
 
-    // Not compatible with vs ext. 1.2.0
     test('Test plural dart getter when content has additional plural form set', () {
       var label =
           Label('labelName', '{count, plural, one {one message} unsupportedPluralForm {unsupported plural form message} other {other message}}');
@@ -1178,7 +1178,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic count) {',
+            '  String labelName(num count) {',
             '    return Intl.plural(',
             '      count,',
             '      zero: \'zero message\',',
@@ -1193,7 +1193,6 @@ void main() {
           ].join('\n'));
     });
 
-    // Not compatible with vs ext. 1.2.0
     test('Test plural dart getter when content has repeated plural forms set', () {
       var label =
           Label('labelName', '{count, plural, one {one message} one {repeated one message} other {other message} other {repeated other message}}');
@@ -1201,7 +1200,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic count) {',
+            '  String labelName(num count) {',
             '    return Intl.plural(',
             '      count,',
             '      one: \'one message\',',
@@ -1222,7 +1221,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic gender) {',
+            '  String labelName(String gender) {',
             '    return Intl.gender(',
             '      gender,',
             '      male: \'male message\',',
@@ -1242,7 +1241,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic gender) {',
+            '  String labelName(String gender) {',
             '    return Intl.gender(',
             '      gender,',
             '      male: \'male message\',',
@@ -1262,7 +1261,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic gender) {',
+            '  String labelName(String gender) {',
             '    return Intl.gender(',
             '      gender,',
             '      male: \'male \\n message\',',
@@ -1282,7 +1281,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic gender) {',
+            '  String labelName(String gender) {',
             '    return Intl.gender(',
             '      gender,',
             '      male: \'male \\\' message\',',
@@ -1302,7 +1301,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic gender) {',
+            '  String labelName(String gender) {',
             '    return Intl.gender(',
             '      gender,',
             '      male: \'male \\\$ message\',',
@@ -1322,7 +1321,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic gender) {',
+            '  String labelName(String gender) {',
             '    return Intl.gender(',
             '      gender,',
             '      male: \'male \${gender}abc\',',
@@ -1342,7 +1341,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic gender) {',
+            '  String labelName(String gender) {',
             '    return Intl.gender(',
             '      gender,',
             '      male: \'male \${gender}_\',',
@@ -1362,7 +1361,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic gender) {',
+            '  String labelName(String gender) {',
             '    return Intl.gender(',
             '      gender,',
             '      male: \'male \${gender}357 .\',',
@@ -1385,7 +1384,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic gender) {',
+            '  String labelName(String gender) {',
             '    return Intl.gender(',
             '      gender,',
             '      male: \'male before\${gender}after\',',
@@ -1406,7 +1405,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic gender) {',
+            '  String labelName(String gender) {',
             '    return Intl.gender(',
             '      gender,',
             '      male: \'male message\',',
@@ -1427,7 +1426,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic gender) {',
+            '  String labelName(String gender) {',
             '    return Intl.gender(',
             '      gender,',
             '      male: \'male message\',',
@@ -1448,7 +1447,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic gender) {',
+            '  String labelName(String gender) {',
             '    return Intl.gender(',
             '      gender,',
             '      male: \'male message\',',
@@ -1469,7 +1468,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic gender, dynamic name) {',
+            '  String labelName(String gender, Object name) {',
             '    return Intl.gender(',
             '      gender,',
             '      male: \'male message with \$name placeholder\',',
@@ -1490,7 +1489,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic gender, dynamic firstName, dynamic lastName) {',
+            '  String labelName(String gender, Object firstName, Object lastName) {',
             '    return Intl.gender(',
             '      gender,',
             '      male: \'male message with \$firstName \$lastName placeholders\',',
@@ -1511,7 +1510,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic gender, dynamic apples) {',
+            '  String labelName(String gender, Object apples) {',
             '    return Intl.gender(',
             '      gender,',
             '      male: \'He has {apples, plural, one {one apple} other {{apples} apples}}\',',
@@ -1525,7 +1524,6 @@ void main() {
           ].join('\n'));
     });
 
-    // Not compatible with vs ext. 1.2.0
     test('Test gender dart getter when content has additional gender form set', () {
       var label = Label('labelName',
           '{gender, select, male {male message} unsupportedGenderForm {unsupported gender form message} female {female message} other {other message}}');
@@ -1533,7 +1531,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic gender) {',
+            '  String labelName(Object gender) {',
             '    return Intl.message(',
             '      \'{gender, select, male {male message} unsupportedGenderForm {unsupported gender form message} female {female message} other {other message}}\',',
             '      name: \'labelName\',',
@@ -1544,7 +1542,6 @@ void main() {
           ].join('\n'));
     });
 
-    // Not compatible with vs ext. 1.2.0
     test('Test gender dart getter when content has repeated gender form set', () {
       var label =
           Label('labelName', '{gender, select, male {male message} male {repeated male message} female {female message} other {other message}}');
@@ -1552,7 +1549,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic gender) {',
+            '  String labelName(String gender) {',
             '    return Intl.gender(',
             '      gender,',
             '      male: \'male message\',',
@@ -1574,7 +1571,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic opt) {',
+            '  String labelName(Object opt) {',
             '    return Intl.message(',
             '      \'{opt, select, foo {foo} bar {bar} baz {baz}}\',',
             '      name: \'labelName\',',
@@ -1591,7 +1588,7 @@ void main() {
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(dynamic opt) {',
+            '  String labelName(Object opt) {',
             '    return Intl.message(',
             '      \'{opt, select, foo {foo} bar {bar} baz {baz}}\',',
             '      name: \'labelName\',',
