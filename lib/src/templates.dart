@@ -14,7 +14,7 @@ import 'intl/messages_all.dart';
 // **************************************************************************
 
 class $className {
-  $className(this.localeName);
+  $className();
   
   static const AppLocalizationDelegate delegate =
     AppLocalizationDelegate();
@@ -24,15 +24,13 @@ class $className {
     final String localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
-      return $className(localeName);
+      return $className();
     });
   } 
 
   static $className of(BuildContext context) {
     return Localizations.of<$className>(context, $className);
   }
-
-  final String localeName;
 
 ${labels.map((label) => label.generateDartGetter()).join("\n\n")}
 }
