@@ -33,19 +33,19 @@ class Parser {
   get pluralLiteral => string("plural");
   get pluralClause => (pluralKeyword & openCurly & interiorText & closeCurly)
       .trim()
-      .map((result) => Option(result[0], List<BaseElement>.from(result[2])));
+      .map((result) => Option(result[0], List<BaseElement>.from(result[2] is List ? result[2] : [result[2]])));
   get plural => preface & pluralLiteral & comma & pluralClause.plus() & closeCurly;
   get intlPlural => plural.map((result) => PluralElement(result[0], List<Option>.from(result[3])));
 
   get selectLiteral => string("select");
   get genderClause => (genderKeyword & openCurly & interiorText & closeCurly)
       .trim()
-      .map((result) => Option(result[0], List<BaseElement>.from(result[2])));
+      .map((result) => Option(result[0], List<BaseElement>.from(result[2] is List ? result[2] : [result[2]])));
   get gender => preface & selectLiteral & comma & genderClause.plus() & closeCurly;
   get intlGender => gender.map((result) => GenderElement(result[0], List<Option>.from(result[3])));
   get selectClause => (id & openCurly & interiorText & closeCurly)
       .trim()
-      .map((result) => Option(result[0], List<BaseElement>.from(result[2])));
+      .map((result) => Option(result[0], List<BaseElement>.from(result[2] is List ? result[2] : [result[2]])));
   get generalSelect => preface & selectLiteral & comma & selectClause.plus() & closeCurly;
   get intlSelect => generalSelect.map((result) => SelectElement(result[0], List<Option>.from(result[3])));
 
@@ -59,7 +59,7 @@ class Parser {
 
   List<BaseElement> parse(String message) {
     var parsed = (pluralOrGenderOrSelect | simpleText | empty)
-        .map((result) => result is List<dynamic> ? List<BaseElement>.from(result) : List<BaseElement>.from([result]))
+        .map((result) => List<BaseElement>.from(result is List ? result : [result]))
         .parse(message);
     return parsed.isSuccess ? parsed.value : null;
   }

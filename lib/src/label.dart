@@ -396,7 +396,15 @@ class Label {
     var sanitized = uniqueKeys.map((uniqueKey) => options.firstWhere((option) => option.name == uniqueKey)).toList();
     if (sanitized.length != options.length) {
       warning("Detected plural irregularity for the '${name}' key.");
+    } else if (!uniqueKeys.contains('other')) {
+      warning("The '${name}' key lacks mandatory plural form 'other'.");
     }
+
+    sanitized.forEach((option) {
+      if (option.value.length == 1 && option.value[0] is LiteralElement && (option.value[0] as LiteralElement).value.isEmpty) {
+        warning("The '${name}' key lacks translation for the plural form '${option.name}'.");
+      }
+    });
 
     return sanitized;
   }
@@ -440,7 +448,15 @@ class Label {
     var sanitized = uniqueKeys.map((uniqueKey) => options.firstWhere((option) => option.name == uniqueKey)).toList();
     if (sanitized.length != options.length) {
       warning("Detected gender irregularity for the '${name}' key.");
+    } else if (!uniqueKeys.contains('other')) {
+      warning("The '${name}' key lacks mandatory gender form 'other'.");
     }
+
+    sanitized.forEach((option) {
+      if (option.value.length == 1 && option.value[0] is LiteralElement && (option.value[0] as LiteralElement).value.isEmpty) {
+        warning("The '${name}' key lacks translation for the gender form '${option.name}'.");
+      }
+    });
 
     return sanitized;
   }

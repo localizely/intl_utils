@@ -866,6 +866,30 @@ void main() {
           ].join('\n'));
     });
 
+    test('Test plural dart getter with name, content and placeholders set for all plural forms when plural forms are empty', () {
+      var label = Label('labelName', '{count, plural, zero {} one {} two {} few {} many {} other {}}',
+          placeholders: ['count']);
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(num count) {',
+            '    return Intl.plural(',
+            '      count,',
+            '      zero: \'\',',
+            '      one: \'\',',
+            '      two: \'\',',
+            '      few: \'\',',
+            '      many: \'\',',
+            '      other: \'\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [count],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
     test('Test plural dart getter when content has new line set for all plural forms', () {
       var label = Label('labelName',
           '{count, plural, zero {zero \n message} one {one \n message} two {two \n message} few {few \n message} many {many \n message} other {other \n message}}',
@@ -1255,6 +1279,26 @@ void main() {
           ].join('\n'));
     });
 
+    test('Test gender dart getter with name, content and placeholders set when gender forms are empty', () {
+      var label = Label('labelName', '{gender, select, male {} female {} other {}}', placeholders: ['gender']);
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(String gender) {',
+            '    return Intl.gender(',
+            '      gender,',
+            '      male: \'\',',
+            '      female: \'\',',
+            '      other: \'\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [gender],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
     test('Test gender dart getter when content has new line set for all gender forms', () {
       var label = Label('labelName', '{gender, select, male {male \n message} female {female \n message} other {other \n message}}');
 
@@ -1582,7 +1626,7 @@ void main() {
           ].join('\n'));
     });
 
-    test('Test unsupported select dart getter with name and content set', () {
+    test('Test unsupported select dart getter with name, content and placeholders set', () {
       var label = Label('labelName', '{opt, select, foo {foo} bar {bar} baz {baz}}', placeholders: ['opt']);
 
       expect(
@@ -1591,6 +1635,23 @@ void main() {
             '  String labelName(Object opt) {',
             '    return Intl.message(',
             '      \'{opt, select, foo {foo} bar {bar} baz {baz}}\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [opt],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test unsupported select dart getter with name, content and placeholders set when select forms are empty', () {
+      var label = Label('labelName', '{opt, select, foo {} bar {} baz {}}', placeholders: ['opt']);
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(Object opt) {',
+            '    return Intl.message(',
+            '      \'{opt, select, foo {} bar {} baz {}}\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
             '      args: [opt],',

@@ -5,7 +5,7 @@ import 'package:intl_utils/src/message_format.dart';
 
 void main() {
   group('Literal messages', () {
-    test('Test empty message', () {
+    test('Test literal message with empty string', () {
       var response = Parser().parse('');
 
       expect(response.length, 1);
@@ -14,7 +14,7 @@ void main() {
       expect(response[0].value, '');
     });
 
-    test('Test literal message', () {
+    test('Test literal message with plain text', () {
       var response = Parser().parse('This is some content.');
 
       expect(response.length, 1);
@@ -115,7 +115,7 @@ void main() {
   });
 
   group('Plural messages', () {
-    test('Test plural message with all plural forms', () {
+    test('Test plural message with all plural forms when plural forms have plain text', () {
       var response = Parser().parse(
           '{count, plural, zero {zero message} one {one message} two {two message} few {few message} many {many message} other {other message}}');
 
@@ -160,6 +160,52 @@ void main() {
       expect((response[0] as PluralElement).options[5].value[0].runtimeType, LiteralElement);
       expect((response[0] as PluralElement).options[5].value[0].type, ElementType.literal);
       expect((response[0] as PluralElement).options[5].value[0].value, 'other message');
+    });
+
+    test('Test plural message with all plural forms when plural forms are empty', () {
+      var response = Parser().parse('{count, plural, zero {} one {} two {} few {} many {} other {}}');
+
+      expect(response.length, 1);
+      expect(response[0].runtimeType, PluralElement);
+      expect(response[0].type, ElementType.plural);
+      expect(response[0].value, 'count');
+      expect((response[0] as PluralElement).options.length, 6);
+
+      expect((response[0] as PluralElement).options[0].name, 'zero');
+      expect((response[0] as PluralElement).options[0].value.length, 1);
+      expect((response[0] as PluralElement).options[0].value[0].runtimeType, LiteralElement);
+      expect((response[0] as PluralElement).options[0].value[0].type, ElementType.literal);
+      expect((response[0] as PluralElement).options[0].value[0].value, '');
+
+      expect((response[0] as PluralElement).options[1].name, 'one');
+      expect((response[0] as PluralElement).options[1].value.length, 1);
+      expect((response[0] as PluralElement).options[1].value[0].runtimeType, LiteralElement);
+      expect((response[0] as PluralElement).options[1].value[0].type, ElementType.literal);
+      expect((response[0] as PluralElement).options[1].value[0].value, '');
+
+      expect((response[0] as PluralElement).options[2].name, 'two');
+      expect((response[0] as PluralElement).options[2].value.length, 1);
+      expect((response[0] as PluralElement).options[2].value[0].runtimeType, LiteralElement);
+      expect((response[0] as PluralElement).options[2].value[0].type, ElementType.literal);
+      expect((response[0] as PluralElement).options[2].value[0].value, '');
+
+      expect((response[0] as PluralElement).options[3].name, 'few');
+      expect((response[0] as PluralElement).options[3].value.length, 1);
+      expect((response[0] as PluralElement).options[3].value[0].runtimeType, LiteralElement);
+      expect((response[0] as PluralElement).options[3].value[0].type, ElementType.literal);
+      expect((response[0] as PluralElement).options[3].value[0].value, '');
+
+      expect((response[0] as PluralElement).options[4].name, 'many');
+      expect((response[0] as PluralElement).options[4].value.length, 1);
+      expect((response[0] as PluralElement).options[4].value[0].runtimeType, LiteralElement);
+      expect((response[0] as PluralElement).options[4].value[0].type, ElementType.literal);
+      expect((response[0] as PluralElement).options[4].value[0].value, '');
+
+      expect((response[0] as PluralElement).options[5].name, 'other');
+      expect((response[0] as PluralElement).options[5].value.length, 1);
+      expect((response[0] as PluralElement).options[5].value[0].runtimeType, LiteralElement);
+      expect((response[0] as PluralElement).options[5].value[0].type, ElementType.literal);
+      expect((response[0] as PluralElement).options[5].value[0].value, '');
     });
 
     test('Test plural message with all plural forms when there are no whitespace around plural forms', () {
@@ -529,7 +575,7 @@ void main() {
   });
 
   group('Gender messages', () {
-    test('Test gender message', () {
+    test('Test gender message with all gender forms when gender forms have plain text', () {
       var response = Parser().parse('{gender, select, female {Hi woman!} male {Hi man!} other {Hi there!}}');
 
       expect(response.length, 1);
@@ -557,7 +603,35 @@ void main() {
       expect((response[0] as GenderElement).options[2].value[0].value, 'Hi there!');
     });
 
-    test('Test gender message when there are no whitespace around gender forms', () {
+    test('Test gender message with all gender forms when gender forms are empty', () {
+      var response = Parser().parse('{gender, select, female {} male {} other {}}');
+
+      expect(response.length, 1);
+      expect(response[0].runtimeType, GenderElement);
+      expect(response[0].type, ElementType.gender);
+      expect(response[0].value, 'gender');
+      expect((response[0] as GenderElement).options.length, 3);
+
+      expect((response[0] as GenderElement).options[0].name, 'female');
+      expect((response[0] as GenderElement).options[0].value.length, 1);
+      expect((response[0] as GenderElement).options[0].value[0].runtimeType, LiteralElement);
+      expect((response[0] as GenderElement).options[0].value[0].type, ElementType.literal);
+      expect((response[0] as GenderElement).options[0].value[0].value, '');
+
+      expect((response[0] as GenderElement).options[1].name, 'male');
+      expect((response[0] as GenderElement).options[1].value.length, 1);
+      expect((response[0] as GenderElement).options[1].value[0].runtimeType, LiteralElement);
+      expect((response[0] as GenderElement).options[1].value[0].type, ElementType.literal);
+      expect((response[0] as GenderElement).options[1].value[0].value, '');
+
+      expect((response[0] as GenderElement).options[2].name, 'other');
+      expect((response[0] as GenderElement).options[2].value.length, 1);
+      expect((response[0] as GenderElement).options[2].value[0].runtimeType, LiteralElement);
+      expect((response[0] as GenderElement).options[2].value[0].type, ElementType.literal);
+      expect((response[0] as GenderElement).options[2].value[0].value, '');
+    });
+
+    test('Test gender message with all gender forms when there are no whitespace around gender forms', () {
       var response = Parser().parse('{gender,select,female{Hi woman!}male{Hi man!}other{Hi there!}}');
 
       expect(response.length, 1);
@@ -585,7 +659,7 @@ void main() {
       expect((response[0] as GenderElement).options[2].value[0].value, 'Hi there!');
     });
 
-    test('Test gender message with placeholder', () {
+    test('Test gender message with all gender forms when gender forms have placeholder', () {
       var response = Parser()
           .parse('{gender, select, female {Miss {firstName}.} male {Mister {firstName}.} other {User {firstName}.}}');
 
@@ -632,7 +706,7 @@ void main() {
       expect((response[0] as GenderElement).options[2].value[2].value, '.');
     });
 
-    test('Test gender message with few placeholders', () {
+    test('Test gender message with all gender forms when gender forms have few placeholders', () {
       var response = Parser().parse(
           '{gender, select, female {Miss {firstName} {lastName} from {address}.} male {Mister {firstName} {lastName} from {address}.} other {User {firstName} {lastName} from {address}.}}');
 
@@ -715,7 +789,7 @@ void main() {
       expect((response[0] as GenderElement).options[2].value[6].value, '.');
     });
 
-    test('Test gender message when gender forms have plural message', () {
+    test('Test gender message with all gender forms when gender forms have plural message', () {
       var response = Parser().parse(
           '{gender, select, female {She has {count, plural, one {one apple} other {{count} apples}}} male {He has {count, plural, one {one apple} other {{count} apples}}} other {Person has {count, plural, one {one apple} other {{count} apples}}}}');
 
@@ -821,7 +895,7 @@ void main() {
   });
 
   group('Select messages', () {
-    test('Test select message', () {
+    test('Test select message when select forms have plain text', () {
       var response = Parser()
           .parse('{choice, select, foo {This is foo option} bar {This is bar option} baz {This is baz option}}');
 
@@ -848,6 +922,35 @@ void main() {
       expect((response[0] as SelectElement).options[2].value[0].runtimeType, LiteralElement);
       expect((response[0] as SelectElement).options[2].value[0].type, ElementType.literal);
       expect((response[0] as SelectElement).options[2].value[0].value, 'This is baz option');
+    });
+
+    test('Test select message when select forms are empty', () {
+      var response = Parser()
+          .parse('{choice, select, foo {} bar {} baz {}}');
+
+      expect(response.length, 1);
+      expect(response[0].runtimeType, SelectElement);
+      expect(response[0].type, ElementType.select);
+      expect(response[0].value, 'choice');
+      expect((response[0] as SelectElement).options.length, 3);
+
+      expect((response[0] as SelectElement).options[0].name, 'foo');
+      expect((response[0] as SelectElement).options[0].value.length, 1);
+      expect((response[0] as SelectElement).options[0].value[0].runtimeType, LiteralElement);
+      expect((response[0] as SelectElement).options[0].value[0].type, ElementType.literal);
+      expect((response[0] as SelectElement).options[0].value[0].value, '');
+
+      expect((response[0] as SelectElement).options[1].name, 'bar');
+      expect((response[0] as SelectElement).options[1].value.length, 1);
+      expect((response[0] as SelectElement).options[1].value[0].runtimeType, LiteralElement);
+      expect((response[0] as SelectElement).options[1].value[0].type, ElementType.literal);
+      expect((response[0] as SelectElement).options[1].value[0].value, '');
+
+      expect((response[0] as SelectElement).options[2].name, 'baz');
+      expect((response[0] as SelectElement).options[2].value.length, 1);
+      expect((response[0] as SelectElement).options[2].value[0].runtimeType, LiteralElement);
+      expect((response[0] as SelectElement).options[2].value[0].type, ElementType.literal);
+      expect((response[0] as SelectElement).options[2].value[0].value, '');
     });
 
     test('Test select message when there are no whitespace around select forms', () {
@@ -879,7 +982,7 @@ void main() {
       expect((response[0] as SelectElement).options[2].value[0].value, 'This is baz option');
     });
 
-    test('Test select message with placeholder', () {
+    test('Test select message when select forms have placeholder', () {
       var response = Parser().parse(
           '{choice, select, foo {This is foo option with {name} placeholder} bar {This is bar option with {name} placeholder} baz {This is baz option with {name} placeholder}}');
 
@@ -926,7 +1029,7 @@ void main() {
       expect((response[0] as SelectElement).options[2].value[2].value, ' placeholder');
     });
 
-    test('Test select message with few placeholders', () {
+    test('Test select message when select forms have few placeholders', () {
       var response = Parser().parse(
           '{choice, select, foo {Foo: {firstName} {lastName}} bar {Bar: {firstName} {lastName}} baz {Baz: {firstName} {lastName}}}');
 
