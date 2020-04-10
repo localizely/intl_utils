@@ -31,6 +31,6 @@ If you wonder how to format key-values content inside ARB files, [here](https://
 
 To generate boilerplate code for localization, run the `generate` program inside directory where you `pubspec.yaml` file is located:
 
-      pub run intl_utils:generate
+      flutter pub run intl_utils:generate
 
 This will produce files inside `lib/generated` directory.
