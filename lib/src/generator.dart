@@ -160,6 +160,8 @@ class Generator {
         .map((file) => file.path)
         .toList();
 
+    arbFiles.sort(); // arb files order is not the same on all operating systems (e.g. win, mac)
+
     // validate arb files (e.g. check if they are well-formatted, etc.)
 
     var helper = IntlTranslationHelper();
