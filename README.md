@@ -2,6 +2,8 @@
 
 Dart package that creates a binding between your translations from .arb files and your Flutter app. It generates boilerplate code for official Dart Intl library and adds auto-complete for keys in Dart code.
 
+Follow us on [Twitter](https://twitter.com/localizely 'Follow us on Twitter').
+
 ## Usage
 
 You can use this package directly (i.e. for Continuous Integration tools or via CLI) or leave it to [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=localizely.flutter-intl) or [IntelliJ/Android Studio](https://plugins.jetbrains.com/plugin/13666-flutter-intl) plugins to run it automatically whenever you modify ARB files.
