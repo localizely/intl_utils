@@ -1576,8 +1576,14 @@ void main() {
           label.generateDartGetter(),
           [
             '  String labelName(Object gender) {',
-            '    return Intl.message(',
-            '      \'{gender, select, male {male message} unsupportedGenderForm {unsupported gender form message} female {female message} other {other message}}\',',
+            '    return Intl.select(',
+            '      gender,',
+            '      {',
+            '        \'male\': \'male message\',',
+            '        \'unsupportedGenderForm\': \'unsupported gender form message\',',
+            '        \'female\': \'female message\',',
+            '        \'other\': \'other message\',',
+            '      },',
             '      name: \'labelName\',',
             '      desc: \'\',',
             '      args: [gender],',
@@ -1608,53 +1614,434 @@ void main() {
     });
   });
 
-  group('Unsupported getters', () {
-    test('Test unsupported select dart getter with name and content set', () {
-      var label = Label('labelName', '{opt, select, foo {foo} bar {bar} baz {baz}}');
+  group('Select getters', () {
+    test('Test select dart getter with name and content set', () {
+      var label = Label('labelName', '{choice, select, foo {foo message} bar {bar message} other {other message}}');
 
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(Object opt) {',
-            '    return Intl.message(',
-            '      \'{opt, select, foo {foo} bar {bar} baz {baz}}\',',
+            '  String labelName(Object choice) {',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message\',',
+            '        \'bar\': \'bar message\',',
+            '        \'other\': \'other message\',',
+            '      },',
             '      name: \'labelName\',',
             '      desc: \'\',',
-            '      args: [opt],',
+            '      args: [choice],',
             '    );',
             '  }'
           ].join('\n'));
     });
 
-    test('Test unsupported select dart getter with name, content and placeholders set', () {
-      var label = Label('labelName', '{opt, select, foo {foo} bar {bar} baz {baz}}', placeholders: ['opt']);
+    test('Test select dart getter with name, content and placeholders set', () {
+      var label = Label('labelName', '{choice, select, foo {foo message} bar {bar message} other {other message}}', placeholders: ['choice']);
 
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(Object opt) {',
-            '    return Intl.message(',
-            '      \'{opt, select, foo {foo} bar {bar} baz {baz}}\',',
+            '  String labelName(Object choice) {',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message\',',
+            '        \'bar\': \'bar message\',',
+            '        \'other\': \'other message\',',
+            '      },',
             '      name: \'labelName\',',
             '      desc: \'\',',
-            '      args: [opt],',
+            '      args: [choice],',
             '    );',
             '  }'
           ].join('\n'));
     });
 
-    test('Test unsupported select dart getter with name, content and placeholders set when select forms are empty', () {
-      var label = Label('labelName', '{opt, select, foo {} bar {} baz {}}', placeholders: ['opt']);
+    test('Test select dart getter with name, content and placeholders set when select cases are empty', () {
+      var label = Label('labelName', '{choice, select, foo {} bar {} other {}}', placeholders: ['choice']);
 
       expect(
           label.generateDartGetter(),
           [
-            '  String labelName(Object opt) {',
-            '    return Intl.message(',
-            '      \'{opt, select, foo {} bar {} baz {}}\',',
+            '  String labelName(Object choice) {',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'\',',
+            '        \'bar\': \'\',',
+            '        \'other\': \'\',',
+            '      },',
             '      name: \'labelName\',',
             '      desc: \'\',',
-            '      args: [opt],',
+            '      args: [choice],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test select dart getter when content has new line set for all select cases', () {
+      var label = Label('labelName', '{choice, select, foo {foo \n message} bar {bar \n message} other {other \n message}}');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(Object choice) {',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo \\n message\',',
+            '        \'bar\': \'bar \\n message\',',
+            '        \'other\': \'other \\n message\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test select dart getter when content has single quotation mark set for all select cases', () {
+      var label = Label('labelName', '{choice, select, foo {foo \' message} bar {bar \' message} other {other \' message}}');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(Object choice) {',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo \\\' message\',',
+            '        \'bar\': \'bar \\\' message\',',
+            '        \'other\': \'other \\\' message\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test select dart getter when content has dollar sign set for all select cases', () {
+      var label = Label('labelName', '{choice, select, foo {foo \$ message} bar {bar \$ message} other {other \$ message}}');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(Object choice) {',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo \\\$ message\',',
+            '        \'bar\': \'bar \\\$ message\',',
+            '        \'other\': \'other \\\$ message\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test select dart getter when content has placeholder which is sticked at the ending with the text for all select cases', () {
+      var label = Label('labelName', '{choice, select, foo {foo {choice}abc} bar {bar {choice}abc} other {other {choice}abc}}');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(Object choice) {',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo \${choice}abc\',',
+            '        \'bar\': \'bar \${choice}abc\',',
+            '        \'other\': \'other \${choice}abc\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test select dart getter when content has placeholder which is sticked at the ending with the underscore sign for all select cases', () {
+      var label = Label('labelName', '{choice, select, foo {foo {choice}_} bar {bar {choice}_} other {other {choice}_}}');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(Object choice) {',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo \${choice}_\',',
+            '        \'bar\': \'bar \${choice}_\',',
+            '        \'other\': \'other \${choice}_\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test select dart getter when content has placeholder which is sticked at the ending with the number for all select cases', () {
+      var label = Label('labelName', '{choice, select, foo {foo {choice}357 .} bar {bar {choice}357 .} other {other {choice}357 .}}');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(Object choice) {',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo \${choice}357 .\',',
+            '        \'bar\': \'bar \${choice}357 .\',',
+            '        \'other\': \'other \${choice}357 .\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test(
+        'Test select dart getter when content has placeholder which is sticked at the beginning and at the ending with the text for all select cases',
+            () {
+          var label = Label(
+              'labelName', '{choice, select, foo {foo before{choice}after} bar {bar before{choice}after} other {other before{choice}after}}');
+
+          expect(
+              label.generateDartGetter(),
+              [
+                '  String labelName(Object choice) {',
+                '    return Intl.select(',
+                '      choice,',
+                '      {',
+                '        \'foo\': \'foo before\${choice}after\',',
+                '        \'bar\': \'bar before\${choice}after\',',
+                '        \'other\': \'other before\${choice}after\',',
+                '      },',
+                '      name: \'labelName\',',
+                '      desc: \'\',',
+                '      args: [choice],',
+                '    );',
+                '  }'
+              ].join('\n'));
+        });
+
+    test('Test select dart getter when description has new line set', () {
+      var label = Label('labelName', '{choice, select, foo {foo message} bar {bar message} other {other message}}',
+          description: 'Description with \n new line');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(Object choice) {',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message\',',
+            '        \'bar\': \'bar message\',',
+            '        \'other\': \'other message\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'Description with \\n new line\',',
+            '      args: [choice],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test select dart getter when description has single quotation mark set', () {
+      var label = Label('labelName', '{choice, select, foo {foo message} bar {bar message} other {other message}}',
+          description: 'Description with \' single quotation mark');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(Object choice) {',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message\',',
+            '        \'bar\': \'bar message\',',
+            '        \'other\': \'other message\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'Description with \\\' single quotation mark\',',
+            '      args: [choice],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test select dart getter when description has dollar sign set', () {
+      var label = Label('labelName', '{choice, select, foo {foo message} bar {bar message} other {other message}}',
+          description: 'Description with \$ dollar sign');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(Object choice) {',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message\',',
+            '        \'bar\': \'bar message\',',
+            '        \'other\': \'other message\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'Description with \\\$ dollar sign\',',
+            '      args: [choice],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test select dart getter when content has placeholder set for all select cases', () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo message with {name} placeholder} bar {bar message with {name} placeholder} other {other message with {name} placeholder}}');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(Object choice, Object name) {',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message with \$name placeholder\',',
+            '        \'bar\': \'bar message with \$name placeholder\',',
+            '        \'other\': \'other message with \$name placeholder\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, name],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test select dart getter when content has placeholder set for all select cases and reverse placeholders order', () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo message with {name} placeholder} bar {bar message with {name} placeholder} other {other message with {name} placeholder}}',
+          placeholders: ['name', 'choice']);
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(Object choice, Object name) {',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message with \$name placeholder\',',
+            '        \'bar\': \'bar message with \$name placeholder\',',
+            '        \'other\': \'other message with \$name placeholder\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, name],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test select dart getter when content has two placeholders set for all select cases', () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo message with {firstName} {lastName} placeholders} bar {bar message with {firstName} {lastName} placeholders} other {other message with {firstName} {lastName} placeholders}}');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(Object choice, Object firstName, Object lastName) {',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message with \$firstName \$lastName placeholders\',',
+            '        \'bar\': \'bar message with \$firstName \$lastName placeholders\',',
+            '        \'other\': \'other message with \$firstName \$lastName placeholders\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, firstName, lastName],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test select dart getter when content has two placeholders set for all select cases and reverse placeholders order', () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo message with {firstName} {lastName} placeholders} bar {bar message with {firstName} {lastName} placeholders} other {other message with {firstName} {lastName} placeholders}}',
+          placeholders: ['lastName', 'firstName', 'choice']);
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(Object choice, Object lastName, Object firstName) {',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message with \$firstName \$lastName placeholders\',',
+            '        \'bar\': \'bar message with \$firstName \$lastName placeholders\',',
+            '        \'other\': \'other message with \$firstName \$lastName placeholders\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, lastName, firstName],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test select dart getter when content has plural content set for all select cases', () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo {apples, plural, one {one apple} other {{apples} apples}}} bar {bar {apples, plural, one {one apple} other {{apples} apples}}} other {other {apples, plural, one {one apple} other {{apples} apples}}}}');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(Object choice, Object apples) {',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo {apples, plural, one {one apple} other {{apples} apples}}\',',
+            '        \'bar\': \'bar {apples, plural, one {one apple} other {{apples} apples}}\',',
+            '        \'other\': \'other {apples, plural, one {one apple} other {{apples} apples}}\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, apples],',
+            '    );',
+            '  }'
+          ].join('\n'));
+    });
+
+    test('Test select dart getter when content has repeated select case set', () {
+      var label =
+      Label('labelName', '{choice, select, foo {foo message} foo {repeated foo message} bar {bar message} other {other message}}');
+
+      expect(
+          label.generateDartGetter(),
+          [
+            '  String labelName(Object choice) {',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message\',',
+            '        \'bar\': \'bar message\',',
+            '        \'other\': \'other message\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice],',
             '    );',
             '  }'
           ].join('\n'));

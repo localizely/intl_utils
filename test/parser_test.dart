@@ -6,7 +6,7 @@ import 'package:intl_utils/src/message_format.dart';
 void main() {
   group('Literal messages', () {
     test('Test literal message with empty string', () {
-      var response = Parser().parse('');
+      var response = IcuParser().parse('');
 
       expect(response.length, 1);
       expect(response[0].runtimeType, LiteralElement);
@@ -15,7 +15,7 @@ void main() {
     });
 
     test('Test literal message with plain text', () {
-      var response = Parser().parse('This is some content.');
+      var response = IcuParser().parse('This is some content.');
 
       expect(response.length, 1);
       expect(response[0].runtimeType, LiteralElement);
@@ -24,7 +24,7 @@ void main() {
     });
 
     test('Test literal message with special characters', () {
-      var response = Parser().parse('Special characters: ,./?\\[]!@#\$%^&*()_+-=');
+      var response = IcuParser().parse('Special characters: ,./?\\[]!@#\$%^&*()_+-=');
 
       expect(response.length, 1);
       expect(response[0].runtimeType, LiteralElement);
@@ -35,7 +35,7 @@ void main() {
 
   group('Argument messages', () {
     test('Test argument message with placeholder only', () {
-      var response = Parser().parse('{firstName}');
+      var response = IcuParser().parse('{firstName}');
 
       expect(response.length, 1);
       expect(response[0].runtimeType, ArgumentElement);
@@ -44,7 +44,7 @@ void main() {
     });
 
     test('Test argument message with placeholder and plain text', () {
-      var response = Parser().parse('Hi my name is {firstName}!');
+      var response = IcuParser().parse('Hi my name is {firstName}!');
 
       expect(response.length, 3);
 
@@ -62,7 +62,7 @@ void main() {
     });
 
     test('Test argument message with placeholder and plain text when there are no space around placeholder', () {
-      var response = Parser().parse('Link: https://example.com?user={username}&test=yes');
+      var response = IcuParser().parse('Link: https://example.com?user={username}&test=yes');
 
       expect(response.length, 3);
 
@@ -80,7 +80,7 @@ void main() {
     });
 
     test('Test argument message with few placeholders and plain text', () {
-      var response = Parser().parse('My name is {lastName}, {firstName} {lastName}!');
+      var response = IcuParser().parse('My name is {lastName}, {firstName} {lastName}!');
 
       expect(response.length, 7);
 
@@ -116,7 +116,7 @@ void main() {
 
   group('Plural messages', () {
     test('Test plural message with all plural forms when plural forms have plain text', () {
-      var response = Parser().parse(
+      var response = IcuParser().parse(
           '{count, plural, zero {zero message} one {one message} two {two message} few {few message} many {many message} other {other message}}');
 
       expect(response.length, 1);
@@ -163,7 +163,7 @@ void main() {
     });
 
     test('Test plural message with all plural forms when plural forms are empty', () {
-      var response = Parser().parse('{count, plural, zero {} one {} two {} few {} many {} other {}}');
+      var response = IcuParser().parse('{count, plural, zero {} one {} two {} few {} many {} other {}}');
 
       expect(response.length, 1);
       expect(response[0].runtimeType, PluralElement);
@@ -209,7 +209,7 @@ void main() {
     });
 
     test('Test plural message with all plural forms when there are no whitespace around plural forms', () {
-      var response = Parser().parse(
+      var response = IcuParser().parse(
           '{count,plural,zero{zero message}one{one message}two{two message}few{few message}many{many message}other{other message}}');
 
       expect(response.length, 1);
@@ -258,7 +258,7 @@ void main() {
     test(
         'Test plural message with all plural forms where zero, one and two plural forms are expressed in the "equal-number" way',
         () {
-      var response = Parser().parse(
+      var response = IcuParser().parse(
           '{count, plural, =0 {=0 message} =1 {=1 message} =2 {=2 message} few {few message} many {many message} other {other message}}');
 
       expect(response.length, 1);
@@ -305,7 +305,7 @@ void main() {
     });
 
     test('Test plural message with all plural forms when plural forms have placeholder', () {
-      var response = Parser().parse(
+      var response = IcuParser().parse(
           '{count, plural, zero {zero message with {name} placeholder.} one {one message with {name} placeholder.} two {two message with {name} placeholder.} few {few message with {name} placeholder.} many {many message with {name} placeholder.} other {other message with {name} placeholder.}}');
 
       expect(response.length, 1);
@@ -388,7 +388,7 @@ void main() {
     });
 
     test('Test plural message with all plural forms when plural forms have few placeholders', () {
-      var response = Parser().parse(
+      var response = IcuParser().parse(
           '{count, plural, =0 {{firstName} {lastName}: zero message} =1 {{firstName} {lastName}: one message} =2 {{firstName} {lastName}: two message} few {{firstName} {lastName}: few message} many {{firstName} {lastName}: many message} other {{firstName} {lastName}: other message}}');
 
       expect(response.length, 1);
@@ -489,7 +489,7 @@ void main() {
     });
 
     test('Test plural message with one and other plural forms when plural forms have gender message', () {
-      var response = Parser().parse(
+      var response = IcuParser().parse(
           '{count, plural, one {{gender, select, female {Girl has} male {Boy has} other {Person has}} one item} other {{gender, select, female {Girl has} male {Boy has} other {Person has}} {count} items}}');
 
       expect(response.length, 1);
@@ -576,7 +576,7 @@ void main() {
 
   group('Gender messages', () {
     test('Test gender message with all gender forms when gender forms have plain text', () {
-      var response = Parser().parse('{gender, select, female {Hi woman!} male {Hi man!} other {Hi there!}}');
+      var response = IcuParser().parse('{gender, select, female {Hi woman!} male {Hi man!} other {Hi there!}}');
 
       expect(response.length, 1);
       expect(response[0].runtimeType, GenderElement);
@@ -604,7 +604,7 @@ void main() {
     });
 
     test('Test gender message with all gender forms when gender forms are empty', () {
-      var response = Parser().parse('{gender, select, female {} male {} other {}}');
+      var response = IcuParser().parse('{gender, select, female {} male {} other {}}');
 
       expect(response.length, 1);
       expect(response[0].runtimeType, GenderElement);
@@ -632,7 +632,7 @@ void main() {
     });
 
     test('Test gender message with all gender forms when there are no whitespace around gender forms', () {
-      var response = Parser().parse('{gender,select,female{Hi woman!}male{Hi man!}other{Hi there!}}');
+      var response = IcuParser().parse('{gender,select,female{Hi woman!}male{Hi man!}other{Hi there!}}');
 
       expect(response.length, 1);
       expect(response[0].runtimeType, GenderElement);
@@ -660,7 +660,7 @@ void main() {
     });
 
     test('Test gender message with all gender forms when gender forms have placeholder', () {
-      var response = Parser()
+      var response = IcuParser()
           .parse('{gender, select, female {Miss {firstName}.} male {Mister {firstName}.} other {User {firstName}.}}');
 
       expect(response.length, 1);
@@ -707,7 +707,7 @@ void main() {
     });
 
     test('Test gender message with all gender forms when gender forms have few placeholders', () {
-      var response = Parser().parse(
+      var response = IcuParser().parse(
           '{gender, select, female {Miss {firstName} {lastName} from {address}.} male {Mister {firstName} {lastName} from {address}.} other {User {firstName} {lastName} from {address}.}}');
 
       expect(response.length, 1);
@@ -790,7 +790,7 @@ void main() {
     });
 
     test('Test gender message with all gender forms when gender forms have plural message', () {
-      var response = Parser().parse(
+      var response = IcuParser().parse(
           '{gender, select, female {She has {count, plural, one {one apple} other {{count} apples}}} male {He has {count, plural, one {one apple} other {{count} apples}}} other {Person has {count, plural, one {one apple} other {{count} apples}}}}');
 
       expect(response.length, 1);
@@ -896,7 +896,7 @@ void main() {
 
   group('Select messages', () {
     test('Test select message when select forms have plain text', () {
-      var response = Parser()
+      var response = IcuParser()
           .parse('{choice, select, foo {This is foo option} bar {This is bar option} baz {This is baz option}}');
 
       expect(response.length, 1);
@@ -925,7 +925,7 @@ void main() {
     });
 
     test('Test select message when select forms are empty', () {
-      var response = Parser()
+      var response = IcuParser()
           .parse('{choice, select, foo {} bar {} baz {}}');
 
       expect(response.length, 1);
@@ -955,7 +955,7 @@ void main() {
 
     test('Test select message when there are no whitespace around select forms', () {
       var response =
-          Parser().parse('{choice,select,foo{This is foo option}bar{This is bar option}baz{This is baz option}}');
+          IcuParser().parse('{choice,select,foo{This is foo option}bar{This is bar option}baz{This is baz option}}');
 
       expect(response.length, 1);
       expect(response[0].runtimeType, SelectElement);
@@ -983,7 +983,7 @@ void main() {
     });
 
     test('Test select message when select forms have placeholder', () {
-      var response = Parser().parse(
+      var response = IcuParser().parse(
           '{choice, select, foo {This is foo option with {name} placeholder} bar {This is bar option with {name} placeholder} baz {This is baz option with {name} placeholder}}');
 
       expect(response.length, 1);
@@ -1030,7 +1030,7 @@ void main() {
     });
 
     test('Test select message when select forms have few placeholders', () {
-      var response = Parser().parse(
+      var response = IcuParser().parse(
           '{choice, select, foo {Foo: {firstName} {lastName}} bar {Bar: {firstName} {lastName}} baz {Baz: {firstName} {lastName}}}');
 
       expect(response.length, 1);

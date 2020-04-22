@@ -40,7 +40,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<$className> {
 
   List<Locale> get supportedLocales {
     return const <Locale>[
-      ${locales.map((locale) => _generateLocale(locale)).join(', ')},
+${locales.map((locale) => _generateLocale(locale)).join("\n")}
     ];
   }
 
@@ -70,12 +70,12 @@ String _generateLocale(String locale) {
   var parts = locale.split('_');
 
   if (isLangScriptCountryLocale(locale)) {
-    return 'Locale.fromSubtags(languageCode: \'${parts[0]}\', scriptCode: \'${parts[1]}\', countryCode: \'${parts[2]}\')';
+    return '      Locale.fromSubtags(languageCode: \'${parts[0]}\', scriptCode: \'${parts[1]}\', countryCode: \'${parts[2]}\'),';
   } else if (isLangScriptLocale(locale)) {
-    return 'Locale.fromSubtags(languageCode: \'${parts[0]}\', scriptCode: \'${parts[1]}\')';
+    return '      Locale.fromSubtags(languageCode: \'${parts[0]}\', scriptCode: \'${parts[1]}\'),';
   } else if (isLangCountryLocale(locale)) {
-    return 'Locale.fromSubtags(languageCode: \'${parts[0]}\', countryCode: \'${parts[1]}\')';
+    return '      Locale.fromSubtags(languageCode: \'${parts[0]}\', countryCode: \'${parts[1]}\'),';
   } else {
-    return 'Locale.fromSubtags(languageCode: \'${parts[0]}\')';
+    return '      Locale.fromSubtags(languageCode: \'${parts[0]}\'),';
   }
 }

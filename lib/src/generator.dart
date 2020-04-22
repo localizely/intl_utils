@@ -128,18 +128,22 @@ class Generator {
     return labels;
   }
 
-  List<String> _getAvailableLocales() {
-    var l10nDirPath = path.join(rootDir.path, 'lib', 'l10n');
-    var l10nDir = Directory(l10nDirPath);
-
-    var locales = l10nDir
+  List<FileSystemEntity> _getAvailableArbFiles() {
+    var arbFiles = Directory(path.join(rootDir.path, 'lib', 'l10n'))
         .listSync()
-        .map((file) => path.basename(file.path))
-        .where((fileName) => fileName.startsWith('intl_') && fileName.endsWith('.arb'))
-        .map((fileName) => fileName.substring(5, fileName.length - 4))
+        .where((file) => path.basename(file.path).startsWith('intl_') && path.basename(file.path).endsWith('.arb'))
         .toList();
 
-    return locales;
+    arbFiles.sort((a, b) => a.path.compareTo(b.path)); // arb files order is not the same on all operating systems (e.g. win, mac)
+
+    return arbFiles;
+  }
+
+  List<String> _getAvailableLocales() {
+    return _getAvailableArbFiles()
+        .map((file) => path.basename(file.path))
+        .map((fileName) => fileName.substring('intl_'.length, fileName.length - '.arb'.length))
+        .toList();
   }
 
   List<String> _orderAvailableLocales(List<String> locales) {
@@ -154,13 +158,9 @@ class Generator {
   Future<void> _generateDartFiles() async {
     var outputDir = path.join(rootDir.path, 'lib', 'generated', 'intl');
     var dartFiles = [path.join(rootDir.path, 'lib', 'generated', 'l10n.dart')];
-    var arbFiles = Directory(path.join(rootDir.path, 'lib', 'l10n'))
-        .listSync()
-        .where((file) => path.basename(file.path).startsWith('intl_') && path.basename(file.path).endsWith('.arb'))
+    var arbFiles = _getAvailableArbFiles()
         .map((file) => file.path)
         .toList();
-
-    arbFiles.sort(); // arb files order is not the same on all operating systems (e.g. win, mac)
 
     // validate arb files (e.g. check if they are well-formatted, etc.)
 

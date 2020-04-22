@@ -96,6 +96,7 @@ class BasicTranslatedMessage extends TranslatedMessage {
 
   BasicTranslatedMessage(String name, translated, this.messages) : super(name, translated);
 
+  @override
   List<MainMessage> get originalMessages =>
       (super.originalMessages == null) ? _findOriginals() : super.originalMessages;
 

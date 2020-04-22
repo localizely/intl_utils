@@ -4,9 +4,9 @@ import 'package:intl_utils/src/parser.dart';
 import 'package:intl_utils/src/message_format.dart';
 import 'package:intl_utils/src/utils.dart';
 
-final parser = Parser();
+final parser = IcuParser();
 
-enum ContentType { literal, argument, plural, gender, unsupported }
+enum ContentType { literal, argument, plural, gender, select, unsupported }
 
 class ValidationException implements Exception {
   final String message;
@@ -117,6 +117,22 @@ class Label {
               '  }'
             ].join('\n');
           }
+        case ContentType.select:
+          {
+            var choiceArg = args[0].name; // The first argument in [args] must correspond to the [choice] Object.
+
+            return [
+              '  String $name(${_generateDartMethodParameters(args)}) {',
+              '    return Intl.select(',
+              '      ${choiceArg},',
+              _generateSelectOptions(parsedContent[0]),
+              '      name: \'$name\',',
+              '      desc: \'$description\',',
+              '      args: [${_generateDartMethodArgs(args)}],',
+              '    );',
+              '  }'
+            ].join('\n');
+          }
         case ContentType.unsupported:
         default:
           {
@@ -198,7 +214,12 @@ class Label {
               }
             case ElementType.select:
               {
-                _updateArgsData(args, [Argument(Object, item.value)]);
+                var choiceArg = Argument(Object, item.value);
+                if (args.isNotEmpty && args.indexOf(choiceArg) != 0) {
+                  warning("The '${name}' key contains a select message which requires '${item.value}' placeholder as a first item in 'placeholders' declaration map.");
+                }
+
+                _updateArgsData(args, [choiceArg], forceBeginning: true);
                 _updateArgsData(args, _getSelectOptionsArgs(item));
                 break;
               }
@@ -210,13 +231,25 @@ class Label {
     return LinkedHashSet<Argument>.from(args).toList();
   }
 
-  void _updateArgsData(List<Argument> existingArgs, List<Argument> newArgs) {
+  void _updateArgsData(List<Argument> existingArgs, List<Argument> newArgs, {bool forceBeginning = false}) {
     newArgs.forEach((newArg) {
       var index = existingArgs.indexOf(newArg);
-      if (index != -1 && existingArgs.elementAt(index).isObject()) {
-        existingArgs.elementAt(index).type = newArg.type;
+
+      if (index != -1) {
+        if (existingArgs.elementAt(index).isObject()) {
+          existingArgs.elementAt(index).type = newArg.type;
+        }
+
+        if (forceBeginning && index > 0) {
+          var arg = existingArgs.removeAt(index);
+          existingArgs.insert(0, arg);
+        }
       } else {
-        existingArgs.add(newArg);
+        if (forceBeginning) {
+          existingArgs.insert(0, newArg);
+        } else {
+          existingArgs.add(newArg);
+        }
       }
     });
   }
@@ -268,6 +301,8 @@ class Label {
       return ContentType.plural;
     } else if (_isGender(data) && args.isNotEmpty) {
       return ContentType.gender;
+    } else if (_isSelect(data) && args.isNotEmpty) {
+      return ContentType.select;
     } else {
       return ContentType.unsupported; // other types which are not supported yet
     }
@@ -293,6 +328,11 @@ class Label {
   bool _isGender(List<BaseElement> data) {
     return (data.isNotEmpty &&
         data.map((item) => item.type == ElementType.gender).reduce((bool acc, bool curr) => acc && curr));
+  }
+
+  bool _isSelect(List<BaseElement> data) {
+    return (data.isNotEmpty &&
+        data.map((item) => item.type == ElementType.select).reduce((bool acc, bool curr) => acc && curr));
   }
 
   String _generateArgumentContent(List<BaseElement> data) {
@@ -455,6 +495,39 @@ class Label {
     sanitized.forEach((option) {
       if (option.value.length == 1 && option.value[0] is LiteralElement && (option.value[0] as LiteralElement).value.isEmpty) {
         warning("The '${name}' key lacks translation for the gender form '${option.name}'.");
+      }
+    });
+
+    return sanitized;
+  }
+
+  String _generateSelectOptions(SelectElement element) {
+    var options = <String>[];
+
+    options.add('      {');
+    _sanitizeSelectOptions(element.options).forEach((option) {
+      options.add("        '${option.name}': '${_generatePluralOrSelectOptionMessage(option)}',");
+    });
+    options.add('      },');
+
+    return options.join('\n');
+  }
+
+  /// remove duplicates and print warnings in case of irregularity
+  List<Option> _sanitizeSelectOptions(List<Option> options) {
+    var keys = options.map((option) => option.name);
+    var uniqueKeys = LinkedHashSet<String>.from(keys);
+
+    var sanitized = uniqueKeys.map((uniqueKey) => options.firstWhere((option) => option.name == uniqueKey)).toList();
+    if (sanitized.length != options.length) {
+      warning("Detected select irregularity for the '${name}' key.");
+    } else if (!uniqueKeys.contains('other')) {
+      warning("The '${name}' key lacks mandatory select case 'other'.");
+    }
+
+    sanitized.forEach((option) {
+      if (option.value.length == 1 && option.value[0] is LiteralElement && (option.value[0] as LiteralElement).value.isEmpty) {
+        warning("The '${name}' key lacks translation for the select case '${option.name}'.");
       }
     });
 
