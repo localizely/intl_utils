@@ -1,7 +1,7 @@
 import 'package:test/test.dart';
 
-import 'package:intl_utils/src/parser.dart';
-import 'package:intl_utils/src/message_format.dart';
+import 'package:intl_utils/src/parser/parser.dart';
+import 'package:intl_utils/src/parser/message_format.dart';
 
 void main() {
   group('Literal messages', () {

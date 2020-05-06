@@ -1,8 +1,8 @@
 import 'dart:collection';
 
-import 'package:intl_utils/src/parser.dart';
-import 'package:intl_utils/src/message_format.dart';
-import 'package:intl_utils/src/utils.dart';
+import '../parser/parser.dart';
+import '../parser/message_format.dart';
+import '../utils/utils.dart';
 
 final parser = IcuParser();
 

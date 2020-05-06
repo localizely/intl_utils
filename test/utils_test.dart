@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
 
-import 'package:intl_utils/src/utils.dart';
+import 'package:intl_utils/src/utils/utils.dart';
 
 void main() {
   group('locale validation', () {

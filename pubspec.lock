@@ -8,8 +8,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.38.5"
+  archive:
+    dependency: "direct main"
+    description:
+      name: archive
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.13"
   args:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: args
       url: "https://pub.dartlang.org"
@@ -100,12 +107,12 @@ packages:
     source: hosted
     version: "0.14.0+3"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.0+3"
+    version: "0.12.1"
   http_multi_server:
     dependency: transitive
     description:

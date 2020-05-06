@@ -8,7 +8,7 @@ import 'package:intl_translation/generate_localized.dart';
 import 'package:intl_translation/src/icu_parser.dart';
 import 'package:intl_translation/src/intl_message.dart';
 
-import 'package:intl_utils/src/utils.dart';
+import '../utils/utils.dart';
 
 class IntlTranslationHelper {
   final pluralAndGenderParser = IcuParser().message;

@@ -1,6 +1,6 @@
 import 'package:petitparser/petitparser.dart';
 
-import 'package:intl_utils/src/message_format.dart';
+import 'message_format.dart';
 
 class IcuParser {
   Parser get openCurly => char('{');

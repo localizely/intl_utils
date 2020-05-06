@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert' as convert;
 
 bool validateClassName(dynamic value) {
   return (value is String) && (RegExp(r'^[A-Z][a-zA-Z0-9]*$').hasMatch(value));
@@ -30,4 +31,15 @@ void warning(String message) {
 
 void error(String message) {
   stderr.writeln('ERROR: $message');
+}
+
+void exitWithError(String message) {
+  error(message);
+  exit(2);
+}
+
+/// Convert to inline json message.
+String formatJsonMessage(String jsonMessage) {
+  var decoded = convert.jsonDecode(jsonMessage);
+  return convert.jsonEncode(decoded);
 }

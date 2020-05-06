@@ -1,5 +1,5 @@
-import 'package:intl_utils/src/label.dart';
-import 'package:intl_utils/src/utils.dart';
+import 'label.dart';
+import '../utils/utils.dart';
 
 String generateL10nDartFileContent(String className, List<Label> labels, List<String> locales) {
   return """

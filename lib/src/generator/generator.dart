@@ -4,11 +4,12 @@ import 'dart:convert';
 import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart' as yaml;
 
-import 'package:intl_utils/src/label.dart';
-import 'package:intl_utils/src/templates.dart';
-import 'package:intl_utils/src/utils.dart';
-import 'package:intl_utils/src/constants.dart';
-import 'package:intl_utils/src/intl_translation_helper.dart';
+import 'label.dart';
+import 'templates.dart';
+import 'intl_translation_helper.dart';
+import '../utils/utils.dart';
+import '../utils/file_utils.dart';
+import '../constants/constants.dart';
 
 class Generator {
   Directory rootDir;
@@ -20,7 +21,7 @@ class Generator {
   }
 
   Future<void> generateAsync() async {
-    var pubspecFile = _getPubspecFile();
+    var pubspecFile = FileUtils.getPubspecFile();
     if (pubspecFile == null) {
       throw GeneratorException("Can't find 'pubspec.yaml' file.");
     }
@@ -32,15 +33,10 @@ class Generator {
     await _generateDartFiles();
   }
 
-  FileSystemEntity _getPubspecFile() {
-    var files = rootDir.listSync();
-    return files.firstWhere((file) => path.basename(file.path) == 'pubspec.yaml', orElse: () => null);
-  }
-
   /// Update generator config with the config values from the 'pubspec.yaml' file.
   /// Note: Current implementation ignores 'enabled' config property from the 'pubspec.yaml' file.
-  void _updateConfig(FileSystemEntity pubspecFile) {
-    var content = File(pubspecFile.path).readAsStringSync();
+  void _updateConfig(File pubspecFile) {
+    var content = pubspecFile.readAsStringSync();
     var pubspecYaml = yaml.loadYaml(content);
 
     var config = pubspecYaml['flutter_intl'];
@@ -173,4 +169,8 @@ class GeneratorException implements Exception {
   final String message;
 
   GeneratorException([this.message]);
+
+  String toString() {
+    return 'GeneratorException: ${message ?? ""}';
+  }
 }

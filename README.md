@@ -19,6 +19,11 @@ flutter_intl:
   <b>enabled: true</b> # Required. Must be set to true to activate the package. Default: false
   class_name: S # Optional. Sets the name for the generated localization class. Default: S
   main_locale: en # Optional. Sets the main locale used for generating localization files. Provided value should consist of language code and optional script and country codes separated with underscore (e.g. 'en', 'en_GB', 'zh_Hans', 'zh_Hans_CN'). Default: en
+
+  localizely: # Optional settings if you use Localizely platform. Read more: https://localizely.com/flutter-localization
+    project_id: # Get it from the https://app.localizely.com/projects page.
+    upload_overwrite: # Set to true if you want to overwrite translations with upload. Default: false
+    upload_as_reviewed: # Set to true if you want to mark uploaded translations as reviewed. Default: false
 </pre>
 
 ### Add ARB files
@@ -31,8 +36,26 @@ If you wonder how to format key-values content inside ARB files, [here](https://
 
 ### Run command
 
-To generate boilerplate code for localization, run the `generate` program inside directory where you `pubspec.yaml` file is located:
+To generate boilerplate code for localization, run the `generate` program inside directory where your `pubspec.yaml` file is located:
 
       flutter pub run intl_utils:generate
 
 This will produce files inside `lib/generated` directory.
+
+### Integration with Localizely
+
+#### Upload main ARB file
+
+      flutter pub run intl_utils:localizely_upload_main --project-id <PROJECT_ID> --api-token <API_TOKEN>
+
+This will upload your main ARB file to Localizely. Check out the 'Configure package' section for additional upload configuration.
+
+#### Download ARB files
+
+      flutter pub run intl_utils:localizely_download --project-id <PROJECT_ID> --api-token <API_TOKEN>
+
+This will download all available ARB files from the Localizely platform and put them under `lib/l10n` folder inside your project.
+
+Notes: 
+Argument `project-id` can be omitted if `pubspec.yaml` file contains `project_id` configuration under `flutter_intl/localizely` section.
+Argument `api-token` can be omitted if `~/.localizely/credentials.yaml` file contains `api_token` configuration.  
