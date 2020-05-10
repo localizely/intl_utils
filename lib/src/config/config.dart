@@ -31,7 +31,8 @@ class Config {
         ? LocalizelyConfig(
             _isString(localizely['project_id']) ? localizely['project_id'] : null,
             _isBool(localizely['upload_as_reviewed']) ? localizely['upload_as_reviewed'] : null,
-            _isBool(localizely['upload_overwrite']) ? localizely['upload_overwrite'] : null)
+            _isBool(localizely['upload_overwrite']) ? localizely['upload_overwrite'] : null,
+            _isBool(localizely['ota_enabled']) ? localizely['ota_enabled'] : null)
         : null;
 
     return PubspecConfig(enabled, className, mainLocale, localizelyConfig);

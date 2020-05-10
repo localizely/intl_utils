@@ -159,6 +159,13 @@ class Label {
     }
   }
 
+  String generateMetadata() {
+    var parsedContent = parser.parse(content);
+    var args = _getArgs(placeholders, parsedContent);
+
+    return "    '${name}' : [${args.map((arg) => '\'${arg.name}\'').join(', ')}]";
+  }
+
   String _generateDartMethodParameters(List<Argument> args) => args.map((arg) => '$arg').join(', ');
 
   String _generateDartMethodArgs(List<Argument> args) => args.map((arg) => arg.name).join(', ');

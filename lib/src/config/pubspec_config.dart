@@ -11,6 +11,7 @@ class LocalizelyConfig {
   String projectId;
   bool uploadAsReviewed;
   bool uploadOverwrite;
+  bool otaEnabled;
 
-  LocalizelyConfig(this.projectId, this.uploadAsReviewed, this.uploadOverwrite);
+  LocalizelyConfig(this.projectId, this.uploadAsReviewed, this.uploadOverwrite, this.otaEnabled);
 }

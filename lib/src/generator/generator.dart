@@ -15,6 +15,7 @@ class Generator {
   Directory rootDir;
   String className;
   String mainLocale;
+  bool otaEnabled;
 
   Generator() {
     rootDir = Directory.current;
@@ -49,6 +50,7 @@ class Generator {
         warning("Config parameter 'class_name' requires valid 'UpperCamelCase' value.");
       }
     }
+
     var mainLocale = config != null ? config['main_locale'] : null;
     if (mainLocale != null) {
       var isValid = validateLocale(mainLocale);
@@ -56,6 +58,16 @@ class Generator {
         this.mainLocale = mainLocale;
       } else {
         warning("Config parameter 'main_locale' requires value consisted of language code and optional script and country codes separated with underscore (e.g. 'en', 'en_GB', 'zh_Hans', 'zh_Hans_CN').");
+      }
+    }
+
+    var otaEnabled = config != null && config['localizely'] != null ? config['localizely']['ota_enabled'] : null;
+    if (otaEnabled != null) {
+      var isValid = otaEnabled is bool;
+      if (isValid) {
+        this.otaEnabled = otaEnabled;
+      } else {
+        warning("Config parameter 'ota_enabled' requires boolean value.");
       }
     }
   }
@@ -82,7 +94,8 @@ class Generator {
     var className = this.className ?? defaultClassName;
     var labels = _getLabelsFromMainArbFile();
     var locales = _orderAvailableLocales(_getAvailableLocales());
-    var content = generateL10nDartFileContent(className, labels, locales);
+    var otaEnabled = this.otaEnabled ?? defaultOtaEnabled;
+    var content = generateL10nDartFileContent(className, labels, locales, otaEnabled);
     await l10nDartFile.writeAsString(content);
 
     var intlDirPath = path.join(rootDir.path, 'lib', 'generated', 'intl');
@@ -170,6 +183,7 @@ class GeneratorException implements Exception {
 
   GeneratorException([this.message]);
 
+  @override
   String toString() {
     return 'GeneratorException: ${message ?? ""}';
   }

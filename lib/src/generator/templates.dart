@@ -1,11 +1,11 @@
 import 'label.dart';
 import '../utils/utils.dart';
 
-String generateL10nDartFileContent(String className, List<Label> labels, List<String> locales) {
+String generateL10nDartFileContent(String className, List<Label> labels, List<String> locales, [bool otaEnabled = false]) {
   return """
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart';${otaEnabled ? '\n${_generateLocalizelySdkImport()}' : ''}
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -20,8 +20,8 @@ class $className {
     AppLocalizationDelegate();
 
   static Future<$className> load(Locale locale) {
-    final String name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
-    final String localeName = Intl.canonicalizedLocale(name);
+    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
+    final localeName = Intl.canonicalizedLocale(name);${otaEnabled ? '\n${_generateMetadataSetter()}' : ''} 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       return $className();
@@ -31,7 +31,7 @@ class $className {
   static $className of(BuildContext context) {
     return Localizations.of<$className>(context, $className);
   }
-
+${otaEnabled ? '\n${_generateMetadata(labels)}\n' : ''}
 ${labels.map((label) => label.generateDartGetter()).join("\n\n")}
 }
 
@@ -53,7 +53,7 @@ ${locales.map((locale) => _generateLocale(locale)).join("\n")}
 
   bool _isSupported(Locale locale) {
     if (locale != null) {
-      for (Locale supportedLocale in supportedLocales) {
+      for (var supportedLocale in supportedLocales) {
         if (supportedLocale.languageCode == locale.languageCode) {
           return true;
         }
@@ -78,4 +78,24 @@ String _generateLocale(String locale) {
   } else {
     return '      Locale.fromSubtags(languageCode: \'${parts[0]}\'),';
   }
+}
+
+String _generateLocalizelySdkImport() {
+  return "import 'package:localizely_sdk/localizely_sdk.dart';";
+}
+
+String _generateMetadataSetter() {
+  return [
+    '    if (!Localizely.hasMetadata()) {',
+    '      Localizely.setMetadata(_metadata);',
+    '    }'
+  ].join('\n');
+}
+
+String _generateMetadata(List<Label> labels) {
+  return [
+    '  static final Map<String, List<String>> _metadata = {',
+    labels.map((label) => label.generateMetadata()).join(',\n'),
+    '  };'
+  ].join('\n');
 }

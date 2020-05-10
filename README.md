@@ -24,6 +24,7 @@ flutter_intl:
     project_id: # Get it from the https://app.localizely.com/projects page.
     upload_overwrite: # Set to true if you want to overwrite translations with upload. Default: false
     upload_as_reviewed: # Set to true if you want to mark uploaded translations as reviewed. Default: false
+    ota_enabled: # Set to true if you want to use Localizely Over-the-air functionality. Default: false
 </pre>
 
 ### Add ARB files
