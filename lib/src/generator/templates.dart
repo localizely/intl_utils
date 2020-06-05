@@ -13,8 +13,12 @@ import 'intl/messages_all.dart';
 // Made by Localizely
 // **************************************************************************
 
+// ignore_for_file: non_constant_identifier_names, lines_longer_than_80_chars
+
 class $className {
   $className();
+  
+  static $className current;
   
   static const AppLocalizationDelegate delegate =
     AppLocalizationDelegate();
@@ -24,7 +28,9 @@ class $className {
     final localeName = Intl.canonicalizedLocale(name);${otaEnabled ? '\n${_generateMetadataSetter()}' : ''} 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
-      return $className();
+      $className.current = $className();
+      
+      return $className.current;
     });
   } 
 

@@ -1,0 +1,9 @@
+stages:
+  - test
+
+run_tests:
+  stage: test
+  image: google/dart:latest
+  script:
+    - pub get
+    - pub run test test

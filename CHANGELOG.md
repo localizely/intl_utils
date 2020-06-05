@@ -5,6 +5,14 @@ All notable changes to the "flutter-intl" extension will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.6.0 - 2020-06-03
+
+- Reference the key without passing the context
+
+- Provide default value of term as Dart doc on getters in `l10n.dart` file
+
+- Suppress lint warnings for getters that do not follow the lowerCamelCase style within `l10n.dart` file
+
 ## 1.5.0 - 2020-05-11
 
 - Add support for the Localizely SDK

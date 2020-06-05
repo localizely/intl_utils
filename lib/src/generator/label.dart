@@ -62,6 +62,7 @@ class Label {
         case ContentType.literal:
           {
             return [
+              _generateDartDoc(),
               '  String get $name {',
               '    return Intl.message(',
               '      \'$content\',',
@@ -75,6 +76,7 @@ class Label {
         case ContentType.argument:
           {
             return [
+              _generateDartDoc(),
               '  String $name(${_generateDartMethodParameters(args)}) {',
               '    return Intl.message(',
               '      \'${_generateArgumentContent(parsedContent)}\',',
@@ -90,6 +92,7 @@ class Label {
             var pluralArg = args.firstWhere((arg) => arg.isNum()).name;
 
             return [
+              _generateDartDoc(),
               '  String $name(${_generateDartMethodParameters(args)}) {',
               '    return Intl.plural(',
               '      ${pluralArg},',
@@ -106,6 +109,7 @@ class Label {
             var genderArg = args.firstWhere((arg) => arg.isString()).name;
 
             return [
+              _generateDartDoc(),
               '  String $name(${_generateDartMethodParameters(args)}) {',
               '    return Intl.gender(',
               '      ${genderArg},',
@@ -122,6 +126,7 @@ class Label {
             var choiceArg = args[0].name; // The first argument in [args] must correspond to the [choice] Object.
 
             return [
+              _generateDartDoc(),
               '  String $name(${_generateDartMethodParameters(args)}) {',
               '    return Intl.select(',
               '      ${choiceArg},',
@@ -139,6 +144,7 @@ class Label {
             warning("The '${name}' key has an unsupported content type.");
 
             return [
+              _generateDartDoc(),
               '  String ${args.isNotEmpty ? '${name}(${_generateDartMethodParameters(args)})' : 'get ${name}'} {',
               '    return Intl.message(',
               '      \'${content}\',',
@@ -160,33 +166,62 @@ class Label {
   }
 
   String generateMetadata() {
-    var parsedContent = parser.parse(content);
-    var args = _getArgs(placeholders, parsedContent);
+    try {
+      var parsedContent = parser.parse(content);
+      var args = _getArgs(placeholders, parsedContent);
 
-    return "    '${name}' : [${args.map((arg) => '\'${arg.name}\'').join(', ')}]";
+      var isValid = _validate(name, content, args, false);
+      if (!isValid) {
+        throw ValidationException();
+      }
+
+      return "    '${name}' : [${args.map((arg) => '\'${arg.name}\'').join(', ')}]";
+    } catch (e) {
+      if (!(e is ValidationException)) {
+        error("The '${name}' key metadata will be ignored due to parsing errors.");
+      }
+
+      return "    // skipped metadata for the '${_escape(name)}' key";
+    }
+  }
+
+  String _generateDartDoc() {
+    return '  /// `${_escapeDartDoc(content)}`';
   }
 
   String _generateDartMethodParameters(List<Argument> args) => args.map((arg) => '$arg').join(', ');
 
   String _generateDartMethodArgs(List<Argument> args) => args.map((arg) => arg.name).join(', ');
 
-  bool _validate(String name, String content, List<Argument> args) {
+  bool _validate(String name, String content, List<Argument> args, [showWarnings = true]) {
     var variableRegex = RegExp(r'^[a-zA-Z_][a-zA-Z0-9_]*$');
     var placeholderRegex = RegExp('\$[a-zA-Z_][a-zA-Z0-9_]*');
+    var reservedKeywords = ['current'];
 
     if (!variableRegex.hasMatch(name)) {
-      warning("The '${name}' key will be ignored as its name does not follow naming convention.");
+      if (showWarnings) {
+        warning("The '${name}' key will be ignored as its name does not follow naming convention.");
+      }
+      return false;
+    }
+
+    if (reservedKeywords.contains(name)) {
+      if (showWarnings) {
+        warning("The '${name}' key will be ignored as '${name}' is a reserved keyword.");
+      }
       return false;
     }
 
     for (var arg in args) {
       if (!variableRegex.hasMatch(arg.name)) {
-        warning("The '${name}' key will be ignored as its placeholder '${arg.name}' does not follow naming convention.");
+        if (showWarnings) {
+          warning("The '${name}' key will be ignored as its placeholder '${arg.name}' does not follow naming convention.");
+        }
         return false;
       }
     }
 
-    if (placeholderRegex.hasMatch(content)) {
+    if (placeholderRegex.hasMatch(content) && showWarnings) {
       warning("Did you mean to use placeholders within the '${name}' key? Try wrapping them within curly braces.");
     }
 
@@ -647,5 +682,11 @@ class Label {
         .replaceAll(RegExp('\n'), '\\n')
         .replaceAll(RegExp('\''), '\\\'')
         .replaceAll(RegExp('\\\$'), '\\\$');
+  }
+
+  String _escapeDartDoc(String value) {
+    return value
+        .replaceAll('\n', '\\n')
+        .replaceAll('`', '\'');
   }
 }
