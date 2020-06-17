@@ -3,7 +3,6 @@ library intl_utils;
 import 'dart:io';
 
 import 'package:args/args.dart' as args;
-import 'package:path/path.dart' as path;
 
 import 'package:intl_utils/src/config/config.dart';
 import 'package:intl_utils/src/config/config_exception.dart';
@@ -11,6 +10,7 @@ import 'package:intl_utils/src/localizely/api/api_exception.dart';
 import 'package:intl_utils/src/localizely/service/service.dart';
 import 'package:intl_utils/src/localizely/service/service_exception.dart';
 import 'package:intl_utils/src/utils/utils.dart';
+import 'package:intl_utils/src/utils/file_utils.dart';
 
 Future<void> main(List<String> arguments) async {
   final argParser = args.ArgParser();
@@ -56,7 +56,7 @@ Future<void> main(List<String> arguments) async {
 
       if (apiToken == null) {
         throw ConfigException(
-            "Argument 'api-token' was not provided, nor 'api_token' config was set within the '${path.join(Config.getUserHome(), '.localizely', 'credentials.yaml')}' file.");
+            "Argument 'api-token' was not provided, nor 'api_token' config was set within the '${FileUtils.getLocalizelyCredentialsFilePath()}' file.");
       }
     }
 
@@ -65,11 +65,11 @@ Future<void> main(List<String> arguments) async {
     exitWithError('${e.message}\n\n${argParser.usage}');
   } on ConfigException catch (e) {
     exitWithError(e.message);
-  } on ServiceException catch(e) {
+  } on ServiceException catch (e) {
     exitWithError(e.message);
   } on ApiException catch (e) {
     exitWithError(e.getFormattedMessage());
   } catch (e) {
-    exitWithError('Failed to download ARB files from Localizely.');
+    exitWithError('Failed to download ARB files from Localizely.\n$e');
   }
 }

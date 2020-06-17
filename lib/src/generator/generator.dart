@@ -12,14 +12,9 @@ import '../utils/file_utils.dart';
 import '../constants/constants.dart';
 
 class Generator {
-  Directory rootDir;
   String className;
   String mainLocale;
   bool otaEnabled;
-
-  Generator() {
-    rootDir = Directory.current;
-  }
 
   Future<void> generateAsync() async {
     var pubspecFile = FileUtils.getPubspecFile();
@@ -74,7 +69,7 @@ class Generator {
 
   Future<void> _updateL10nDir() async {
     var mainLocale = this.mainLocale ?? defaultMainLocale;
-    var mainArbFilePath = path.join(rootDir.path, 'lib', 'l10n', 'intl_${mainLocale}.arb');
+    var mainArbFilePath = path.join(FileUtils.getRootDirectoryPath(), 'lib', 'l10n', 'intl_${mainLocale}.arb');
     var mainArbFile = File(mainArbFilePath);
 
     if (!mainArbFile.existsSync()) {
@@ -84,7 +79,7 @@ class Generator {
   }
 
   Future<void> _updateGeneratedDir() async {
-    var l10nDartFilePath = path.join(rootDir.path, 'lib', 'generated', 'l10n.dart');
+    var l10nDartFilePath = path.join(FileUtils.getRootDirectoryPath(), 'lib', 'generated', 'l10n.dart');
     var l10nDartFile = File(l10nDartFilePath);
 
     if (!l10nDartFile.existsSync()) {
@@ -93,12 +88,12 @@ class Generator {
 
     var className = this.className ?? defaultClassName;
     var labels = _getLabelsFromMainArbFile();
-    var locales = _orderAvailableLocales(_getAvailableLocales());
+    var locales = _orderLocales(FileUtils.getLocales());
     var otaEnabled = this.otaEnabled ?? defaultOtaEnabled;
     var content = generateL10nDartFileContent(className, labels, locales, otaEnabled);
     await l10nDartFile.writeAsString(content);
 
-    var intlDirPath = path.join(rootDir.path, 'lib', 'generated', 'intl');
+    var intlDirPath = path.join(FileUtils.getRootDirectoryPath(), 'lib', 'generated', 'intl');
     var intlDir = await Directory(intlDirPath).create(recursive: true);
 
     // remove unused dart messages files
@@ -115,8 +110,11 @@ class Generator {
 
   List<Label> _getLabelsFromMainArbFile() {
     var mainLocale = this.mainLocale ?? defaultMainLocale;
-    var mainArbFilePath = path.join(rootDir.path, 'lib', 'l10n', 'intl_${mainLocale}.arb');
-    var mainArbFile = File(mainArbFilePath);
+    var mainArbFile = FileUtils.getArbFileForLocale(mainLocale);
+    if (mainArbFile == null) {
+      throw GeneratorException("Can't find ARB file for the '$mainLocale' locale.");
+    }
+
     var content = mainArbFile.readAsStringSync();
     var decodedContent = json.decode(content) as Map<String, dynamic>;
 
@@ -137,25 +135,7 @@ class Generator {
     return labels;
   }
 
-  List<FileSystemEntity> _getAvailableArbFiles() {
-    var arbFiles = Directory(path.join(rootDir.path, 'lib', 'l10n'))
-        .listSync()
-        .where((file) => path.basename(file.path).startsWith('intl_') && path.basename(file.path).endsWith('.arb'))
-        .toList();
-
-    arbFiles.sort((a, b) => a.path.compareTo(b.path)); // arb files order is not the same on all operating systems (e.g. win, mac)
-
-    return arbFiles;
-  }
-
-  List<String> _getAvailableLocales() {
-    return _getAvailableArbFiles()
-        .map((file) => path.basename(file.path))
-        .map((fileName) => fileName.substring('intl_'.length, fileName.length - '.arb'.length))
-        .toList();
-  }
-
-  List<String> _orderAvailableLocales(List<String> locales) {
+  List<String> _orderLocales(List<String> locales) {
     var mainLocale = this.mainLocale ?? defaultMainLocale;
 
     var index = locales.indexOf(mainLocale);
@@ -165,13 +145,11 @@ class Generator {
   }
 
   Future<void> _generateDartFiles() async {
-    var outputDir = path.join(rootDir.path, 'lib', 'generated', 'intl');
-    var dartFiles = [path.join(rootDir.path, 'lib', 'generated', 'l10n.dart')];
-    var arbFiles = _getAvailableArbFiles()
+    var outputDir = path.join(FileUtils.getRootDirectoryPath(), 'lib', 'generated', 'intl');
+    var dartFiles = [path.join(FileUtils.getRootDirectoryPath(), 'lib', 'generated', 'l10n.dart')];
+    var arbFiles = FileUtils.getArbFiles()
         .map((file) => file.path)
         .toList();
-
-    // validate arb files (e.g. check if they are well-formatted, etc.)
 
     var helper = IntlTranslationHelper();
     helper.generateFromArb(outputDir, dartFiles, arbFiles);

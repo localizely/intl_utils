@@ -10,6 +10,6 @@ Future<void> main(List<String> args) async {
   } on GeneratorException catch (e) {
     exitWithError(e.message);
   } catch (e) {
-    exitWithError('Failed to generate localization files.');
+    exitWithError('Failed to generate localization files.\n$e');
   }
 }

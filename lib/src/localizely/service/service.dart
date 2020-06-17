@@ -9,7 +9,7 @@ class LocalizelyService {
 
   LocalizelyService._();
 
-  /// Upload main ARB file on Localizely.
+  /// Uploads main ARB file on Localizely.
   static Future<void> uploadMainArbFile(String projectId, String apiToken) async {
     var pubspecConfig = Config.getPubspecConfig();
 
@@ -35,7 +35,7 @@ class LocalizelyService {
     await LocalizelyApi.upload(projectId, apiToken, mainLocale, mainArbFile, overwrite, reviewed);
   }
 
-  // Download all ARB files from Localizely.
+  /// Downloads all ARB files from Localizely.
   static Future<void> download(String projectId, String apiToken) async {
     var response = await LocalizelyApi.download(projectId, apiToken);
 
