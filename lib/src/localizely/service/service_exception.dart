@@ -4,7 +4,5 @@ class ServiceException implements Exception {
   ServiceException(this.message);
 
   @override
-  String toString() {
-    return 'ServiceException: ${message ?? ""}';
-  }
+  String toString() => 'ServiceException: ${message ?? ""}';
 }

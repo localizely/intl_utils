@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-import '../parser/parser.dart';
+import '../parser/icu_parser.dart';
 import '../parser/message_format.dart';
 import '../utils/utils.dart';
 
@@ -29,7 +29,7 @@ class Argument {
   String toString() => '$type $name';
 
   @override
-  bool operator == (obj) => obj is Argument && obj.name == name;
+  bool operator ==(obj) => obj is Argument && obj.name == name;
 
   @override
   int get hashCode => name.hashCode;
@@ -42,8 +42,10 @@ class Label {
   String description;
   List<String> placeholders;
 
-  Label(this.name, this.content, {this.type, this.description, this.placeholders});
+  Label(this.name, this.content,
+      {this.type, this.description, this.placeholders});
 
+  /// Generates label getter.
   String generateDartGetter() {
     try {
       var content = _escape(this.content);
@@ -123,7 +125,8 @@ class Label {
           }
         case ContentType.select:
           {
-            var choiceArg = args[0].name; // The first argument in [args] must correspond to the [choice] Object.
+            var choiceArg = args[0]
+                .name; // The first argument in [args] must correspond to the [choice] Object.
 
             return [
               _generateDartDoc(),
@@ -165,6 +168,7 @@ class Label {
     }
   }
 
+  /// Generates label metadata.
   String generateMetadata() {
     try {
       var parsedContent = parser.parse(content);
@@ -178,36 +182,40 @@ class Label {
       return "    '${name}' : [${args.map((arg) => '\'${arg.name}\'').join(', ')}]";
     } catch (e) {
       if (!(e is ValidationException)) {
-        error("The '${name}' key metadata will be ignored due to parsing errors.");
+        error(
+            "The '${name}' key metadata will be ignored due to parsing errors.");
       }
 
       return "    // skipped metadata for the '${_escape(name)}' key";
     }
   }
 
-  String _generateDartDoc() {
-    return '  /// `${_escapeDartDoc(content)}`';
-  }
+  String _generateDartDoc() => '  /// `${_escapeDartDoc(content)}`';
 
-  String _generateDartMethodParameters(List<Argument> args) => args.map((arg) => '$arg').join(', ');
+  String _generateDartMethodParameters(List<Argument> args) =>
+      args.map((arg) => '$arg').join(', ');
 
-  String _generateDartMethodArgs(List<Argument> args) => args.map((arg) => arg.name).join(', ');
+  String _generateDartMethodArgs(List<Argument> args) =>
+      args.map((arg) => arg.name).join(', ');
 
-  bool _validate(String name, String content, List<Argument> args, [showWarnings = true]) {
+  bool _validate(String name, String content, List<Argument> args,
+      [showWarnings = true]) {
     var variableRegex = RegExp(r'^[a-zA-Z_][a-zA-Z0-9_]*$');
     var placeholderRegex = RegExp('\$[a-zA-Z_][a-zA-Z0-9_]*');
     var reservedKeywords = ['current'];
 
     if (!variableRegex.hasMatch(name)) {
       if (showWarnings) {
-        warning("The '${name}' key will be ignored as its name does not follow naming convention.");
+        warning(
+            "The '${name}' key will be ignored as its name does not follow naming convention.");
       }
       return false;
     }
 
     if (reservedKeywords.contains(name)) {
       if (showWarnings) {
-        warning("The '${name}' key will be ignored as '${name}' is a reserved keyword.");
+        warning(
+            "The '${name}' key will be ignored as '${name}' is a reserved keyword.");
       }
       return false;
     }
@@ -215,65 +223,77 @@ class Label {
     for (var arg in args) {
       if (!variableRegex.hasMatch(arg.name)) {
         if (showWarnings) {
-          warning("The '${name}' key will be ignored as its placeholder '${arg.name}' does not follow naming convention.");
+          warning(
+              "The '${name}' key will be ignored as its placeholder '${arg.name}' does not follow naming convention.");
         }
         return false;
       }
     }
 
     if (placeholderRegex.hasMatch(content) && showWarnings) {
-      warning("Did you mean to use placeholders within the '${name}' key? Try wrapping them within curly braces.");
+      warning(
+          "Did you mean to use placeholders within the '${name}' key? Try wrapping them within curly braces.");
     }
 
     return true;
   }
 
-  /// union of meta args and extracted args from the message with preserved order
+  /// Merges meta args with extracted args from the message with preserved order.
   List<Argument> _getArgs(List<String> placeholders, List<BaseElement> data) {
     var args = placeholders != null
-        ? placeholders.map((placeholder) => Argument(Object, placeholder)).toList()
+        ? placeholders
+            .map((placeholder) => Argument(Object, placeholder))
+            .toList()
         : <Argument>[];
 
-    data.where((item) => [ElementType.argument, ElementType.plural, ElementType.gender, ElementType.select].contains(item.type))
+    data
+        .where((item) => [
+              ElementType.argument,
+              ElementType.plural,
+              ElementType.gender,
+              ElementType.select
+            ].contains(item.type))
         .forEach((item) {
-          switch (item.type) {
-            case ElementType.argument:
-              {
-                _updateArgsData(args, [Argument(Object, item.value)]);
-                break;
-              }
-            case ElementType.plural:
-              {
-                _updateArgsData(args, [Argument(num, item.value)]);
-                _updateArgsData(args, _getPluralOptionsArgs(item));
-                break;
-              }
-            case ElementType.gender:
-              {
-                _updateArgsData(args, [Argument(String, item.value)]);
-                _updateArgsData(args, _getGenderOptionsArgs(item));
-                break;
-              }
-            case ElementType.select:
-              {
-                var choiceArg = Argument(Object, item.value);
-                if (args.isNotEmpty && args.indexOf(choiceArg) != 0) {
-                  warning("The '${name}' key contains a select message which requires '${item.value}' placeholder as a first item in 'placeholders' declaration map.");
-                }
-
-                _updateArgsData(args, [choiceArg], forceBeginning: true);
-                _updateArgsData(args, _getSelectOptionsArgs(item));
-                break;
-              }
-            default:
-              {}
+      switch (item.type) {
+        case ElementType.argument:
+          {
+            _updateArgsData(args, [Argument(Object, item.value)]);
+            break;
           }
+        case ElementType.plural:
+          {
+            _updateArgsData(args, [Argument(num, item.value)]);
+            _updateArgsData(args, _getPluralOptionsArgs(item));
+            break;
+          }
+        case ElementType.gender:
+          {
+            _updateArgsData(args, [Argument(String, item.value)]);
+            _updateArgsData(args, _getGenderOptionsArgs(item));
+            break;
+          }
+        case ElementType.select:
+          {
+            var choiceArg = Argument(Object, item.value);
+            if (args.isNotEmpty && args.indexOf(choiceArg) != 0) {
+              warning(
+                  "The '${name}' key contains a select message which requires '${item.value}' placeholder as a first item in 'placeholders' declaration map.");
+            }
+
+            _updateArgsData(args, [choiceArg], forceBeginning: true);
+            _updateArgsData(args, _getSelectOptionsArgs(item));
+            break;
+          }
+        default:
+          {}
+      }
     });
 
     return LinkedHashSet<Argument>.from(args).toList();
   }
 
-  void _updateArgsData(List<Argument> existingArgs, List<Argument> newArgs, {bool forceBeginning = false}) {
+  void _updateArgsData(List<Argument> existingArgs, List<Argument> newArgs,
+      {bool forceBeginning = false}) {
     newArgs.forEach((newArg) {
       var index = existingArgs.indexOf(newArg);
 
@@ -300,8 +320,19 @@ class Label {
     var args = <Argument>[];
 
     pluralElement.options
-        .where((option) => ['=0', 'zero', '=1', 'one', '=2', 'two', 'few', 'many', 'other'].contains(option.name))
-        .forEach((option) => args.addAll(_getArgumentOrPluralOrSelectArgs(option.value)));
+        .where((option) => [
+              '=0',
+              'zero',
+              '=1',
+              'one',
+              '=2',
+              'two',
+              'few',
+              'many',
+              'other'
+            ].contains(option.name))
+        .forEach((option) =>
+            args.addAll(_getArgumentOrPluralOrSelectArgs(option.value)));
 
     return LinkedHashSet<Argument>.from(args).toList();
   }
@@ -311,7 +342,8 @@ class Label {
 
     genderElement.options
         .where((option) => ['female', 'male', 'other'].contains(option.name))
-        .forEach((option) => args.addAll(_getArgumentOrPluralOrSelectArgs(option.value)));
+        .forEach((option) =>
+            args.addAll(_getArgumentOrPluralOrSelectArgs(option.value)));
 
     return LinkedHashSet<Argument>.from(args).toList();
   }
@@ -319,7 +351,8 @@ class Label {
   List<Argument> _getSelectOptionsArgs(SelectElement selectElement) {
     var args = <Argument>[];
 
-    selectElement.options.forEach((option) => args.addAll(_getArgumentOrPluralOrSelectArgs(option.value)));
+    selectElement.options.forEach((option) =>
+        args.addAll(_getArgumentOrPluralOrSelectArgs(option.value)));
 
     return LinkedHashSet<Argument>.from(args).toList();
   }
@@ -327,7 +360,14 @@ class Label {
   List<Argument> _getArgumentOrPluralOrSelectArgs(List<BaseElement> data) {
     var args = <Argument>[];
 
-    data.where((item) => [ElementType.argument, ElementType.plural, ElementType.gender, ElementType.select].contains(item.type)).forEach((item) {
+    data
+        .where((item) => [
+              ElementType.argument,
+              ElementType.plural,
+              ElementType.gender,
+              ElementType.select
+            ].contains(item.type))
+        .forEach((item) {
       args.add(Argument(Object, item.value));
     });
 
@@ -350,32 +390,31 @@ class Label {
     }
   }
 
-  bool _isLiteral(List<BaseElement> data) {
-    return (data.isNotEmpty &&
-        data.map((BaseElement item) => item.type == ElementType.literal).reduce((bool acc, bool curr) => acc && curr));
-  }
+  bool _isLiteral(List<BaseElement> data) => (data.isNotEmpty &&
+      data
+          .map((BaseElement item) => item.type == ElementType.literal)
+          .reduce((bool acc, bool curr) => acc && curr));
 
-  bool _isArgument(List<BaseElement> data) {
-    return (data.isNotEmpty &&
-        data
-            .map((item) => [ElementType.argument, ElementType.literal].contains(item.type))
-            .reduce((bool acc, bool curr) => acc && curr));
-  }
+  bool _isArgument(List<BaseElement> data) => (data.isNotEmpty &&
+      data
+          .map((item) =>
+              [ElementType.argument, ElementType.literal].contains(item.type))
+          .reduce((bool acc, bool curr) => acc && curr));
 
-  bool _isPlural(List<BaseElement> data) {
-    return (data.isNotEmpty &&
-        data.map((item) => item.type == ElementType.plural).reduce((bool acc, bool curr) => acc && curr));
-  }
+  bool _isPlural(List<BaseElement> data) => (data.isNotEmpty &&
+      data
+          .map((item) => item.type == ElementType.plural)
+          .reduce((bool acc, bool curr) => acc && curr));
 
-  bool _isGender(List<BaseElement> data) {
-    return (data.isNotEmpty &&
-        data.map((item) => item.type == ElementType.gender).reduce((bool acc, bool curr) => acc && curr));
-  }
+  bool _isGender(List<BaseElement> data) => (data.isNotEmpty &&
+      data
+          .map((item) => item.type == ElementType.gender)
+          .reduce((bool acc, bool curr) => acc && curr));
 
-  bool _isSelect(List<BaseElement> data) {
-    return (data.isNotEmpty &&
-        data.map((item) => item.type == ElementType.select).reduce((bool acc, bool curr) => acc && curr));
-  }
+  bool _isSelect(List<BaseElement> data) => (data.isNotEmpty &&
+      data
+          .map((item) => item.type == ElementType.select)
+          .reduce((bool acc, bool curr) => acc && curr));
 
   String _generateArgumentContent(List<BaseElement> data) {
     var content = data
@@ -389,7 +428,10 @@ class Label {
             case ElementType.argument:
               {
                 return MapEntry(
-                    index, _isArgumentBracingRequired(data, index) ? '\${${item.value}}' : '\$${item.value}');
+                    index,
+                    _isArgumentBracingRequired(data, index)
+                        ? '\${${item.value}}'
+                        : '\$${item.value}');
               }
             default:
               {
@@ -403,6 +445,8 @@ class Label {
     return content;
   }
 
+  /// Checks if argument bracing is required.
+  ///
   /// Arguments that are immediately followed by alphanumeric character or underscore should be wrapped within curly-braces.
   bool _isArgumentBracingRequired(List<BaseElement> data, int index) {
     return data.length > 1 &&
@@ -461,7 +505,7 @@ class Label {
     return options.join('\n');
   }
 
-  /// remove duplicates and print warnings in case of irregularity
+  /// Removes duplicates and print warnings in case of irregularity for plural options.
   List<Option> _sanitizePluralOptions(List<Option> options) {
     var keys = options.map((option) => option.name);
     var uniqueKeys = LinkedHashSet<String>.from(keys);
@@ -475,7 +519,10 @@ class Label {
       uniqueKeys.remove('=2');
     }
 
-    var sanitized = uniqueKeys.map((uniqueKey) => options.firstWhere((option) => option.name == uniqueKey)).toList();
+    var sanitized = uniqueKeys
+        .map((uniqueKey) =>
+            options.firstWhere((option) => option.name == uniqueKey))
+        .toList();
     if (sanitized.length != options.length) {
       warning("Detected plural irregularity for the '${name}' key.");
     } else if (!uniqueKeys.contains('other')) {
@@ -483,8 +530,11 @@ class Label {
     }
 
     sanitized.forEach((option) {
-      if (option.value.length == 1 && option.value[0] is LiteralElement && (option.value[0] as LiteralElement).value.isEmpty) {
-        warning("The '${name}' key lacks translation for the plural form '${option.name}'.");
+      if (option.value.length == 1 &&
+          option.value[0] is LiteralElement &&
+          (option.value[0] as LiteralElement).value.isEmpty) {
+        warning(
+            "The '${name}' key lacks translation for the plural form '${option.name}'.");
       }
     });
 
@@ -522,12 +572,15 @@ class Label {
     return options.join('\n');
   }
 
-  /// remove duplicates and print warnings in case of irregularity
+  /// Removes duplicates and print warnings in case of irregularity for gender options.
   List<Option> _sanitizeGenderOptions(List<Option> options) {
     var keys = options.map((option) => option.name);
     var uniqueKeys = LinkedHashSet<String>.from(keys);
 
-    var sanitized = uniqueKeys.map((uniqueKey) => options.firstWhere((option) => option.name == uniqueKey)).toList();
+    var sanitized = uniqueKeys
+        .map((uniqueKey) =>
+            options.firstWhere((option) => option.name == uniqueKey))
+        .toList();
     if (sanitized.length != options.length) {
       warning("Detected gender irregularity for the '${name}' key.");
     } else if (!uniqueKeys.contains('other')) {
@@ -535,8 +588,11 @@ class Label {
     }
 
     sanitized.forEach((option) {
-      if (option.value.length == 1 && option.value[0] is LiteralElement && (option.value[0] as LiteralElement).value.isEmpty) {
-        warning("The '${name}' key lacks translation for the gender form '${option.name}'.");
+      if (option.value.length == 1 &&
+          option.value[0] is LiteralElement &&
+          (option.value[0] as LiteralElement).value.isEmpty) {
+        warning(
+            "The '${name}' key lacks translation for the gender form '${option.name}'.");
       }
     });
 
@@ -548,19 +604,23 @@ class Label {
 
     options.add('      {');
     _sanitizeSelectOptions(element.options).forEach((option) {
-      options.add("        '${option.name}': '${_generatePluralOrSelectOptionMessage(option)}',");
+      options.add(
+          "        '${option.name}': '${_generatePluralOrSelectOptionMessage(option)}',");
     });
     options.add('      },');
 
     return options.join('\n');
   }
 
-  /// remove duplicates and print warnings in case of irregularity
+  /// Removes duplicates and print warnings in case of irregularity for select options.
   List<Option> _sanitizeSelectOptions(List<Option> options) {
     var keys = options.map((option) => option.name);
     var uniqueKeys = LinkedHashSet<String>.from(keys);
 
-    var sanitized = uniqueKeys.map((uniqueKey) => options.firstWhere((option) => option.name == uniqueKey)).toList();
+    var sanitized = uniqueKeys
+        .map((uniqueKey) =>
+            options.firstWhere((option) => option.name == uniqueKey))
+        .toList();
     if (sanitized.length != options.length) {
       warning("Detected select irregularity for the '${name}' key.");
     } else if (!uniqueKeys.contains('other')) {
@@ -568,8 +628,11 @@ class Label {
     }
 
     sanitized.forEach((option) {
-      if (option.value.length == 1 && option.value[0] is LiteralElement && (option.value[0] as LiteralElement).value.isEmpty) {
-        warning("The '${name}' key lacks translation for the select case '${option.name}'.");
+      if (option.value.length == 1 &&
+          option.value[0] is LiteralElement &&
+          (option.value[0] as LiteralElement).value.isEmpty) {
+        warning(
+            "The '${name}' key lacks translation for the select case '${option.name}'.");
       }
     });
 
@@ -592,7 +655,10 @@ class Label {
                 case ElementType.argument:
                   {
                     return MapEntry(
-                        index, _isArgumentBracingRequired(data, index) ? '\${${item.value}}' : '\$${item.value}');
+                        index,
+                        _isArgumentBracingRequired(data, index)
+                            ? '\${${item.value}}'
+                            : '\$${item.value}');
                   }
                 default:
                   {
@@ -605,10 +671,13 @@ class Label {
         : _getRawPluralOrSelectOption(option);
   }
 
-  /// current implementation only supports trivial plural and gender options (literal and argument messages)
-  bool _validatePluralOrSelectOption(List<BaseElement> data) {
-    return data.map((item) => [ElementType.literal, ElementType.argument].contains(item.type)).reduce((acc, curr) => acc && curr);
-  }
+  /// Validates plural, gender and select options.
+  ///
+  /// Note: Current implementation only supports trivial plural, gender and select options (literal and argument messages)
+  bool _validatePluralOrSelectOption(List<BaseElement> data) => data
+      .map((item) =>
+          [ElementType.literal, ElementType.argument].contains(item.type))
+      .reduce((acc, curr) => acc && curr);
 
   String _getRawPluralOrSelectOption(Option option) {
     var content = _escape(this.content);
@@ -640,7 +709,8 @@ class Label {
         var chunk = content.substring(0, i + 1);
 
         var optionIndex = chunk.lastIndexOf(RegExp('${option.name}(\\s)*{'));
-        if (optionIndex != -1 && chunk.substring(optionIndex, i).trim() == option.name) {
+        if (optionIndex != -1 &&
+            chunk.substring(optionIndex, i).trim() == option.name) {
           return i + 1;
         }
       }
@@ -678,15 +748,13 @@ class Label {
 
   String _escape(String value) {
     return value
-        .replaceAll(RegExp('\r'), '\\r')
-        .replaceAll(RegExp('\n'), '\\n')
-        .replaceAll(RegExp('\''), '\\\'')
-        .replaceAll(RegExp('\\\$'), '\\\$');
+        .replaceAll('\r', '\\r')
+        .replaceAll('\n', '\\n')
+        .replaceAll('\'', '\\\'')
+        .replaceAll('\$', '\\\$');
   }
 
   String _escapeDartDoc(String value) {
-    return value
-        .replaceAll('\n', '\\n')
-        .replaceAll('`', '\'');
+    return value.replaceAll('\n', '\\n').replaceAll('`', '\'');
   }
 }

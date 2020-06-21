@@ -12,31 +12,40 @@ class LocalizelyApi {
 
   LocalizelyApi._();
 
-  static Future<void> upload(String projectId, String apiToken, String langCode, File file, [bool overwrite = false, bool reviewed = false]) async {
-    var uri = Uri.parse('$_baseUrl/v1/projects/$projectId/files/upload?lang_code=$langCode&overwrite=$overwrite&reviewed=$reviewed');
+  static Future<void> upload(
+      String projectId, String apiToken, String langCode, File file,
+      [bool overwrite = false, bool reviewed = false]) async {
+    var uri = Uri.parse(
+        '$_baseUrl/v1/projects/$projectId/files/upload?lang_code=$langCode&overwrite=$overwrite&reviewed=$reviewed');
     var headers = {'X-Api-Token': apiToken};
 
     var request = http.MultipartRequest('POST', uri)
       ..headers.addAll(headers)
-      ..files.add(http.MultipartFile.fromBytes('file', file.readAsBytesSync(), filename: path.basename(file.path)));
+      ..files.add(http.MultipartFile.fromBytes('file', file.readAsBytesSync(),
+          filename: path.basename(file.path)));
 
     var response = await request.send();
 
     if (response.statusCode != 200) {
-      var formattedResponse = formatJsonMessage(await response.stream.bytesToString());
-      throw ApiException('Failed to upload data on Localizely.', response.statusCode, formattedResponse);
+      var formattedResponse =
+          formatJsonMessage(await response.stream.bytesToString());
+      throw ApiException('Failed to upload data on Localizely.',
+          response.statusCode, formattedResponse);
     }
   }
 
-  static Future<DownloadResponse> download(String projectId, String apiToken) async {
-    var url = '$_baseUrl/v1/projects/$projectId/files/download?type=flutter_arb';
+  static Future<DownloadResponse> download(
+      String projectId, String apiToken) async {
+    var url =
+        '$_baseUrl/v1/projects/$projectId/files/download?type=flutter_arb';
     var headers = {'X-Api-Token': apiToken};
 
     var response = await http.get(url, headers: headers);
 
     if (response.statusCode != 200) {
       var formattedResponse = formatJsonMessage(response.body);
-      throw ApiException('Failed to download data from Localizely.', response.statusCode, formattedResponse);
+      throw ApiException('Failed to download data from Localizely.',
+          response.statusCode, formattedResponse);
     }
 
     return DownloadResponse.fromResponse(response);

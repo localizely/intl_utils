@@ -4,7 +4,8 @@ import 'dart:io';
 
 import 'package:args/args.dart' as args;
 
-import 'package:intl_utils/src/config/config.dart';
+import 'package:intl_utils/src/config/pubspec_config.dart';
+import 'package:intl_utils/src/config/credentials_config.dart';
 import 'package:intl_utils/src/config/config_exception.dart';
 import 'package:intl_utils/src/localizely/api/api_exception.dart';
 import 'package:intl_utils/src/localizely/service/service.dart';
@@ -41,8 +42,8 @@ Future<void> main(List<String> arguments) async {
     var apiToken = argResults['api-token'] as String;
 
     if (projectId == null) {
-      var pubspecConfig = Config.getPubspecConfig();
-      projectId = pubspecConfig?.localizelyConfig?.projectId;
+      var pubspecConfig = PubspecConfig();
+      projectId = pubspecConfig.localizelyConfig?.projectId;
 
       if (projectId == null) {
         throw ConfigException(
@@ -51,12 +52,12 @@ Future<void> main(List<String> arguments) async {
     }
 
     if (apiToken == null) {
-      var localizelyCredentials = Config.getLocalizelyCredentials();
-      apiToken = localizelyCredentials?.apiToken;
+      var credentialsConfig = CredentialsConfig();
+      apiToken = credentialsConfig.apiToken;
 
       if (apiToken == null) {
         throw ConfigException(
-            "Argument 'api-token' was not provided, nor 'api_token' config was set within the '${FileUtils.getLocalizelyCredentialsFilePath()}' file.");
+            "Argument 'api-token' was not provided, nor 'api_token' config was set within the '${getLocalizelyCredentialsFilePath()}' file.");
       }
     }
 

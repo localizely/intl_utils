@@ -18,7 +18,8 @@ class DownloadResponse {
 
     var fileName = _getFileName(contentDisposition);
     if (fileName == null) {
-      throw Exception("Can't extract file name from 'Content-Disposition' header.");
+      throw Exception(
+          "Can't extract file name from 'Content-Disposition' header.");
     }
 
     var bytes = response.bodyBytes;
@@ -37,16 +38,16 @@ class DownloadResponse {
   String _getFileName(String contentDisposition) {
     var fileName;
 
-    var fileNameChunkRegExp = RegExp('filename[^;=\n]*=(([\'"]).*?\2|[^;\n]*)'); // may fail to detect ext. if file name contains `;` char
+    var fileNameChunkRegExp = RegExp(
+        'filename[^;=\n]*=(([\'"]).*?\2|[^;\n]*)'); // may fail to detect ext. if file name contains `;` char
     var fileNameChunk = fileNameChunkRegExp.stringMatch(contentDisposition);
     if (fileNameChunk != null) {
-      fileName = fileNameChunk.substring('filename="'.length, fileNameChunk.length - '"'.length);
+      fileName = fileNameChunk.substring(
+          'filename="'.length, fileNameChunk.length - '"'.length);
     }
 
     return fileName;
   }
 
-  bool _checkIsArchive(String fileName) {
-    return fileName.endsWith('.zip');
-  }
+  bool _checkIsArchive(String fileName) => fileName.endsWith('.zip');
 }

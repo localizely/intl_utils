@@ -4,7 +4,5 @@ class ConfigException implements Exception {
   ConfigException(this.message);
 
   @override
-  String toString() {
-    return 'ConfigException: ${message ?? ""}';
-  }
+  String toString() => 'ConfigException: ${message ?? ""}';
 }

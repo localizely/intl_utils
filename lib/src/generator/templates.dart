@@ -1,7 +1,9 @@
 import 'label.dart';
 import '../utils/utils.dart';
 
-String generateL10nDartFileContent(String className, List<Label> labels, List<String> locales, [bool otaEnabled = false]) {
+String generateL10nDartFileContent(
+    String className, List<Label> labels, List<String> locales,
+    [bool otaEnabled = false]) {
   return """
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';

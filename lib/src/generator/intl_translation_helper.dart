@@ -47,7 +47,8 @@ class IntlTranslationHelper {
 
   final MessageExtraction extraction = MessageExtraction();
   final MessageGeneration generation = MessageGeneration();
-  final Map<String, List<MainMessage>> messages = {}; // Track of all processed messages, keyed by message name
+  final Map<String, List<MainMessage>> messages =
+      {}; // Track of all processed messages, keyed by message name
 
   IntlTranslationHelper() {
     extraction.suppressWarnings = true;
@@ -55,10 +56,12 @@ class IntlTranslationHelper {
     generation.generatedFilePrefix = '';
   }
 
-  void generateFromArb(String outputDir, List<String> dartFiles, List<String> arbFiles) {
+  void generateFromArb(
+      String outputDir, List<String> dartFiles, List<String> arbFiles) {
     var allMessages = dartFiles.map((file) => extraction.parseFile(File(file)));
     for (var messageMap in allMessages) {
-      messageMap.forEach((key, value) => messages.putIfAbsent(key, () => []).add(value));
+      messageMap.forEach(
+          (key, value) => messages.putIfAbsent(key, () => []).add(value));
     }
 
     var messagesByLocale = <String, List<Map>>{};
@@ -70,7 +73,8 @@ class IntlTranslationHelper {
       _generateLocaleFile(locale, data, outputDir);
     });
 
-    var mainImportFile = File(path.join(outputDir, '${generation.generatedFilePrefix}messages_all.dart'));
+    var mainImportFile = File(path.join(
+        outputDir, '${generation.generatedFilePrefix}messages_all.dart'));
     mainImportFile.writeAsStringSync(generation.generateMainImportFile());
   }
 
@@ -86,13 +90,15 @@ class IntlTranslationHelper {
       // my_file_fr.arb is locale "fr" or "file_fr".
       var name = path.basenameWithoutExtension(file.path);
       locale = name.split('_').skip(1).join('_');
-      info("No @@locale or _locale field found in $name, assuming '$locale' based on the file name.");
+      info(
+          "No @@locale or _locale field found in $name, assuming '$locale' based on the file name.");
     }
     messagesByLocale.putIfAbsent(locale, () => []).add(data);
     generation.allLocales.add(locale);
   }
 
-  void _generateLocaleFile(String locale, List<Map> localeData, String targetDir) {
+  void _generateLocaleFile(
+      String locale, List<Map> localeData, String targetDir) {
     var translations = <TranslatedMessage>[];
     for (var jsonTranslations in localeData) {
       jsonTranslations.forEach((id, messageData) {
@@ -124,11 +130,13 @@ class IntlTranslationHelper {
 class BasicTranslatedMessage extends TranslatedMessage {
   Map<String, List<MainMessage>> messages;
 
-  BasicTranslatedMessage(String name, translated, this.messages) : super(name, translated);
+  BasicTranslatedMessage(String name, translated, this.messages)
+      : super(name, translated);
 
   @override
-  List<MainMessage> get originalMessages =>
-      (super.originalMessages == null) ? _findOriginals() : super.originalMessages;
+  List<MainMessage> get originalMessages => (super.originalMessages == null)
+      ? _findOriginals()
+      : super.originalMessages;
 
   // We know that our [id] is the name of the message, which is used as the key in [messages].
   List<MainMessage> _findOriginals() => originalMessages = messages[id];

@@ -10,7 +10,6 @@ class ApiException implements Exception {
   }
 
   @override
-  String toString() {
-    return 'ApiException: ${message ?? ""}. Status code: ${statusCode ?? ""}. Body: ${body ?? ""}';
-  }
+  String toString() =>
+      'ApiException: ${message ?? ""}. Status code: ${statusCode ?? ""}. Body: ${body ?? ""}';
 }
