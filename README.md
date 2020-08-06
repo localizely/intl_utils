@@ -1,5 +1,7 @@
 ## Intl Utils
 
+[![pub package](https://img.shields.io/pub/v/intl_utils.svg)](https://pub.dev/packages/intl_utils)
+
 Dart package that creates a binding between your translations from .arb files and your Flutter app. It generates boilerplate code for official Dart Intl library and adds auto-complete for keys in Dart code.
 
 Follow us on [Twitter](https://twitter.com/localizely 'Follow us on Twitter').
