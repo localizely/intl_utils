@@ -1,9 +1,9 @@
+import 'service_exception.dart';
 import '../api/api.dart';
 import '../../config/pubspec_config.dart';
 import '../../utils/file_utils.dart';
 import '../../constants/constants.dart';
 import '../../utils/utils.dart';
-import 'service_exception.dart';
 
 class LocalizelyService {
   LocalizelyService._();
@@ -29,18 +29,23 @@ class LocalizelyService {
       throw ServiceException("Can't find ARB file for the main locale.");
     }
 
+    var branch = pubspecConfig.localizelyConfig?.branch;
     var overwrite = pubspecConfig.localizelyConfig?.uploadOverwrite ??
         defaultUploadOverwrite;
     var reviewed = pubspecConfig.localizelyConfig?.uploadAsReviewed ??
         defaultUploadAsReviewed;
 
-    await LocalizelyApi.upload(
-        projectId, apiToken, mainLocale, mainArbFile, overwrite, reviewed);
+    await LocalizelyApi.upload(projectId, apiToken, mainLocale, mainArbFile,
+        branch, overwrite, reviewed);
   }
 
   /// Downloads all ARB files from Localizely.
   static Future<void> download(String projectId, String apiToken) async {
-    var response = await LocalizelyApi.download(projectId, apiToken);
+    var pubspecConfig = PubspecConfig();
+
+    var branch = pubspecConfig.localizelyConfig?.branch;
+
+    var response = await LocalizelyApi.download(projectId, apiToken, branch);
 
     for (var fileData in response.files) {
       await updateArbFile(fileData.name, fileData.bytes);

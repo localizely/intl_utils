@@ -22,8 +22,9 @@ flutter_intl:
   class_name: S # Optional. Sets the name for the generated localization class. Default: S
   main_locale: en # Optional. Sets the main locale used for generating localization files. Provided value should consist of language code and optional script and country codes separated with underscore (e.g. 'en', 'en_GB', 'zh_Hans', 'zh_Hans_CN'). Default: en
 
-  localizely: # Optional settings if you use Localizely platform. Read more: https://localizely.com/flutter-localization
+  localizely: # Optional settings if you use Localizely platform. Read more: https://localizely.com/flutter-localization-workflow
     project_id: # Get it from the https://app.localizely.com/projects page.
+    branch: # Get it from the “Branches” page on the Localizely platform, in case branching is enabled and you want to use a non-main branch.
     upload_overwrite: # Set to true if you want to overwrite translations with upload. Default: false
     upload_as_reviewed: # Set to true if you want to mark uploaded translations as reviewed. Default: false
     ota_enabled: # Set to true if you want to use Localizely Over-the-air functionality. Default: false

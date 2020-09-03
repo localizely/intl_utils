@@ -14,9 +14,11 @@ class LocalizelyApi {
 
   static Future<void> upload(
       String projectId, String apiToken, String langCode, File file,
-      [bool overwrite = false, bool reviewed = false]) async {
+      [String branch, bool overwrite = false, bool reviewed = false]) async {
+    var branchParam = branch != null ? '&branch=${branch}' : '';
+
     var uri = Uri.parse(
-        '$_baseUrl/v1/projects/$projectId/files/upload?lang_code=$langCode&overwrite=$overwrite&reviewed=$reviewed');
+        '$_baseUrl/v1/projects/$projectId/files/upload?lang_code=$langCode&overwrite=$overwrite&reviewed=$reviewed$branchParam');
     var headers = {'X-Api-Token': apiToken};
 
     var request = http.MultipartRequest('POST', uri)
@@ -34,10 +36,12 @@ class LocalizelyApi {
     }
   }
 
-  static Future<DownloadResponse> download(
-      String projectId, String apiToken) async {
+  static Future<DownloadResponse> download(String projectId, String apiToken,
+      [String branch]) async {
+    var branchParam = branch != null ? '&branch=${branch}' : '';
+
     var url =
-        '$_baseUrl/v1/projects/$projectId/files/download?type=flutter_arb';
+        '$_baseUrl/v1/projects/$projectId/files/download?type=flutter_arb$branchParam';
     var headers = {'X-Api-Token': apiToken};
 
     var response = await http.get(url, headers: headers);

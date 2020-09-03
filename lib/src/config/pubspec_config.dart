@@ -47,6 +47,7 @@ class PubspecConfig {
 
 class LocalizelyConfig {
   String _projectId;
+  String _branch;
   bool _uploadAsReviewed;
   bool _uploadOverwrite;
   bool _otaEnabled;
@@ -58,6 +59,9 @@ class LocalizelyConfig {
 
     _projectId = localizelyConfig['project_id'] is String
         ? localizelyConfig['project_id']
+        : null;
+    _branch = localizelyConfig['branch'] is String
+        ? localizelyConfig['branch']
         : null;
     _uploadAsReviewed = localizelyConfig['upload_as_reviewed'] is bool
         ? localizelyConfig['upload_as_reviewed']
@@ -71,6 +75,8 @@ class LocalizelyConfig {
   }
 
   String get projectId => _projectId;
+
+  String get branch => _branch;
 
   bool get uploadAsReviewed => _uploadAsReviewed;
 
