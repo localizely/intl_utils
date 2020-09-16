@@ -1,16 +1,16 @@
-import 'service_exception.dart';
-import '../api/api.dart';
 import '../../config/pubspec_config.dart';
-import '../../utils/file_utils.dart';
 import '../../constants/constants.dart';
+import '../../utils/file_utils.dart';
 import '../../utils/utils.dart';
+import '../api/api.dart';
+import 'service_exception.dart';
 
 class LocalizelyService {
   LocalizelyService._();
 
   /// Uploads main ARB file on Localizely.
   static Future<void> uploadMainArbFile(
-      String projectId, String apiToken) async {
+      String projectId, String apiToken, String arbPath) async {
     var pubspecConfig = PubspecConfig();
 
     var mainLocale = pubspecConfig.mainLocale;
@@ -24,7 +24,7 @@ class LocalizelyService {
       mainLocale = defaultMainLocale;
     }
 
-    var mainArbFile = getArbFileForLocale(mainLocale);
+    var mainArbFile = getArbFileForLocale(mainLocale, arbPath);
     if (mainArbFile == null) {
       throw ServiceException("Can't find ARB file for the main locale.");
     }
@@ -40,7 +40,8 @@ class LocalizelyService {
   }
 
   /// Downloads all ARB files from Localizely.
-  static Future<void> download(String projectId, String apiToken) async {
+  static Future<void> download(
+      String projectId, String apiToken, String arbPath) async {
     var pubspecConfig = PubspecConfig();
 
     var branch = pubspecConfig.localizelyConfig?.branch;
@@ -48,7 +49,7 @@ class LocalizelyService {
     var response = await LocalizelyApi.download(projectId, apiToken, branch);
 
     for (var fileData in response.files) {
-      await updateArbFile(fileData.name, fileData.bytes);
+      await updateArbFile(fileData.name, fileData.bytes, arbPath);
     }
   }
 }

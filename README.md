@@ -21,6 +21,7 @@ flutter_intl:
   <b>enabled: true</b> # Required. Must be set to true to activate the package. Default: false
   class_name: S # Optional. Sets the name for the generated localization class. Default: S
   main_locale: en # Optional. Sets the main locale used for generating localization files. Provided value should consist of language code and optional script and country codes separated with underscore (e.g. 'en', 'en_GB', 'zh_Hans', 'zh_Hans_CN'). Default: en
+  arb_path: lib/l10n # Optional. Sets the path to the arb resource files. Provided value should be a valid path (e.g. 'lib', 'res/', 'assets\l10n').
 
   localizely: # Optional settings if you use Localizely platform. Read more: https://localizely.com/flutter-localization-workflow
     project_id: # Get it from the https://app.localizely.com/projects page.

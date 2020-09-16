@@ -21,18 +21,18 @@ File getPubspecFile() {
 }
 
 /// Gets arb file for the given locale.
-File getArbFileForLocale(String locale) {
+File getArbFileForLocale(String locale, String arbPath) {
   var rootDirPath = getRootDirectoryPath();
-  var arbFilePath = path.join(rootDirPath, 'lib', 'l10n', 'intl_$locale.arb');
+  var arbFilePath = path.join(rootDirPath, arbPath, 'intl_$locale.arb');
   var arbFile = File(arbFilePath);
 
   return arbFile.existsSync() ? arbFile : null;
 }
 
 /// Creates arb file for the given locale.
-Future<File> createArbFileForLocale(String locale) async {
+Future<File> createArbFileForLocale(String locale, String arbPath) async {
   var rootDirPath = getRootDirectoryPath();
-  var arbFilePath = path.join(rootDirPath, 'lib', 'l10n', 'intl_$locale.arb');
+  var arbFilePath = path.join(rootDirPath, arbPath, 'intl_$locale.arb');
   var arbFile = File(arbFilePath);
 
   await arbFile.create(recursive: true);
@@ -42,8 +42,8 @@ Future<File> createArbFileForLocale(String locale) async {
 }
 
 /// Gets all arb files in the project.
-List<FileSystemEntity> getArbFiles() {
-  var l10nDirPath = path.join(getRootDirectoryPath(), 'lib', 'l10n');
+List<FileSystemEntity> getArbFiles(String arbPath) {
+  var l10nDirPath = path.join(getRootDirectoryPath(), arbPath);
   var arbFiles = Directory(l10nDirPath)
       .listSync()
       .where((file) =>
@@ -58,8 +58,8 @@ List<FileSystemEntity> getArbFiles() {
 }
 
 /// Gets all locales in the project.
-List<String> getLocales() {
-  var locales = getArbFiles()
+List<String> getLocales(String arbPath) {
+  var locales = getArbFiles(arbPath)
       .map((file) => path.basename(file.path))
       .map((fileName) =>
           fileName.substring('intl_'.length, fileName.length - '.arb'.length))
@@ -69,9 +69,10 @@ List<String> getLocales() {
 }
 
 /// Updates arb file content.
-Future<void> updateArbFile(String fileName, Uint8List bytes) async {
+Future<void> updateArbFile(
+    String fileName, Uint8List bytes, String arbPath) async {
   var rootDirPath = getRootDirectoryPath();
-  var arbFilePath = path.join(rootDirPath, 'lib', 'l10n', fileName);
+  var arbFilePath = path.join(rootDirPath, arbPath, fileName);
   var arbFile = File(arbFilePath);
 
   if (!arbFile.existsSync()) {

@@ -3,15 +3,16 @@ library intl_utils;
 import 'dart:io';
 
 import 'package:args/args.dart' as args;
-
-import 'package:intl_utils/src/config/pubspec_config.dart';
-import 'package:intl_utils/src/config/credentials_config.dart';
 import 'package:intl_utils/src/config/config_exception.dart';
+import 'package:intl_utils/src/config/credentials_config.dart';
+import 'package:intl_utils/src/config/pubspec_config.dart';
 import 'package:intl_utils/src/localizely/api/api_exception.dart';
 import 'package:intl_utils/src/localizely/service/service.dart';
 import 'package:intl_utils/src/localizely/service/service_exception.dart';
-import 'package:intl_utils/src/utils/utils.dart';
 import 'package:intl_utils/src/utils/file_utils.dart';
+import 'package:intl_utils/src/utils/utils.dart';
+
+import '../lib/src/constants/constants.dart';
 
 Future<void> main(List<String> arguments) async {
   final argParser = args.ArgParser();
@@ -30,6 +31,11 @@ Future<void> main(List<String> arguments) async {
     'api-token',
     help: 'Localizely API token.',
   );
+  argParser.addOption(
+    'arb-path',
+    help: 'Path of the arb files.',
+    defaultsTo: defaultArbPath,
+  );
 
   try {
     final argResults = argParser.parse(arguments);
@@ -40,6 +46,7 @@ Future<void> main(List<String> arguments) async {
 
     var projectId = argResults['project-id'] as String;
     var apiToken = argResults['api-token'] as String;
+    var arbPath = argResults['arb-path'] as String;
 
     if (projectId == null) {
       var pubspecConfig = PubspecConfig();
@@ -61,7 +68,7 @@ Future<void> main(List<String> arguments) async {
       }
     }
 
-    await LocalizelyService.download(projectId, apiToken);
+    await LocalizelyService.download(projectId, apiToken, arbPath);
   } on args.ArgParserException catch (e) {
     exitWithError('${e.message}\n\n${argParser.usage}');
   } on ConfigException catch (e) {

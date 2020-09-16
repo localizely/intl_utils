@@ -1,8 +1,39 @@
+import 'package:intl_utils/src/utils/utils.dart';
 import 'package:test/test.dart';
 
-import 'package:intl_utils/src/utils/utils.dart';
-
 void main() {
+  group('Path validation', () {
+    test('Test path validation with blank string',
+        () => expect(isValidPath('  '), isFalse));
+
+    test('Test path validation with forbidden path character *',
+        () => expect(isValidPath('te*/lib'), isFalse));
+
+    test('Test path validation with forbidden path character "',
+        () => expect(isValidPath('te"/lib'), isFalse));
+
+    test('Test path validation with forbidden path character ?',
+        () => expect(isValidPath('te?/lib'), isFalse));
+
+    test('Test path validation with empty string',
+        () => expect(isValidPath(''), isTrue));
+
+    test('Test path validation with Windows path',
+        () => expect(isValidPath('lib\l10n'), isTrue));
+
+    test('Test path validation with UNIX path',
+        () => expect(isValidPath('lib/l10n'), isTrue));
+
+    test('Test path validation with escaped path separators',
+        () => expect(isValidPath('lib\\l10n'), isTrue));
+
+    test('Test path validation with dual path separators',
+        () => expect(isValidPath('lib//l10n'), isTrue));
+
+    test('Test path validation with Windows absolute path',
+        () => expect(isValidPath('C:\\dart\\l10n'), isTrue));
+  });
+
   group('Locale validation', () {
     test('Test locale validation with empty string',
         () => expect(isValidLocale(''), isFalse));
