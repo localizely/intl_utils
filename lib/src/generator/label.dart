@@ -10,6 +10,7 @@ enum ContentType { literal, argument, plural, gender, select, unsupported }
 
 class ValidationException implements Exception {
   final String message;
+
   ValidationException([this.message]);
 }
 

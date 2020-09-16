@@ -1,5 +1,5 @@
-import 'package:http/http.dart';
 import 'package:archive/archive.dart';
+import 'package:http/http.dart';
 
 import 'file_data.dart';
 

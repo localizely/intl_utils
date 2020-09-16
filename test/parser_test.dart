@@ -1,7 +1,6 @@
-import 'package:test/test.dart';
-
 import 'package:intl_utils/src/parser/icu_parser.dart';
 import 'package:intl_utils/src/parser/message_format.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('Literal messages', () {

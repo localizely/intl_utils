@@ -28,15 +28,14 @@
 //     (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 //     OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import 'dart:io';
 import 'dart:convert';
-
-import 'package:path/path.dart' as path;
+import 'dart:io';
 
 import 'package:intl_translation/extract_messages.dart';
 import 'package:intl_translation/generate_localized.dart';
 import 'package:intl_translation/src/icu_parser.dart';
 import 'package:intl_translation/src/intl_message.dart';
+import 'package:path/path.dart' as path;
 
 import '../utils/utils.dart';
 

@@ -4,7 +4,7 @@
 
 Dart package that creates a binding between your translations from .arb files and your Flutter app. It generates boilerplate code for official Dart Intl library and adds auto-complete for keys in Dart code.
 
-Follow us on [Twitter](https://twitter.com/localizely 'Follow us on Twitter').
+Follow us on [Twitter](https://twitter.com/localizely "Follow us on Twitter").
 
 ## Usage
 
@@ -34,7 +34,7 @@ flutter_intl:
 ### Add ARB files
 
 Add one ARB file for each locale you need to support in your Flutter app.
-Add them to `lib/l10n` folder inside your project, and name them in a following way: `intl_<LOCALE_ISO_CODE>.arb`.
+Add them to `lib/l10n` folder inside your project, and name them in a following way: `intl_<LOCALE_ISO_CODE>.arb`.  
 For example: `intl_en.arb` or `intl_en_GB.arb`.
 You can also change the ARB folder from `lib/l10n` to a custom directory by adding the `arb_path` line in your `pubspec.yaml` file.
 
@@ -62,7 +62,7 @@ This will upload your main ARB file to Localizely. Check out the 'Configure pack
 
 This will download all available ARB files from the Localizely platform and put them under `lib/l10n` folder, if you did not give a different `arb-path`, inside your project.
 
-Notes: 
-Argument `project-id` can be omitted if `pubspec.yaml` file contains `project_id` configuration under `flutter_intl/localizely` section.
-Argument `api-token` can be omitted if `~/.localizely/credentials.yaml` file contains `api_token` configuration.
-Optional argument `arb-path` is `lib/l10n` as default and needs only to be set, if you want to place your ARB files in a custom directory.
+Notes:  
+Argument `project-id` can be omitted if `pubspec.yaml` file contains `project_id` configuration under `flutter_intl/localizely` section.  
+Argument `api-token` can be omitted if `~/.localizely/credentials.yaml` file contains `api_token` configuration.  
+Optional argument `arb-path` has the value `lib/l10n` as default and needs only to be set, if you want to place your ARB files in a custom directory.
