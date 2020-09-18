@@ -36,14 +36,20 @@ class DownloadResponse {
   }
 
   String _getFileName(String contentDisposition) {
-    var fileName;
+    var patterns = [
+      RegExp('filename\*=[^\']+\'\w*\'"([^"]+)";?', caseSensitive: false),
+      RegExp('filename\*=[^\']+\'\w*\'([^;]+);?', caseSensitive: false),
+      RegExp('filename="([^;]*);?"', caseSensitive: false),
+      RegExp('filename=([^;]*);?', caseSensitive: false)
+    ];
 
-    var fileNameChunkRegExp = RegExp(
-        'filename[^;=\n]*=(([\'"]).*?\2|[^;\n]*)'); // may fail to detect ext. if file name contains `;` char
-    var fileNameChunk = fileNameChunkRegExp.stringMatch(contentDisposition);
-    if (fileNameChunk != null) {
-      fileName = fileNameChunk.substring(
-          'filename="'.length, fileNameChunk.length - '"'.length);
+    var fileName;
+    for (var i = 0; i < patterns.length; i++) {
+      var allMatches = patterns[i].allMatches(contentDisposition);
+      if (allMatches.isNotEmpty && allMatches.elementAt(0).groupCount == 1) {
+        fileName = allMatches.elementAt(0).group(1);
+        break;
+      }
     }
 
     return fileName;
