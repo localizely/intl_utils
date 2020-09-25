@@ -41,7 +41,7 @@ class LocalizelyService {
 
   /// Downloads all ARB files from Localizely.
   static Future<void> download(
-      String projectId, String apiToken, String arbPath) async {
+      String projectId, String apiToken, String arbDir) async {
     var pubspecConfig = PubspecConfig();
 
     var branch = pubspecConfig.localizelyConfig?.branch;
@@ -49,7 +49,7 @@ class LocalizelyService {
     var response = await LocalizelyApi.download(projectId, apiToken, branch);
 
     for (var fileData in response.files) {
-      await updateArbFile(fileData.name, fileData.bytes, arbPath);
+      await updateArbFile(fileData.name, fileData.bytes, arbDir);
     }
   }
 }

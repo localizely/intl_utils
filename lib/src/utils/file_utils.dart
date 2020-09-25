@@ -21,10 +21,10 @@ File getPubspecFile() {
 }
 
 /// Gets arb file for the given locale.
-File getArbFileForLocale(String locale, String arbPath) {
+File getArbFileForLocale(String locale, String arbDir) {
   var rootDirPath = getRootDirectoryPath();
-  var arbFilePath = path.join(rootDirPath, arbPath, 'intl_$locale.arb');
-  var arbFile = File(arbFilePath);
+  var arbFileDir = path.join(rootDirPath, arbDir, 'intl_$locale.arb');
+  var arbFile = File(arbFileDir);
 
   return arbFile.existsSync() ? arbFile : null;
 }
@@ -32,8 +32,8 @@ File getArbFileForLocale(String locale, String arbPath) {
 /// Creates arb file for the given locale.
 Future<File> createArbFileForLocale(String locale, String arbPath) async {
   var rootDirPath = getRootDirectoryPath();
-  var arbFilePath = path.join(rootDirPath, arbPath, 'intl_$locale.arb');
-  var arbFile = File(arbFilePath);
+  var arbFileDir = path.join(rootDirPath, arbPath, 'intl_$locale.arb');
+  var arbFile = File(arbFileDir);
 
   await arbFile.create(recursive: true);
   await arbFile.writeAsString('{}');

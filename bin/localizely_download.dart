@@ -31,9 +31,9 @@ Future<void> main(List<String> arguments) async {
     help: 'Localizely API token.',
   );
   argParser.addOption(
-    'arb-path',
-    help: 'Path of the arb files.',
-    defaultsTo: defaultArbPath,
+    'arb-dir',
+    help: 'Directory of the arb files.',
+    defaultsTo: defaultArbDir,
   );
 
   try {
