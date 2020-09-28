@@ -51,13 +51,13 @@ This will produce files inside `lib/generated` directory.
 
 #### Upload main ARB file
 
-      flutter pub run intl_utils:localizely_upload_main --project-id <PROJECT_ID> --api-token <API_TOKEN> [--arb_dir <ARB_PATH>]
+      flutter pub run intl_utils:localizely_upload_main --project-id <PROJECT_ID> --api-token <API_TOKEN> [--arb_dir <ARB_DIR>]
 
 This will upload your main ARB file to Localizely. Check out the 'Configure package' section for additional upload configuration.
 
 #### Download ARB files
 
-      flutter pub run intl_utils:localizely_download --project-id <PROJECT_ID> --api-token <API_TOKEN> [--arb_dir <ARB_PATH>]
+      flutter pub run intl_utils:localizely_download --project-id <PROJECT_ID> --api-token <API_TOKEN> [--arb_dir <ARB_DIR>]
 
 This will download all available ARB files from the Localizely platform and put them under `lib/l10n` folder, if you did not give a different `arb-path`, inside your project.
 
