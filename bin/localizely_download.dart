@@ -45,7 +45,7 @@ Future<void> main(List<String> arguments) async {
 
     var projectId = argResults['project-id'] as String;
     var apiToken = argResults['api-token'] as String;
-    var arbPath = argResults['arb-path'] as String;
+    var arbDir = argResults['arb-dir'] as String;
 
     if (projectId == null) {
       var pubspecConfig = PubspecConfig();
@@ -67,7 +67,12 @@ Future<void> main(List<String> arguments) async {
       }
     }
 
-    await LocalizelyService.download(projectId, apiToken, arbPath);
+    if (arbDir == null) {
+      var pubspecConfig = PubspecConfig();
+      arbDir = pubspecConfig.arbDir ?? defaultArbDir;
+    }
+
+    await LocalizelyService.download(projectId, apiToken, arbDir);
   } on args.ArgParserException catch (e) {
     exitWithError('${e.message}\n\n${argParser.usage}');
   } on ConfigException catch (e) {

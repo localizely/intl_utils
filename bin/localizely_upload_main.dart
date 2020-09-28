@@ -32,8 +32,7 @@ Future<void> main(List<String> arguments) async {
   );
   argParser.addOption(
     'arb-dir',
-    help: 'Path of the arb files.',
-    defaultsTo: defaultArbDir,
+    help: 'Directory of the arb files.',
   );
 
   try {
@@ -65,6 +64,11 @@ Future<void> main(List<String> arguments) async {
         throw ConfigException(
             "Argument 'api-token' was not provided, nor 'api_token' config was set within the '${getLocalizelyCredentialsFilePath()}' file.");
       }
+    }
+
+    if (arbDir == null) {
+      var pubspecConfig = PubspecConfig();
+      arbDir = pubspecConfig.arbDir ?? defaultArbDir;
     }
 
     await LocalizelyService.uploadMainArbFile(projectId, apiToken, arbDir);
