@@ -1,17 +1,18 @@
 import 'dart:convert';
 
+import '../config/pubspec_config.dart';
+import '../constants/constants.dart';
+import '../utils/file_utils.dart';
+import '../utils/utils.dart';
+import 'generator_exception.dart';
+import 'intl_translation_helper.dart';
 import 'label.dart';
 import 'templates.dart';
-import 'intl_translation_helper.dart';
-import 'generator_exception.dart';
-import '../config/pubspec_config.dart';
-import '../utils/utils.dart';
-import '../utils/file_utils.dart';
-import '../constants/constants.dart';
 
 class Generator {
   String _className;
   String _mainLocale;
+  String _arbDir;
   bool _otaEnabled;
 
   Generator() {
@@ -37,6 +38,16 @@ class Generator {
       }
     }
 
+    _arbDir = defaultArbDir;
+    if (pubspecConfig.arbDir != null) {
+      if (isValidPath(pubspecConfig.arbDir)) {
+        _arbDir = pubspecConfig.arbDir;
+      } else {
+        warning(
+            "Config parameter 'arb_dir' requires value consisted of a path (e.g. 'lib', 'res/', 'lib\\l10n').");
+      }
+    }
+
     _otaEnabled =
         pubspecConfig.localizelyConfig?.otaEnabled ?? defaultOtaEnabled;
   }
@@ -48,15 +59,15 @@ class Generator {
   }
 
   Future<void> _updateL10nDir() async {
-    var mainArbFile = getArbFileForLocale(_mainLocale);
+    var mainArbFile = getArbFileForLocale(_mainLocale, _arbDir);
     if (mainArbFile == null) {
-      await createArbFileForLocale(_mainLocale);
+      await createArbFileForLocale(_mainLocale, _arbDir);
     }
   }
 
   Future<void> _updateGeneratedDir() async {
     var labels = _getLabelsFromMainArbFile();
-    var locales = _orderLocales(getLocales());
+    var locales = _orderLocales(getLocales(_arbDir));
     var content =
         generateL10nDartFileContent(_className, labels, locales, _otaEnabled);
     await updateL10nDartFile(content);
@@ -70,7 +81,7 @@ class Generator {
   }
 
   List<Label> _getLabelsFromMainArbFile() {
-    var mainArbFile = getArbFileForLocale(_mainLocale);
+    var mainArbFile = getArbFileForLocale(_mainLocale, _arbDir);
     if (mainArbFile == null) {
       throw GeneratorException(
           "Can't find ARB file for the '$_mainLocale' locale.");
@@ -112,7 +123,7 @@ class Generator {
   Future<void> _generateDartFiles() async {
     var outputDir = getIntlDirectoryPath();
     var dartFiles = [getL10nDartFilePath()];
-    var arbFiles = getArbFiles().map((file) => file.path).toList();
+    var arbFiles = getArbFiles(_arbDir).map((file) => file.path).toList();
 
     var helper = IntlTranslationHelper();
     helper.generateFromArb(outputDir, dartFiles, arbFiles);

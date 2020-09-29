@@ -1,12 +1,13 @@
 import 'package:yaml/yaml.dart' as yaml;
 
-import 'config_exception.dart';
 import '../utils/file_utils.dart';
+import 'config_exception.dart';
 
 class PubspecConfig {
   bool _enabled;
   String _className;
   String _mainLocale;
+  String _arbDir;
   LocalizelyConfig _localizelyConfig;
 
   PubspecConfig() {
@@ -32,6 +33,9 @@ class PubspecConfig {
     _mainLocale = flutterIntlConfig['main_locale'] is String
         ? flutterIntlConfig['main_locale']
         : null;
+    _arbDir = flutterIntlConfig['arb_dir'] is String
+        ? flutterIntlConfig['arb_dir']
+        : null;
     _localizelyConfig =
         LocalizelyConfig.fromConfig(flutterIntlConfig['localizely']);
   }
@@ -41,6 +45,8 @@ class PubspecConfig {
   String get className => _className;
 
   String get mainLocale => _mainLocale;
+
+  String get arbDir => _arbDir;
 
   LocalizelyConfig get localizelyConfig => _localizelyConfig;
 }

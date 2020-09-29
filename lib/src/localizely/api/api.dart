@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
 
+import '../../utils/utils.dart';
 import '../api/api_exception.dart';
 import '../model/download_response.dart';
-import '../../utils/utils.dart';
 
 class LocalizelyApi {
   static final String _baseUrl = 'https://api.localizely.com';

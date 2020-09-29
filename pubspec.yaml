@@ -8,12 +8,12 @@ environment:
 
 dependencies:
   args: '>=0.12.1 <2.0.0'
-  archive: ^2.0.0
+  archive: ^2.0.13
   intl_translation: 0.17.10
-  http: ^0.12.0
-  path: ^1.6.4
-  petitparser: ^3.0.0
-  yaml: ^2.2.0
+  http: ^0.12.2
+  path: ^1.7.0
+  petitparser: ^3.1.0
+  yaml: ^2.2.1
 
 dev_dependencies:
   pedantic: ^1.9.0
