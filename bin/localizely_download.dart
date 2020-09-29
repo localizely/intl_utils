@@ -33,7 +33,6 @@ Future<void> main(List<String> arguments) async {
   argParser.addOption(
     'arb-dir',
     help: 'Directory of the arb files.',
-    defaultsTo: defaultArbDir,
   );
 
   try {
