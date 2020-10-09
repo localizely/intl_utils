@@ -56,6 +56,7 @@ class LocalizelyConfig {
   String _branch;
   bool _uploadAsReviewed;
   bool _uploadOverwrite;
+  String _downloadEmptyAs;
   bool _otaEnabled;
 
   LocalizelyConfig.fromConfig(yaml.YamlMap localizelyConfig) {
@@ -75,6 +76,9 @@ class LocalizelyConfig {
     _uploadOverwrite = localizelyConfig['upload_overwrite'] is bool
         ? localizelyConfig['upload_overwrite']
         : null;
+    _downloadEmptyAs = localizelyConfig['download_empty_as'] is String
+        ? localizelyConfig['download_empty_as']
+        : null;
     _otaEnabled = localizelyConfig['ota_enabled'] is bool
         ? localizelyConfig['ota_enabled']
         : null;
@@ -87,6 +91,8 @@ class LocalizelyConfig {
   bool get uploadAsReviewed => _uploadAsReviewed;
 
   bool get uploadOverwrite => _uploadOverwrite;
+
+  String get downloadEmptyAs => _downloadEmptyAs;
 
   bool get otaEnabled => _otaEnabled;
 }

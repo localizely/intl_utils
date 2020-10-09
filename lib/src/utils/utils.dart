@@ -10,6 +10,9 @@ bool isValidLocale(String value) =>
 bool isValidPath(String value) =>
     RegExp(r'^(?:[A-Za-z]:)?([\/\\]{0,2}\w*)+$').hasMatch(value);
 
+bool isValidDownloadEmptyAsParam(String value) =>
+    RegExp(r'^(empty|main|skip)$').hasMatch(value);
+
 bool isLangScriptCountryLocale(String locale) =>
     RegExp(r'^[a-z]{2}_[A-Z][a-z]{3}_[A-Z]{2}$').hasMatch(locale);
 

@@ -34,6 +34,35 @@ void main() {
         () => expect(isValidPath('C:\\dart\\l10n'), isTrue));
   });
 
+  group('Download empty as param validation', () {
+    test('Test download empty as param with empty string',
+        () => expect(isValidDownloadEmptyAsParam(''), isFalse));
+
+    test('Test download empty as param with blank string',
+        () => expect(isValidDownloadEmptyAsParam('  '), isFalse));
+
+    test('Test download empty as param with unsupported value',
+        () => expect(isValidDownloadEmptyAsParam('unsupported'), isFalse));
+
+    test('Test download empty as param with invalid empty value',
+        () => expect(isValidDownloadEmptyAsParam('emty'), isFalse));
+
+    test('Test download empty as param with empty value',
+        () => expect(isValidDownloadEmptyAsParam('empty'), isTrue));
+
+    test('Test download empty as param with invalid main value',
+        () => expect(isValidDownloadEmptyAsParam('mmain'), isFalse));
+
+    test('Test download empty as param with main value',
+        () => expect(isValidDownloadEmptyAsParam('main'), isTrue));
+
+    test('Test download empty as param with invalid skip value',
+        () => expect(isValidDownloadEmptyAsParam('skipp'), isFalse));
+
+    test('Test download empty as param with skip value',
+        () => expect(isValidDownloadEmptyAsParam('skip'), isTrue));
+  });
+
   group('Locale validation', () {
     test('Test locale validation with empty string',
         () => expect(isValidLocale(''), isFalse));

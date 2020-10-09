@@ -9,12 +9,14 @@ import 'intl_translation_helper.dart';
 import 'label.dart';
 import 'templates.dart';
 
+/// The generator of localization files.
 class Generator {
   String _className;
   String _mainLocale;
   String _arbDir;
   bool _otaEnabled;
 
+  /// Creates a new generator with configuration from the 'pubspec.yaml' file.
   Generator() {
     var pubspecConfig = PubspecConfig();
 
@@ -52,6 +54,7 @@ class Generator {
         pubspecConfig.localizelyConfig?.otaEnabled ?? defaultOtaEnabled;
   }
 
+  /// Generates localization files.
   Future<void> generateAsync() async {
     await _updateL10nDir();
     await _updateGeneratedDir();

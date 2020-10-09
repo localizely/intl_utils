@@ -27,6 +27,7 @@ flutter_intl:
     branch: # Get it from the “Branches” page on the Localizely platform, in case branching is enabled and you want to use a non-main branch.
     upload_overwrite: # Set to true if you want to overwrite translations with upload. Default: false
     upload_as_reviewed: # Set to true if you want to mark uploaded translations as reviewed. Default: false
+    download_empty_as: # Set to empty|main|skip, to configure how empty translations should be exported from the Localizely platform. Default: empty
     ota_enabled: # Set to true if you want to use Localizely Over-the-air functionality. Default: false
 </pre>
 

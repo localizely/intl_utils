@@ -45,8 +45,19 @@ class LocalizelyService {
     var pubspecConfig = PubspecConfig();
 
     var branch = pubspecConfig.localizelyConfig?.branch;
+    var exportEmptyAs = pubspecConfig?.localizelyConfig?.downloadEmptyAs;
+    if (exportEmptyAs != null) {
+      if (!isValidDownloadEmptyAsParam(exportEmptyAs)) {
+        exportEmptyAs = defaultDownloadEmptyAs;
+        warning(
+            "Config parameter 'download_empty_as' expects one of the following values: 'empty', 'main' or 'skip'.");
+      }
+    } else {
+      exportEmptyAs = defaultDownloadEmptyAs;
+    }
 
-    var response = await LocalizelyApi.download(projectId, apiToken, branch);
+    var response = await LocalizelyApi.download(
+        projectId, apiToken, branch, exportEmptyAs);
 
     for (var fileData in response.files) {
       await updateArbFile(fileData.name, fileData.bytes, arbDir);

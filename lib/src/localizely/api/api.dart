@@ -37,11 +37,13 @@ class LocalizelyApi {
   }
 
   static Future<DownloadResponse> download(String projectId, String apiToken,
-      [String branch]) async {
+      [String branch, String exportEmptyAs]) async {
     var branchParam = branch != null ? '&branch=${branch}' : '';
+    var exportEmptyAsParam =
+        exportEmptyAs != null ? '&export_empty_as=${exportEmptyAs}' : '';
 
     var url =
-        '$_baseUrl/v1/projects/$projectId/files/download?type=flutter_arb$branchParam';
+        '$_baseUrl/v1/projects/$projectId/files/download?type=flutter_arb${branchParam}${exportEmptyAsParam}';
     var headers = {'X-Api-Token': apiToken};
 
     var response = await http.get(url, headers: headers);
