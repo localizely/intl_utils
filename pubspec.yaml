@@ -1,6 +1,6 @@
 name: intl_utils
 description: intl_utils is a dart library that generates Dart localization code from ARB file. Generated code relies on Intl library.
-version: 1.8.0
+version: 1.9.0
 homepage: https://github.com/localizely/intl_utils
 
 environment:
@@ -9,7 +9,7 @@ environment:
 dependencies:
   args: '>=0.12.1 <2.0.0'
   archive: ^2.0.13
-  intl_translation: 0.17.10
+  intl_translation: 0.17.10+1
   http: ^0.12.2
   path: ^1.7.0
   petitparser: ^3.1.0

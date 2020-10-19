@@ -14,6 +14,8 @@ class Generator {
   String _className;
   String _mainLocale;
   String _arbDir;
+  String _outputDir;
+  bool _useDeferredLoading;
   bool _otaEnabled;
 
   /// Creates a new generator with configuration from the 'pubspec.yaml' file.
@@ -46,9 +48,22 @@ class Generator {
         _arbDir = pubspecConfig.arbDir;
       } else {
         warning(
-            "Config parameter 'arb_dir' requires value consisted of a path (e.g. 'lib', 'res/', 'lib\\l10n').");
+            "Config parameter 'arb_dir' requires valid path value (e.g. 'lib', 'res/', 'lib\\l10n').");
       }
     }
+
+    _outputDir = defaultOutputDir;
+    if (pubspecConfig.outputDir != null) {
+      if (isValidPath(pubspecConfig.outputDir)) {
+        _outputDir = pubspecConfig.outputDir;
+      } else {
+        warning(
+            "Config parameter 'output_dir' requires valid path value (e.g. 'lib', 'lib\\generated').");
+      }
+    }
+
+    _useDeferredLoading =
+        pubspecConfig.useDeferredLoading ?? defaultUseDeferredLoading;
 
     _otaEnabled =
         pubspecConfig.localizelyConfig?.otaEnabled ?? defaultOtaEnabled;
@@ -73,14 +88,14 @@ class Generator {
     var locales = _orderLocales(getLocales(_arbDir));
     var content =
         generateL10nDartFileContent(_className, labels, locales, _otaEnabled);
-    await updateL10nDartFile(content);
+    await updateL10nDartFile(content, _outputDir);
 
-    var intlDir = getIntlDirectory();
+    var intlDir = getIntlDirectory(_outputDir);
     if (intlDir == null) {
-      await createIntlDirectory();
+      await createIntlDirectory(_outputDir);
     }
 
-    await removeUnusedGeneratedDartFiles(locales);
+    await removeUnusedGeneratedDartFiles(locales, _outputDir);
   }
 
   List<Label> _getLabelsFromMainArbFile() {
@@ -124,11 +139,11 @@ class Generator {
   }
 
   Future<void> _generateDartFiles() async {
-    var outputDir = getIntlDirectoryPath();
-    var dartFiles = [getL10nDartFilePath()];
+    var outputDir = getIntlDirectoryPath(_outputDir);
+    var dartFiles = [getL10nDartFilePath(_outputDir)];
     var arbFiles = getArbFiles(_arbDir).map((file) => file.path).toList();
 
-    var helper = IntlTranslationHelper();
+    var helper = IntlTranslationHelper(_useDeferredLoading);
     helper.generateFromArb(outputDir, dartFiles, arbFiles);
   }
 }

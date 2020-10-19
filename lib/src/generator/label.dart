@@ -180,7 +180,7 @@ class Label {
         throw ValidationException();
       }
 
-      return "    '${name}' : [${args.map((arg) => '\'${arg.name}\'').join(', ')}]";
+      return "    '${name}': [${args.map((arg) => '\'${arg.name}\'').join(', ')}]";
     } catch (e) {
       if (!(e is ValidationException)) {
         error(

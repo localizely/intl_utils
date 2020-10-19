@@ -21,7 +21,9 @@ flutter_intl:
   <b>enabled: true</b> # Required. Must be set to true to activate the package. Default: false
   class_name: S # Optional. Sets the name for the generated localization class. Default: S
   main_locale: en # Optional. Sets the main locale used for generating localization files. Provided value should consist of language code and optional script and country codes separated with underscore (e.g. 'en', 'en_GB', 'zh_Hans', 'zh_Hans_CN'). Default: en
-  arb_dir: lib/l10n # Optional. Sets the directory of your ARB resource files. Provided value should be a valid path on your system.
+  arb_dir: lib/l10n # Optional. Sets the directory of your ARB resource files. Provided value should be a valid path on your system. Default: lib/l10n
+  output_dir: lib/generated # Optional. Sets the directory of generated localization files. Provided value should be a valid path on your system. Default: lib/generated
+  use_deferred_loading: false # Optional. Must be set to true to generate localization code that is loaded with deferred loading. Default: false
   localizely: # Optional settings if you use Localizely platform. Read more: https://localizely.com/flutter-localization-workflow
     project_id: # Get it from the https://app.localizely.com/projects page.
     branch: # Get it from the “Branches” page on the Localizely platform, in case branching is enabled and you want to use a non-main branch.
@@ -47,6 +49,7 @@ To generate boilerplate code for localization, run the `generate` program inside
       flutter pub run intl_utils:generate
 
 This will produce files inside `lib/generated` directory.
+You can also change the output folder from `lib/generated` to a custom directory by adding the `output_dir` line in your `pubspec.yaml` file.
 
 ### Integration with Localizely
 

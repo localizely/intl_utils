@@ -30,9 +30,9 @@ File getArbFileForLocale(String locale, String arbDir) {
 }
 
 /// Creates arb file for the given locale.
-Future<File> createArbFileForLocale(String locale, String arbPath) async {
+Future<File> createArbFileForLocale(String locale, String arbDir) async {
   var rootDirPath = getRootDirectoryPath();
-  var arbFilePath = path.join(rootDirPath, arbPath, 'intl_$locale.arb');
+  var arbFilePath = path.join(rootDirPath, arbDir, 'intl_$locale.arb');
   var arbFile = File(arbFilePath);
 
   await arbFile.create(recursive: true);
@@ -42,8 +42,8 @@ Future<File> createArbFileForLocale(String locale, String arbPath) async {
 }
 
 /// Gets all arb files in the project.
-List<FileSystemEntity> getArbFiles(String arbPath) {
-  var l10nDirPath = path.join(getRootDirectoryPath(), arbPath);
+List<FileSystemEntity> getArbFiles(String arbDir) {
+  var l10nDirPath = path.join(getRootDirectoryPath(), arbDir);
   var arbFiles = Directory(l10nDirPath)
       .listSync()
       .where((file) =>
@@ -58,8 +58,8 @@ List<FileSystemEntity> getArbFiles(String arbPath) {
 }
 
 /// Gets all locales in the project.
-List<String> getLocales(String arbPath) {
-  var locales = getArbFiles(arbPath)
+List<String> getLocales(String arbDir) {
+  var locales = getArbFiles(arbDir)
       .map((file) => path.basename(file.path))
       .map((fileName) =>
           fileName.substring('intl_'.length, fileName.length - '.arb'.length))
@@ -70,9 +70,9 @@ List<String> getLocales(String arbPath) {
 
 /// Updates arb file content.
 Future<void> updateArbFile(
-    String fileName, Uint8List bytes, String arbPath) async {
+    String fileName, Uint8List bytes, String arbDir) async {
   var rootDirPath = getRootDirectoryPath();
-  var arbFilePath = path.join(rootDirPath, arbPath, fileName);
+  var arbFilePath = path.join(rootDirPath, arbDir, fileName);
   var arbFile = File(arbFilePath);
 
   if (!arbFile.existsSync()) {
@@ -83,12 +83,12 @@ Future<void> updateArbFile(
 }
 
 /// Gets l10n Dart file path.
-String getL10nDartFilePath() =>
-    path.join(getRootDirectoryPath(), 'lib', 'generated', 'l10n.dart');
+String getL10nDartFilePath(String outputDir) =>
+    path.join(getRootDirectoryPath(), outputDir, 'l10n.dart');
 
 /// Updates l10n Dart file.
-Future<void> updateL10nDartFile(String content) async {
-  var l10nDartFilePath = getL10nDartFilePath();
+Future<void> updateL10nDartFile(String content, String outputDir) async {
+  var l10nDartFilePath = getL10nDartFilePath(outputDir);
   var l10nDartFile = File(l10nDartFilePath);
 
   if (!l10nDartFile.existsSync()) {
@@ -99,20 +99,20 @@ Future<void> updateL10nDartFile(String content) async {
 }
 
 /// Gets intl directory path.
-String getIntlDirectoryPath() =>
-    path.join(getRootDirectoryPath(), 'lib', 'generated', 'intl');
+String getIntlDirectoryPath(String outputDir) =>
+    path.join(getRootDirectoryPath(), outputDir, 'intl');
 
 /// Gets intl directory.
-Directory getIntlDirectory() {
-  var intlDirPath = getIntlDirectoryPath();
+Directory getIntlDirectory(String outputDir) {
+  var intlDirPath = getIntlDirectoryPath(outputDir);
   var intlDir = Directory(intlDirPath);
 
   return intlDir.existsSync() ? intlDir : null;
 }
 
 /// Creates intl directory.
-Future<Directory> createIntlDirectory() async {
-  var intlDirPath = getIntlDirectoryPath();
+Future<Directory> createIntlDirectory(String outputDir) async {
+  var intlDirPath = getIntlDirectoryPath(outputDir);
   var intlDir = Directory(intlDirPath);
 
   if (!intlDir.existsSync()) {
@@ -123,8 +123,9 @@ Future<Directory> createIntlDirectory() async {
 }
 
 /// Removes unused generated Dart files.
-Future<void> removeUnusedGeneratedDartFiles(List<String> locales) async {
-  var intlDir = getIntlDirectory();
+Future<void> removeUnusedGeneratedDartFiles(
+    List<String> locales, String outputDir) async {
+  var intlDir = getIntlDirectory(outputDir);
   if (intlDir == null) {
     return;
   }

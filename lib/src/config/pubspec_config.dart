@@ -8,6 +8,8 @@ class PubspecConfig {
   String _className;
   String _mainLocale;
   String _arbDir;
+  String _outputDir;
+  bool _useDeferredLoading;
   LocalizelyConfig _localizelyConfig;
 
   PubspecConfig() {
@@ -36,6 +38,12 @@ class PubspecConfig {
     _arbDir = flutterIntlConfig['arb_dir'] is String
         ? flutterIntlConfig['arb_dir']
         : null;
+    _outputDir = flutterIntlConfig['output_dir'] is String
+        ? flutterIntlConfig['output_dir']
+        : null;
+    _useDeferredLoading = flutterIntlConfig['use_deferred_loading'] is bool
+        ? flutterIntlConfig['use_deferred_loading']
+        : null;
     _localizelyConfig =
         LocalizelyConfig.fromConfig(flutterIntlConfig['localizely']);
   }
@@ -47,6 +55,10 @@ class PubspecConfig {
   String get mainLocale => _mainLocale;
 
   String get arbDir => _arbDir;
+
+  String get outputDir => _outputDir;
+
+  bool get useDeferredLoading => _useDeferredLoading;
 
   LocalizelyConfig get localizelyConfig => _localizelyConfig;
 }

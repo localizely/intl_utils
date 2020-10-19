@@ -2478,7 +2478,7 @@ void main() {
 
       expect(
         label.generateMetadata(),
-        equals('    \'labelName\' : []'),
+        equals('    \'labelName\': []'),
       );
     });
 
@@ -2500,7 +2500,7 @@ void main() {
 
       expect(
         label.generateMetadata(),
-        equals('    \'labelName\' : [\'name\']'),
+        equals('    \'labelName\': [\'name\']'),
       );
     });
 
@@ -2511,7 +2511,7 @@ void main() {
 
       expect(
         label.generateMetadata(),
-        equals('    \'labelName\' : [\'firstName\', \'lastName\']'),
+        equals('    \'labelName\': [\'firstName\', \'lastName\']'),
       );
     });
 

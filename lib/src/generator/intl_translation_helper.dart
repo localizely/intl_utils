@@ -49,9 +49,9 @@ class IntlTranslationHelper {
   final Map<String, List<MainMessage>> messages =
       {}; // Track of all processed messages, keyed by message name
 
-  IntlTranslationHelper() {
+  IntlTranslationHelper([bool useDeferredLoading = false]) {
     extraction.suppressWarnings = true;
-    generation.useDeferredLoading = false;
+    generation.useDeferredLoading = useDeferredLoading;
     generation.generatedFilePrefix = '';
   }
 
