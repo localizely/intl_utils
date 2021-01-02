@@ -5,6 +5,7 @@ String generateL10nDartFileContent(
     String className, List<Label> labels, List<String> locales,
     [bool otaEnabled = false]) {
   return """
+//@dart=2.9
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';${otaEnabled ? '\n${_generateLocalizelySdkImport()}' : ''}
@@ -21,22 +22,22 @@ import 'intl/messages_all.dart';
 
 class $className {
   $className();
-  
+
   static $className current;
-  
+
   static const AppLocalizationDelegate delegate =
     AppLocalizationDelegate();
 
   static Future<$className> load(Locale locale) {
     final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
-    final localeName = Intl.canonicalizedLocale(name);${otaEnabled ? '\n${_generateMetadataSetter()}' : ''} 
+    final localeName = Intl.canonicalizedLocale(name);${otaEnabled ? '\n${_generateMetadataSetter()}' : ''}
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       $className.current = $className();
-      
+
       return $className.current;
     });
-  } 
+  }
 
   static $className of(BuildContext context) {
     return Localizations.of<$className>(context, $className);

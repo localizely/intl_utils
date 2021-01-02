@@ -5,6 +5,10 @@ All notable changes to the "flutter-intl" extension will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.9.1 – 2021-01
+
+- Make generated code work in null-safe environments by annotating the Dart version
+
 ## 1.9.0 - 2020-10-19
 
 - Make generated directory path configurable
@@ -63,7 +67,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 1.3.0 - 2020-04-21
 
-- Support select messages 
+- Support select messages
 
 - Make order of supported locales consistent
 
