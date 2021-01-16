@@ -162,6 +162,7 @@ void main() {
             '      \'Literal message\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [],',
             '    );',
             '  }'
@@ -180,6 +181,7 @@ void main() {
             '      \'Literal message\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [],',
             '    );',
             '  }'
@@ -201,6 +203,7 @@ void main() {
             '      \'Literal message\',',
             '      name: \'labelName\',',
             '      desc: \'Some description\',',
+            '      locale: localeName,',
             '      args: [],',
             '    );',
             '  }'
@@ -219,6 +222,7 @@ void main() {
             '      \'Literal `message`\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [],',
             '    );',
             '  }'
@@ -237,6 +241,7 @@ void main() {
             '      \'Literal message \\n with new line\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [],',
             '    );',
             '  }'
@@ -257,6 +262,7 @@ void main() {
             '      \'Literal message \\\' with single quotation mark\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [],',
             '    );',
             '  }'
@@ -275,6 +281,7 @@ void main() {
             '      \'Literal message \\\$ with dollar sign\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [],',
             '    );',
             '  }'
@@ -294,6 +301,7 @@ void main() {
             '      \'Literal message\',',
             '      name: \'labelName\',',
             '      desc: \'Description \\n with new line\',',
+            '      locale: localeName,',
             '      args: [],',
             '    );',
             '  }'
@@ -315,6 +323,7 @@ void main() {
             '      \'Literal message\',',
             '      name: \'labelName\',',
             '      desc: \'Description \\\' with single quotation mark\',',
+            '      locale: localeName,',
             '      args: [],',
             '    );',
             '  }'
@@ -334,6 +343,7 @@ void main() {
             '      \'Literal message\',',
             '      name: \'labelName\',',
             '      desc: \'Description \\\$ with dollar sign\',',
+            '      locale: localeName,',
             '      args: [],',
             '    );',
             '  }'
@@ -354,6 +364,7 @@ void main() {
             '      \'Argument message \$name.\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -375,6 +386,7 @@ void main() {
             '      \'Argument message\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -395,6 +407,7 @@ void main() {
             '      \'Argument message \$name.\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -416,6 +429,7 @@ void main() {
             '      \'Argument message \$firstName \$lastName.\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [firstName, lastName],',
             '    );',
             '  }'
@@ -437,6 +451,7 @@ void main() {
             '      \'Argument message \$firstName \$lastName.\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [lastName, firstName],',
             '    );',
             '  }'
@@ -458,6 +473,7 @@ void main() {
             '      \'Argument message \$firstName \$lastName \$address, \$firstName \$lastName.\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [firstName, lastName, address],',
             '    );',
             '  }'
@@ -480,6 +496,7 @@ void main() {
             '      \'Argument message \$firstName \$lastName \$address, \$firstName \$lastName.\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [firstName, lastName, address],',
             '    );',
             '  }'
@@ -502,6 +519,7 @@ void main() {
             '      \'Argument message \$firstName \$lastName \$address, \$firstName \$lastName.\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [firstName, lastName, address],',
             '    );',
             '  }'
@@ -524,6 +542,7 @@ void main() {
             '      \'Argument message \$firstName \$lastName \$address, \$firstName \$lastName.\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [address, firstName, lastName],',
             '    );',
             '  }'
@@ -542,6 +561,7 @@ void main() {
             '      \'Argument `message` \$name.\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -561,6 +581,7 @@ void main() {
             '      \'Argument message \\n \$name.\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -581,6 +602,7 @@ void main() {
             '      \'Argument message \\\' \$name.\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -600,6 +622,7 @@ void main() {
             '      \'Argument message \\\$ \$name.\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -620,6 +643,7 @@ void main() {
             '      \'Argument message: before\$name after.\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -640,6 +664,7 @@ void main() {
             '      \'Argument message: before _\$name .\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -660,6 +685,7 @@ void main() {
             '      \'Argument message: before 357\$name .\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -680,6 +706,7 @@ void main() {
             '      \'Argument message: before -\$name .\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -700,6 +727,7 @@ void main() {
             '      \'Argument message: before .\$name .\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -720,6 +748,7 @@ void main() {
             '      \'Argument message: before &\$name .\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -740,6 +769,7 @@ void main() {
             '      \'Argument message: before \\\$\$name .\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -760,6 +790,7 @@ void main() {
             '      \'Argument message: before \${name}after.\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -780,6 +811,7 @@ void main() {
             '      \'Argument message: before \${name}_.\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -800,6 +832,7 @@ void main() {
             '      \'Argument message: before \${name}357.\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -820,6 +853,7 @@ void main() {
             '      \'Argument message: before \$name-.\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -840,6 +874,7 @@ void main() {
             '      \'Argument message: before \$name.\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -860,6 +895,7 @@ void main() {
             '      \'Argument message: before \$name&.\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -880,6 +916,7 @@ void main() {
             '      \'Argument message: before \$name\\\$.\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -900,6 +937,7 @@ void main() {
             '      \'Argument message: before\${name}after.\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -919,6 +957,7 @@ void main() {
             '      \'Argument message \$name.\',',
             '      name: \'labelName\',',
             '      desc: \'Description with \\n new line\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -941,6 +980,7 @@ void main() {
             '      \'Argument message \$name.\',',
             '      name: \'labelName\',',
             '      desc: \'Description with \\\' single quotation mark\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -961,6 +1001,7 @@ void main() {
             '      \'Argument message \$name.\',',
             '      name: \'labelName\',',
             '      desc: \'Description with \\\$ dollar sign\',',
+            '      locale: localeName,',
             '      args: [name],',
             '    );',
             '  }'
@@ -984,6 +1025,7 @@ void main() {
             '      other: \'other items\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [count],',
             '    );',
             '  }'
@@ -1006,6 +1048,7 @@ void main() {
             '      other: \'other items\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [count],',
             '    );',
             '  }'
@@ -1034,6 +1077,7 @@ void main() {
             '      other: \'other message\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [count],',
             '    );',
             '  }'
@@ -1062,6 +1106,7 @@ void main() {
             '      other: \'\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [count],',
             '    );',
             '  }'
@@ -1090,6 +1135,7 @@ void main() {
             '      other: \'other `message`\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [count],',
             '    );',
             '  }'
@@ -1118,6 +1164,7 @@ void main() {
             '      other: \'other \\n message\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [count],',
             '    );',
             '  }'
@@ -1146,6 +1193,7 @@ void main() {
             '      other: \'other \\\' message\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [count],',
             '    );',
             '  }'
@@ -1174,6 +1222,7 @@ void main() {
             '      other: \'other \\\$ message\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [count],',
             '    );',
             '  }'
@@ -1202,6 +1251,7 @@ void main() {
             '      other: \'other \${count}abc\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [count],',
             '    );',
             '  }'
@@ -1230,6 +1280,7 @@ void main() {
             '      other: \'other \${count}_ .\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [count],',
             '    );',
             '  }'
@@ -1258,6 +1309,7 @@ void main() {
             '      other: \'other \${count}357 .\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [count],',
             '    );',
             '  }'
@@ -1286,6 +1338,7 @@ void main() {
             '      other: \'other before\${count}after.\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [count],',
             '    );',
             '  }'
@@ -1308,6 +1361,7 @@ void main() {
             '      other: \'other message\',',
             '      name: \'labelName\',',
             '      desc: \'Description with \\n new line\',',
+            '      locale: localeName,',
             '      args: [count],',
             '    );',
             '  }'
@@ -1333,6 +1387,7 @@ void main() {
             '      other: \'other message\',',
             '      name: \'labelName\',',
             '      desc: \'Description with \\\' single quotation mark\',',
+            '      locale: localeName,',
             '      args: [count],',
             '    );',
             '  }'
@@ -1356,6 +1411,7 @@ void main() {
             '      other: \'other message\',',
             '      name: \'labelName\',',
             '      desc: \'Description with \\\$ dollar sign\',',
+            '      locale: localeName,',
             '      args: [count],',
             '    );',
             '  }'
@@ -1379,6 +1435,7 @@ void main() {
             '      other: \'\$name have \$count items\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [count, name],',
             '    );',
             '  }'
@@ -1402,6 +1459,7 @@ void main() {
             '      other: \'{cats} cats run {birds, plural, one {one bird.} other {{birds} birds.}}\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [cats, birds],',
             '    );',
             '  }'
@@ -1425,6 +1483,7 @@ void main() {
             '      other: \'{cats} cats run {gender, select, male {one man} female {one woman} other {one person}}\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [cats, gender],',
             '    );',
             '  }'
@@ -1459,6 +1518,7 @@ void main() {
             '      other: \'other message\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [count],',
             '    );',
             '  }'
@@ -1481,6 +1541,7 @@ void main() {
             '      other: \'other message\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [count],',
             '    );',
             '  }'
@@ -1505,6 +1566,7 @@ void main() {
             '      other: \'other message\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [gender],',
             '    );',
             '  }'
@@ -1528,6 +1590,7 @@ void main() {
             '      other: \'other message\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [gender],',
             '    );',
             '  }'
@@ -1553,6 +1616,7 @@ void main() {
             '      other: \'\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [gender],',
             '    );',
             '  }'
@@ -1577,6 +1641,7 @@ void main() {
             '      other: \'other `message`\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [gender],',
             '    );',
             '  }'
@@ -1601,6 +1666,7 @@ void main() {
             '      other: \'other \\n message\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [gender],',
             '    );',
             '  }'
@@ -1625,6 +1691,7 @@ void main() {
             '      other: \'other \\\' message\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [gender],',
             '    );',
             '  }'
@@ -1649,6 +1716,7 @@ void main() {
             '      other: \'other \\\$ message\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [gender],',
             '    );',
             '  }'
@@ -1673,6 +1741,7 @@ void main() {
             '      other: \'other \${gender}abc\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [gender],',
             '    );',
             '  }'
@@ -1697,6 +1766,7 @@ void main() {
             '      other: \'other \${gender}_\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [gender],',
             '    );',
             '  }'
@@ -1721,6 +1791,7 @@ void main() {
             '      other: \'other \${gender}357 .\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [gender],',
             '    );',
             '  }'
@@ -1745,6 +1816,7 @@ void main() {
             '      other: \'other before\${gender}after\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [gender],',
             '    );',
             '  }'
@@ -1768,6 +1840,7 @@ void main() {
             '      other: \'other message\',',
             '      name: \'labelName\',',
             '      desc: \'Description with \\n new line\',',
+            '      locale: localeName,',
             '      args: [gender],',
             '    );',
             '  }'
@@ -1793,6 +1866,7 @@ void main() {
             '      other: \'other message\',',
             '      name: \'labelName\',',
             '      desc: \'Description with \\\' single quotation mark\',',
+            '      locale: localeName,',
             '      args: [gender],',
             '    );',
             '  }'
@@ -1816,6 +1890,7 @@ void main() {
             '      other: \'other message\',',
             '      name: \'labelName\',',
             '      desc: \'Description with \\\$ dollar sign\',',
+            '      locale: localeName,',
             '      args: [gender],',
             '    );',
             '  }'
@@ -1840,6 +1915,7 @@ void main() {
             '      other: \'other message with \$name placeholder\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [gender, name],',
             '    );',
             '  }'
@@ -1864,6 +1940,7 @@ void main() {
             '      other: \'other message with \$firstName \$lastName placeholders\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [gender, firstName, lastName],',
             '    );',
             '  }'
@@ -1888,6 +1965,7 @@ void main() {
             '      other: \'Person has {apples, plural, one {one apple} other {{apples} apples}}\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [gender, apples],',
             '    );',
             '  }'
@@ -1914,6 +1992,7 @@ void main() {
             '      },',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [gender],',
             '    );',
             '  }'
@@ -1937,6 +2016,7 @@ void main() {
             '      other: \'other message\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [gender],',
             '    );',
             '  }'
@@ -1963,6 +2043,7 @@ void main() {
             '      },',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [choice],',
             '    );',
             '  }'
@@ -1988,6 +2069,7 @@ void main() {
             '      },',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [choice],',
             '    );',
             '  }'
@@ -2014,6 +2096,7 @@ void main() {
             '      },',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [choice],',
             '    );',
             '  }'
@@ -2040,6 +2123,7 @@ void main() {
             '      },',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [choice],',
             '    );',
             '  }'
@@ -2066,6 +2150,7 @@ void main() {
             '      },',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [choice],',
             '    );',
             '  }'
@@ -2092,6 +2177,7 @@ void main() {
             '      },',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [choice],',
             '    );',
             '  }'
@@ -2118,6 +2204,7 @@ void main() {
             '      },',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [choice],',
             '    );',
             '  }'
@@ -2144,6 +2231,7 @@ void main() {
             '      },',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [choice],',
             '    );',
             '  }'
@@ -2170,6 +2258,7 @@ void main() {
             '      },',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [choice],',
             '    );',
             '  }'
@@ -2196,6 +2285,7 @@ void main() {
             '      },',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [choice],',
             '    );',
             '  }'
@@ -2222,6 +2312,7 @@ void main() {
             '      },',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [choice],',
             '    );',
             '  }'
@@ -2247,6 +2338,7 @@ void main() {
             '      },',
             '      name: \'labelName\',',
             '      desc: \'Description with \\n new line\',',
+            '      locale: localeName,',
             '      args: [choice],',
             '    );',
             '  }'
@@ -2274,6 +2366,7 @@ void main() {
             '      },',
             '      name: \'labelName\',',
             '      desc: \'Description with \\\' single quotation mark\',',
+            '      locale: localeName,',
             '      args: [choice],',
             '    );',
             '  }'
@@ -2299,6 +2392,7 @@ void main() {
             '      },',
             '      name: \'labelName\',',
             '      desc: \'Description with \\\$ dollar sign\',',
+            '      locale: localeName,',
             '      args: [choice],',
             '    );',
             '  }'
@@ -2325,6 +2419,7 @@ void main() {
             '      },',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [choice, name],',
             '    );',
             '  }'
@@ -2352,6 +2447,7 @@ void main() {
             '      },',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [choice, name],',
             '    );',
             '  }'
@@ -2378,6 +2474,7 @@ void main() {
             '      },',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [choice, firstName, lastName],',
             '    );',
             '  }'
@@ -2405,6 +2502,7 @@ void main() {
             '      },',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [choice, lastName, firstName],',
             '    );',
             '  }'
@@ -2431,6 +2529,7 @@ void main() {
             '      },',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [choice, apples],',
             '    );',
             '  }'
@@ -2456,6 +2555,7 @@ void main() {
             '      },',
             '      name: \'labelName\',',
             '      desc: \'\',',
+            '      locale: localeName,',
             '      args: [choice],',
             '    );',
             '  }'

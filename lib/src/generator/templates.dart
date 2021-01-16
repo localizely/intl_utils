@@ -19,8 +19,18 @@ import 'intl/messages_all.dart';
 // ignore_for_file: join_return_with_assignment, prefer_final_in_for_each
 // ignore_for_file: avoid_redundant_argument_values
 
+extension _LocaleEx on Locale {
+  String get canonicalizedName {
+    final name = (countryCode?.isEmpty ?? false) ? languageCode : toString();
+    return Intl.canonicalizedLocale(name);
+  }
+}
+
 class $className {
-  $className();
+  final Locale locale;
+  final String localeName;
+
+  $className(this.locale) : localeName = locale.canonicalizedName;
   
   static $className current;
   
@@ -28,15 +38,15 @@ class $className {
     AppLocalizationDelegate();
 
   static Future<$className> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
-    final localeName = Intl.canonicalizedLocale(name);${otaEnabled ? '\n${_generateMetadataSetter()}' : ''} 
+    final localizations = $className(locale);
+    final localeName = locale.canonicalizedName;
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
-      $className.current = $className();
-      
+      $className.current = localizations;
+
       return $className.current;
     });
-  } 
+  }
 
   static $className of(BuildContext context) {
     return Localizations.of<$className>(context, $className);

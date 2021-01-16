@@ -71,6 +71,7 @@ class Label {
               '      \'$content\',',
               '      name: \'$name\',',
               '      desc: \'$description\',',
+              '      locale: localeName,',
               '      args: [],',
               '    );',
               '  }'
@@ -85,6 +86,7 @@ class Label {
               '      \'${_generateArgumentContent(parsedContent)}\',',
               '      name: \'$name\',',
               '      desc: \'$description\',',
+              '      locale: localeName,',
               '      args: [${_generateDartMethodArgs(args)}],',
               '    );',
               '  }'
@@ -102,6 +104,7 @@ class Label {
               _generatePluralOptions(parsedContent[0]),
               '      name: \'$name\',',
               '      desc: \'$description\',',
+              '      locale: localeName,',
               '      args: [${_generateDartMethodArgs(args)}],',
               '    );',
               '  }'
@@ -119,6 +122,7 @@ class Label {
               _generateGenderOptions(parsedContent[0]),
               '      name: \'$name\',',
               '      desc: \'$description\',',
+              '      locale: localeName,',
               '      args: [${_generateDartMethodArgs(args)}],',
               '    );',
               '  }'
@@ -137,6 +141,7 @@ class Label {
               _generateSelectOptions(parsedContent[0]),
               '      name: \'$name\',',
               '      desc: \'$description\',',
+              '      locale: localeName,',
               '      args: [${_generateDartMethodArgs(args)}],',
               '    );',
               '  }'
@@ -154,6 +159,7 @@ class Label {
               '      \'${content}\',',
               '      name: \'${name}\',',
               '      desc: \'${description}\',',
+              '      locale: localeName,',
               '      args: [${_generateDartMethodArgs(args)}],',
               '    );',
               '  }'
