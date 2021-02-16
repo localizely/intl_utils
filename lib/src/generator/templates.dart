@@ -45,8 +45,8 @@ ${otaEnabled ? '\n${_generateMetadata(labels)}\n' : ''}
 ${labels.map((label) => label.generateDartGetter()).join("\n\n")}
 }
 
-class ${$className}Delegate extends LocalizationsDelegate<$className> {
-  const ${$className}Delegate();
+class ${className}Delegate extends LocalizationsDelegate<$className> {
+  const ${className}Delegate();
 
   List<Locale> get supportedLocales {
     return const <Locale>[
@@ -59,7 +59,7 @@ ${locales.map((locale) => _generateLocale(locale)).join("\n")}
   @override
   Future<$className> load(Locale locale) => $className.load(locale);
   @override
-  bool shouldReload(${$className}Delegate old) => false;
+  bool shouldReload(${className}Delegate old) => false;
 
   bool _isSupported(Locale locale) {
     if (locale != null) {
