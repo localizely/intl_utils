@@ -28,7 +28,7 @@ class $className {
     AppLocalizationDelegate();
 
   static Future<$className> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
+    final name = (locale != null && locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
     final localeName = Intl.canonicalizedLocale(name);${otaEnabled ? '\n${_generateMetadataSetter()}' : ''} 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
