@@ -3,7 +3,7 @@ import 'package:yaml/yaml.dart' as yaml;
 import '../utils/file_utils.dart';
 
 class CredentialsConfig {
-  String _apiToken;
+  String? _apiToken;
 
   CredentialsConfig() {
     var credentialsFile = getLocalizelyCredentialsFile();
@@ -19,5 +19,5 @@ class CredentialsConfig {
         : null;
   }
 
-  String get apiToken => _apiToken;
+  String? get apiToken => _apiToken;
 }

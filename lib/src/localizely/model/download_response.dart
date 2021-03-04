@@ -4,7 +4,7 @@ import 'package:http/http.dart';
 import 'file_data.dart';
 
 class DownloadResponse {
-  List<FileData> files;
+  late List<FileData> files;
 
   DownloadResponse.fromResponse(Response response) {
     files = [];
@@ -35,7 +35,7 @@ class DownloadResponse {
     }
   }
 
-  String _getFileName(String contentDisposition) {
+  String? _getFileName(String contentDisposition) {
     var patterns = [
       RegExp('filename\*=[^\']+\'\w*\'"([^"]+)";?', caseSensitive: false),
       RegExp('filename\*=[^\']+\'\w*\'([^;]+);?', caseSensitive: false),

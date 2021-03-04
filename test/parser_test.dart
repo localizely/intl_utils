@@ -7,29 +7,32 @@ void main() {
     test('Test literal message with empty string', () {
       var response = IcuParser().parse('');
 
-      expect(response.length, equals(1));
-      expect(response[0].runtimeType, equals(LiteralElement));
-      expect(response[0].type, equals(ElementType.literal));
-      expect(response[0].value, equals(''));
+      expect(response, isNotNull);
+      expect(response?.length, equals(1));
+      expect(response?.elementAt(0).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(0).type, equals(ElementType.literal));
+      expect(response?.elementAt(0).value, equals(''));
     });
 
     test('Test literal message with plain text', () {
       var response = IcuParser().parse('This is some content.');
 
-      expect(response.length, equals(1));
-      expect(response[0].runtimeType, equals(LiteralElement));
-      expect(response[0].type, equals(ElementType.literal));
-      expect(response[0].value, equals('This is some content.'));
+      expect(response, isNotNull);
+      expect(response?.length, equals(1));
+      expect(response?.elementAt(0).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(0).type, equals(ElementType.literal));
+      expect(response?.elementAt(0).value, equals('This is some content.'));
     });
 
     test('Test literal message with special characters', () {
       var response =
           IcuParser().parse('Special characters: ,./?\\[]!@#\$%^&*()_+-=');
 
-      expect(response.length, equals(1));
-      expect(response[0].runtimeType, equals(LiteralElement));
-      expect(response[0].type, equals(ElementType.literal));
-      expect(response[0].value,
+      expect(response, isNotNull);
+      expect(response?.length, equals(1));
+      expect(response?.elementAt(0).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(0).type, equals(ElementType.literal));
+      expect(response?.elementAt(0).value,
           equals('Special characters: ,./?\\[]!@#\$%^&*()_+-='));
     });
   });
@@ -38,28 +41,30 @@ void main() {
     test('Test argument message with placeholder only', () {
       var response = IcuParser().parse('{firstName}');
 
-      expect(response.length, equals(1));
-      expect(response[0].runtimeType, equals(ArgumentElement));
-      expect(response[0].type, equals(ElementType.argument));
-      expect(response[0].value, equals('firstName'));
+      expect(response, isNotNull);
+      expect(response?.length, equals(1));
+      expect(response?.elementAt(0).runtimeType, equals(ArgumentElement));
+      expect(response?.elementAt(0).type, equals(ElementType.argument));
+      expect(response?.elementAt(0).value, equals('firstName'));
     });
 
     test('Test argument message with placeholder and plain text', () {
       var response = IcuParser().parse('Hi my name is {firstName}!');
 
-      expect(response.length, equals(3));
+      expect(response, isNotNull);
+      expect(response?.length, equals(3));
 
-      expect(response[0].runtimeType, equals(LiteralElement));
-      expect(response[0].type, equals(ElementType.literal));
-      expect(response[0].value, equals('Hi my name is '));
+      expect(response?.elementAt(0).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(0).type, equals(ElementType.literal));
+      expect(response?.elementAt(0).value, equals('Hi my name is '));
 
-      expect(response[1].runtimeType, equals(ArgumentElement));
-      expect(response[1].type, equals(ElementType.argument));
-      expect(response[1].value, equals('firstName'));
+      expect(response?.elementAt(1).runtimeType, equals(ArgumentElement));
+      expect(response?.elementAt(1).type, equals(ElementType.argument));
+      expect(response?.elementAt(1).value, equals('firstName'));
 
-      expect(response[2].runtimeType, equals(LiteralElement));
-      expect(response[2].type, equals(ElementType.literal));
-      expect(response[2].value, equals('!'));
+      expect(response?.elementAt(2).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(2).type, equals(ElementType.literal));
+      expect(response?.elementAt(2).value, equals('!'));
     });
 
     test(
@@ -68,54 +73,57 @@ void main() {
       var response = IcuParser()
           .parse('Link: https://example.com?user={username}&test=yes');
 
-      expect(response.length, equals(3));
+      expect(response, isNotNull);
+      expect(response?.length, equals(3));
 
-      expect(response[0].runtimeType, equals(LiteralElement));
-      expect(response[0].type, equals(ElementType.literal));
-      expect(response[0].value, equals('Link: https://example.com?user='));
+      expect(response?.elementAt(0).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(0).type, equals(ElementType.literal));
+      expect(response?.elementAt(0).value,
+          equals('Link: https://example.com?user='));
 
-      expect(response[1].runtimeType, equals(ArgumentElement));
-      expect(response[1].type, equals(ElementType.argument));
-      expect(response[1].value, equals('username'));
+      expect(response?.elementAt(1).runtimeType, equals(ArgumentElement));
+      expect(response?.elementAt(1).type, equals(ElementType.argument));
+      expect(response?.elementAt(1).value, equals('username'));
 
-      expect(response[2].runtimeType, equals(LiteralElement));
-      expect(response[2].type, equals(ElementType.literal));
-      expect(response[2].value, equals('&test=yes'));
+      expect(response?.elementAt(2).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(2).type, equals(ElementType.literal));
+      expect(response?.elementAt(2).value, equals('&test=yes'));
     });
 
     test('Test argument message with few placeholders and plain text', () {
       var response =
           IcuParser().parse('My name is {lastName}, {firstName} {lastName}!');
 
-      expect(response.length, equals(7));
+      expect(response, isNotNull);
+      expect(response?.length, equals(7));
 
-      expect(response[0].runtimeType, equals(LiteralElement));
-      expect(response[0].type, equals(ElementType.literal));
-      expect(response[0].value, equals('My name is '));
+      expect(response?.elementAt(0).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(0).type, equals(ElementType.literal));
+      expect(response?.elementAt(0).value, equals('My name is '));
 
-      expect(response[1].runtimeType, equals(ArgumentElement));
-      expect(response[1].type, equals(ElementType.argument));
-      expect(response[1].value, equals('lastName'));
+      expect(response?.elementAt(1).runtimeType, equals(ArgumentElement));
+      expect(response?.elementAt(1).type, equals(ElementType.argument));
+      expect(response?.elementAt(1).value, equals('lastName'));
 
-      expect(response[2].runtimeType, equals(LiteralElement));
-      expect(response[2].type, equals(ElementType.literal));
-      expect(response[2].value, equals(', '));
+      expect(response?.elementAt(2).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(2).type, equals(ElementType.literal));
+      expect(response?.elementAt(2).value, equals(', '));
 
-      expect(response[3].runtimeType, equals(ArgumentElement));
-      expect(response[3].type, equals(ElementType.argument));
-      expect(response[3].value, equals('firstName'));
+      expect(response?.elementAt(3).runtimeType, equals(ArgumentElement));
+      expect(response?.elementAt(3).type, equals(ElementType.argument));
+      expect(response?.elementAt(3).value, equals('firstName'));
 
-      expect(response[4].runtimeType, equals(LiteralElement));
-      expect(response[4].type, equals(ElementType.literal));
-      expect(response[4].value, equals(' '));
+      expect(response?.elementAt(4).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(4).type, equals(ElementType.literal));
+      expect(response?.elementAt(4).value, equals(' '));
 
-      expect(response[5].runtimeType, equals(ArgumentElement));
-      expect(response[5].type, equals(ElementType.argument));
-      expect(response[5].value, equals('lastName'));
+      expect(response?.elementAt(5).runtimeType, equals(ArgumentElement));
+      expect(response?.elementAt(5).type, equals(ElementType.argument));
+      expect(response?.elementAt(5).value, equals('lastName'));
 
-      expect(response[6].runtimeType, equals(LiteralElement));
-      expect(response[6].type, equals(ElementType.literal));
-      expect(response[6].value, equals('!'));
+      expect(response?.elementAt(6).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(6).type, equals(ElementType.literal));
+      expect(response?.elementAt(6).value, equals('!'));
     });
   });
 
@@ -126,12 +134,13 @@ void main() {
       var response = IcuParser().parse(
           '{count, plural, zero {zero message} one {one message} two {two message} few {few message} many {many message} other {other message}}');
 
-      expect(response.length, equals(1));
-      expect(response[0].runtimeType, equals(PluralElement));
-      expect(response[0].type, equals(ElementType.plural));
-      expect(response[0].value, equals('count'));
+      expect(response, isNotNull);
+      expect(response?.length, equals(1));
+      expect(response?.elementAt(0).runtimeType, equals(PluralElement));
+      expect(response?.elementAt(0).type, equals(ElementType.plural));
+      expect(response?.elementAt(0).value, equals('count'));
 
-      var options = (response[0] as PluralElement).options;
+      var options = (response?.elementAt(0) as PluralElement).options;
 
       expect(options.length, equals(6));
 
@@ -178,12 +187,13 @@ void main() {
       var response = IcuParser().parse(
           '{count, plural, zero {} one {} two {} few {} many {} other {}}');
 
-      expect(response.length, equals(1));
-      expect(response[0].runtimeType, equals(PluralElement));
-      expect(response[0].type, equals(ElementType.plural));
-      expect(response[0].value, equals('count'));
+      expect(response, isNotNull);
+      expect(response?.length, equals(1));
+      expect(response?.elementAt(0).runtimeType, equals(PluralElement));
+      expect(response?.elementAt(0).type, equals(ElementType.plural));
+      expect(response?.elementAt(0).value, equals('count'));
 
-      var options = (response[0] as PluralElement).options;
+      var options = (response?.elementAt(0) as PluralElement).options;
 
       expect(options.length, equals(6));
 
@@ -230,12 +240,13 @@ void main() {
       var response = IcuParser().parse(
           '{count,plural,zero{zero message}one{one message}two{two message}few{few message}many{many message}other{other message}}');
 
-      expect(response.length, equals(1));
-      expect(response[0].runtimeType, equals(PluralElement));
-      expect(response[0].type, equals(ElementType.plural));
-      expect(response[0].value, equals('count'));
+      expect(response, isNotNull);
+      expect(response?.length, equals(1));
+      expect(response?.elementAt(0).runtimeType, equals(PluralElement));
+      expect(response?.elementAt(0).type, equals(ElementType.plural));
+      expect(response?.elementAt(0).value, equals('count'));
 
-      var options = (response[0] as PluralElement).options;
+      var options = (response?.elementAt(0) as PluralElement).options;
 
       expect(options.length, equals(6));
 
@@ -282,12 +293,13 @@ void main() {
       var response = IcuParser().parse(
           '{count, plural, =0 {=0 message} =1 {=1 message} =2 {=2 message} few {few message} many {many message} other {other message}}');
 
-      expect(response.length, equals(1));
-      expect(response[0].runtimeType, equals(PluralElement));
-      expect(response[0].type, equals(ElementType.plural));
-      expect(response[0].value, equals('count'));
+      expect(response, isNotNull);
+      expect(response?.length, equals(1));
+      expect(response?.elementAt(0).runtimeType, equals(PluralElement));
+      expect(response?.elementAt(0).type, equals(ElementType.plural));
+      expect(response?.elementAt(0).value, equals('count'));
 
-      var options = (response[0] as PluralElement).options;
+      var options = (response?.elementAt(0) as PluralElement).options;
 
       expect(options.length, equals(6));
 
@@ -334,12 +346,13 @@ void main() {
       var response = IcuParser().parse(
           '{count, plural, zero {zero message with {name} placeholder.} one {one message with {name} placeholder.} two {two message with {name} placeholder.} few {few message with {name} placeholder.} many {many message with {name} placeholder.} other {other message with {name} placeholder.}}');
 
-      expect(response.length, equals(1));
-      expect(response[0].runtimeType, equals(PluralElement));
-      expect(response[0].type, equals(ElementType.plural));
-      expect(response[0].value, equals('count'));
+      expect(response, isNotNull);
+      expect(response?.length, equals(1));
+      expect(response?.elementAt(0).runtimeType, equals(PluralElement));
+      expect(response?.elementAt(0).type, equals(ElementType.plural));
+      expect(response?.elementAt(0).value, equals('count'));
 
-      var options = (response[0] as PluralElement).options;
+      var options = (response?.elementAt(0) as PluralElement).options;
 
       expect(options.length, equals(6));
 
@@ -422,12 +435,13 @@ void main() {
       var response = IcuParser().parse(
           '{count, plural, =0 {{firstName} {lastName}: zero message} =1 {{firstName} {lastName}: one message} =2 {{firstName} {lastName}: two message} few {{firstName} {lastName}: few message} many {{firstName} {lastName}: many message} other {{firstName} {lastName}: other message}}');
 
-      expect(response.length, equals(1));
-      expect(response[0].runtimeType, equals(PluralElement));
-      expect(response[0].type, equals(ElementType.plural));
-      expect(response[0].value, equals('count'));
+      expect(response, isNotNull);
+      expect(response?.length, equals(1));
+      expect(response?.elementAt(0).runtimeType, equals(PluralElement));
+      expect(response?.elementAt(0).type, equals(ElementType.plural));
+      expect(response?.elementAt(0).value, equals('count'));
 
-      var options = (response[0] as PluralElement).options;
+      var options = (response?.elementAt(0) as PluralElement).options;
 
       expect(options.length, equals(6));
 
@@ -528,12 +542,13 @@ void main() {
       var response = IcuParser().parse(
           '{count, plural, one {{gender, select, female {Girl has} male {Boy has} other {Person has}} one item} other {{gender, select, female {Girl has} male {Boy has} other {Person has}} {count} items}}');
 
-      expect(response.length, equals(1));
-      expect(response[0].runtimeType, equals(PluralElement));
-      expect(response[0].type, equals(ElementType.plural));
-      expect(response[0].value, equals('count'));
+      expect(response, isNotNull);
+      expect(response?.length, equals(1));
+      expect(response?.elementAt(0).runtimeType, equals(PluralElement));
+      expect(response?.elementAt(0).type, equals(ElementType.plural));
+      expect(response?.elementAt(0).value, equals('count'));
 
-      var options = (response[0] as PluralElement).options;
+      var options = (response?.elementAt(0) as PluralElement).options;
 
       expect(options.length, equals(2));
 
@@ -610,12 +625,13 @@ void main() {
       var response = IcuParser().parse(
           '{gender, select, female {Hi woman!} male {Hi man!} other {Hi there!}}');
 
-      expect(response.length, equals(1));
-      expect(response[0].runtimeType, equals(GenderElement));
-      expect(response[0].type, equals(ElementType.gender));
-      expect(response[0].value, equals('gender'));
+      expect(response, isNotNull);
+      expect(response?.length, equals(1));
+      expect(response?.elementAt(0).runtimeType, equals(GenderElement));
+      expect(response?.elementAt(0).type, equals(ElementType.gender));
+      expect(response?.elementAt(0).value, equals('gender'));
 
-      var options = (response[0] as GenderElement).options;
+      var options = (response?.elementAt(0) as GenderElement).options;
 
       expect(options.length, equals(3));
 
@@ -644,12 +660,13 @@ void main() {
       var response =
           IcuParser().parse('{gender, select, female {} male {} other {}}');
 
-      expect(response.length, equals(1));
-      expect(response[0].runtimeType, equals(GenderElement));
-      expect(response[0].type, equals(ElementType.gender));
-      expect(response[0].value, equals('gender'));
+      expect(response, isNotNull);
+      expect(response?.length, equals(1));
+      expect(response?.elementAt(0).runtimeType, equals(GenderElement));
+      expect(response?.elementAt(0).type, equals(ElementType.gender));
+      expect(response?.elementAt(0).value, equals('gender'));
 
-      var options = (response[0] as GenderElement).options;
+      var options = (response?.elementAt(0) as GenderElement).options;
 
       expect(options.length, equals(3));
 
@@ -678,12 +695,13 @@ void main() {
       var response = IcuParser().parse(
           '{gender,select,female{Hi woman!}male{Hi man!}other{Hi there!}}');
 
-      expect(response.length, equals(1));
-      expect(response[0].runtimeType, equals(GenderElement));
-      expect(response[0].type, equals(ElementType.gender));
-      expect(response[0].value, equals('gender'));
+      expect(response, isNotNull);
+      expect(response?.length, equals(1));
+      expect(response?.elementAt(0).runtimeType, equals(GenderElement));
+      expect(response?.elementAt(0).type, equals(ElementType.gender));
+      expect(response?.elementAt(0).value, equals('gender'));
 
-      var options = (response[0] as GenderElement).options;
+      var options = (response?.elementAt(0) as GenderElement).options;
 
       expect(options.length, equals(3));
 
@@ -712,12 +730,13 @@ void main() {
       var response = IcuParser().parse(
           '{gender, select, female {Miss {firstName}.} male {Mister {firstName}.} other {User {firstName}.}}');
 
-      expect(response.length, equals(1));
-      expect(response[0].runtimeType, equals(GenderElement));
-      expect(response[0].type, equals(ElementType.gender));
-      expect(response[0].value, equals('gender'));
+      expect(response, isNotNull);
+      expect(response?.length, equals(1));
+      expect(response?.elementAt(0).runtimeType, equals(GenderElement));
+      expect(response?.elementAt(0).type, equals(ElementType.gender));
+      expect(response?.elementAt(0).value, equals('gender'));
 
-      var options = (response[0] as GenderElement).options;
+      var options = (response?.elementAt(0) as GenderElement).options;
 
       expect(options.length, equals(3));
 
@@ -764,12 +783,13 @@ void main() {
       var response = IcuParser().parse(
           '{gender, select, female {Miss {firstName} {lastName} from {address}.} male {Mister {firstName} {lastName} from {address}.} other {User {firstName} {lastName} from {address}.}}');
 
-      expect(response.length, equals(1));
-      expect(response[0].runtimeType, equals(GenderElement));
-      expect(response[0].type, equals(ElementType.gender));
-      expect(response[0].value, equals('gender'));
+      expect(response, isNotNull);
+      expect(response?.length, equals(1));
+      expect(response?.elementAt(0).runtimeType, equals(GenderElement));
+      expect(response?.elementAt(0).type, equals(ElementType.gender));
+      expect(response?.elementAt(0).value, equals('gender'));
 
-      var options = (response[0] as GenderElement).options;
+      var options = (response?.elementAt(0) as GenderElement).options;
 
       expect(options.length, equals(3));
 
@@ -852,12 +872,13 @@ void main() {
       var response = IcuParser().parse(
           '{gender, select, female {She has {count, plural, one {one apple} other {{count} apples}}} male {He has {count, plural, one {one apple} other {{count} apples}}} other {Person has {count, plural, one {one apple} other {{count} apples}}}}');
 
-      expect(response.length, equals(1));
-      expect(response[0].runtimeType, equals(GenderElement));
-      expect(response[0].type, equals(ElementType.gender));
-      expect(response[0].value, equals('gender'));
+      expect(response, isNotNull);
+      expect(response?.length, equals(1));
+      expect(response?.elementAt(0).runtimeType, equals(GenderElement));
+      expect(response?.elementAt(0).type, equals(ElementType.gender));
+      expect(response?.elementAt(0).value, equals('gender'));
 
-      var options = (response[0] as GenderElement).options;
+      var options = (response?.elementAt(0) as GenderElement).options;
 
       expect(options.length, equals(3));
 
@@ -946,12 +967,13 @@ void main() {
       var response = IcuParser().parse(
           '{choice, select, foo {This is foo option} bar {This is bar option} baz {This is baz option}}');
 
-      expect(response.length, equals(1));
-      expect(response[0].runtimeType, equals(SelectElement));
-      expect(response[0].type, equals(ElementType.select));
-      expect(response[0].value, equals('choice'));
+      expect(response, isNotNull);
+      expect(response?.length, equals(1));
+      expect(response?.elementAt(0).runtimeType, equals(SelectElement));
+      expect(response?.elementAt(0).type, equals(ElementType.select));
+      expect(response?.elementAt(0).value, equals('choice'));
 
-      var options = (response[0] as SelectElement).options;
+      var options = (response?.elementAt(0) as SelectElement).options;
 
       expect(options.length, equals(3));
 
@@ -978,12 +1000,13 @@ void main() {
       var response =
           IcuParser().parse('{choice, select, foo {} bar {} baz {}}');
 
-      expect(response.length, equals(1));
-      expect(response[0].runtimeType, equals(SelectElement));
-      expect(response[0].type, equals(ElementType.select));
-      expect(response[0].value, equals('choice'));
+      expect(response, isNotNull);
+      expect(response?.length, equals(1));
+      expect(response?.elementAt(0).runtimeType, equals(SelectElement));
+      expect(response?.elementAt(0).type, equals(ElementType.select));
+      expect(response?.elementAt(0).value, equals('choice'));
 
-      var options = (response[0] as SelectElement).options;
+      var options = (response?.elementAt(0) as SelectElement).options;
 
       expect(options.length, equals(3));
 
@@ -1011,12 +1034,13 @@ void main() {
       var response = IcuParser().parse(
           '{choice,select,foo{This is foo option}bar{This is bar option}baz{This is baz option}}');
 
-      expect(response.length, equals(1));
-      expect(response[0].runtimeType, equals(SelectElement));
-      expect(response[0].type, equals(ElementType.select));
-      expect(response[0].value, equals('choice'));
+      expect(response, isNotNull);
+      expect(response?.length, equals(1));
+      expect(response?.elementAt(0).runtimeType, equals(SelectElement));
+      expect(response?.elementAt(0).type, equals(ElementType.select));
+      expect(response?.elementAt(0).value, equals('choice'));
 
-      var options = (response[0] as SelectElement).options;
+      var options = (response?.elementAt(0) as SelectElement).options;
 
       expect(options.length, equals(3));
 
@@ -1043,12 +1067,13 @@ void main() {
       var response = IcuParser().parse(
           '{choice, select, foo {This is foo option with {name} placeholder} bar {This is bar option with {name} placeholder} baz {This is baz option with {name} placeholder}}');
 
-      expect(response.length, equals(1));
-      expect(response[0].runtimeType, equals(SelectElement));
-      expect(response[0].type, equals(ElementType.select));
-      expect(response[0].value, equals('choice'));
+      expect(response, isNotNull);
+      expect(response?.length, equals(1));
+      expect(response?.elementAt(0).runtimeType, equals(SelectElement));
+      expect(response?.elementAt(0).type, equals(ElementType.select));
+      expect(response?.elementAt(0).value, equals('choice'));
 
-      var options = (response[0] as SelectElement).options;
+      var options = (response?.elementAt(0) as SelectElement).options;
 
       expect(options.length, equals(3));
 
@@ -1093,12 +1118,13 @@ void main() {
       var response = IcuParser().parse(
           '{choice, select, foo {Foo: {firstName} {lastName}} bar {Bar: {firstName} {lastName}} baz {Baz: {firstName} {lastName}}}');
 
-      expect(response.length, equals(1));
-      expect(response[0].runtimeType, equals(SelectElement));
-      expect(response[0].type, equals(ElementType.select));
-      expect(response[0].value, equals('choice'));
+      expect(response, isNotNull);
+      expect(response?.length, equals(1));
+      expect(response?.elementAt(0).runtimeType, equals(SelectElement));
+      expect(response?.elementAt(0).type, equals(ElementType.select));
+      expect(response?.elementAt(0).value, equals('choice'));
 
-      var options = (response[0] as SelectElement).options;
+      var options = (response?.elementAt(0) as SelectElement).options;
 
       expect(options.length, equals(3));
 

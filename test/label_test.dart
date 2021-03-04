@@ -21,8 +21,8 @@ void main() {
       expect(label.content, equals('Content with {name} placeholder!'));
       expect(label.type, equals('text'));
       expect(label.description, equals('Description'));
-      expect(label.placeholders.length, equals(1));
-      expect(label.placeholders[0], equals('name'));
+      expect(label.placeholders?.length, equals(1));
+      expect(label.placeholders?.first, equals('name'));
     });
 
     test('Test instantiation when content has new line set', () {

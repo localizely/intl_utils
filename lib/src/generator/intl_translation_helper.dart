@@ -31,11 +31,14 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:intl_translation/extract_messages.dart';
-import 'package:intl_translation/generate_localized.dart';
-import 'package:intl_translation/src/icu_parser.dart';
-import 'package:intl_translation/src/intl_message.dart';
 import 'package:path/path.dart' as path;
+
+// Due to a delay in the maintenance of the 'intl_translation' package,
+// we are using a partial copy of it with added support for the null-safety
+import '../intl_translation/extract_messages.dart';
+import '../intl_translation/generate_localized.dart';
+import '../intl_translation/src/icu_parser.dart';
+import '../intl_translation/src/intl_message.dart';
 
 import '../utils/utils.dart';
 
@@ -101,7 +104,7 @@ class IntlTranslationHelper {
     var translations = <TranslatedMessage>[];
     for (var jsonTranslations in localeData) {
       jsonTranslations.forEach((id, messageData) {
-        TranslatedMessage message = _recreateIntlObjects(id, messageData);
+        TranslatedMessage? message = _recreateIntlObjects(id, messageData);
         if (message != null) {
           translations.add(message);
         }
@@ -114,7 +117,7 @@ class IntlTranslationHelper {
   /// things that are messages, we expect [id] not to start with "@" and
   /// [data] to be a String. For metadata we expect [id] to start with "@"
   /// and [data] to be a Map or null. For metadata we return null.
-  BasicTranslatedMessage _recreateIntlObjects(String id, data) {
+  BasicTranslatedMessage? _recreateIntlObjects(String id, data) {
     if (id.startsWith('@')) return null;
     if (data == null) return null;
     var parsed = pluralAndGenderParser.parse(data).value;
@@ -133,10 +136,10 @@ class BasicTranslatedMessage extends TranslatedMessage {
       : super(name, translated);
 
   @override
-  List<MainMessage> get originalMessages => (super.originalMessages == null)
+  List<MainMessage>? get originalMessages => (super.originalMessages == null)
       ? _findOriginals()
       : super.originalMessages;
 
   // We know that our [id] is the name of the message, which is used as the key in [messages].
-  List<MainMessage> _findOriginals() => originalMessages = messages[id];
+  List<MainMessage>? _findOriginals() => originalMessages = messages[id];
 }

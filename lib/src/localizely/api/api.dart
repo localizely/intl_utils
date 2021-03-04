@@ -14,7 +14,7 @@ class LocalizelyApi {
 
   static Future<void> upload(
       String projectId, String apiToken, String langCode, File file,
-      [String branch, bool overwrite = false, bool reviewed = false]) async {
+      [String? branch, bool overwrite = false, bool reviewed = false]) async {
     var branchParam = branch != null ? '&branch=${branch}' : '';
 
     var uri = Uri.parse(
@@ -37,16 +37,16 @@ class LocalizelyApi {
   }
 
   static Future<DownloadResponse> download(String projectId, String apiToken,
-      [String branch, String exportEmptyAs]) async {
+      [String? branch, String? exportEmptyAs]) async {
     var branchParam = branch != null ? '&branch=${branch}' : '';
     var exportEmptyAsParam =
         exportEmptyAs != null ? '&export_empty_as=${exportEmptyAs}' : '';
 
-    var url =
-        '$_baseUrl/v1/projects/$projectId/files/download?type=flutter_arb${branchParam}${exportEmptyAsParam}';
+    var uri = Uri.parse(
+        '$_baseUrl/v1/projects/$projectId/files/download?type=flutter_arb${branchParam}${exportEmptyAsParam}');
     var headers = {'X-Api-Token': apiToken};
 
-    var response = await http.get(url, headers: headers);
+    var response = await http.get(uri, headers: headers);
 
     if (response.statusCode != 200) {
       var formattedResponse = formatJsonMessage(response.body);

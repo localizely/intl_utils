@@ -11,12 +11,12 @@ import 'templates.dart';
 
 /// The generator of localization files.
 class Generator {
-  String _className;
-  String _mainLocale;
-  String _arbDir;
-  String _outputDir;
-  bool _useDeferredLoading;
-  bool _otaEnabled;
+  late String _className;
+  late String _mainLocale;
+  late String _arbDir;
+  late String _outputDir;
+  late bool _useDeferredLoading;
+  late bool _otaEnabled;
 
   /// Creates a new generator with configuration from the 'pubspec.yaml' file.
   Generator() {
@@ -24,8 +24,8 @@ class Generator {
 
     _className = defaultClassName;
     if (pubspecConfig.className != null) {
-      if (isValidClassName(pubspecConfig.className)) {
-        _className = pubspecConfig.className;
+      if (isValidClassName(pubspecConfig.className!)) {
+        _className = pubspecConfig.className!;
       } else {
         warning(
             "Config parameter 'class_name' requires valid 'UpperCamelCase' value.");
@@ -34,8 +34,8 @@ class Generator {
 
     _mainLocale = defaultMainLocale;
     if (pubspecConfig.mainLocale != null) {
-      if (isValidLocale(pubspecConfig.mainLocale)) {
-        _mainLocale = pubspecConfig.mainLocale;
+      if (isValidLocale(pubspecConfig.mainLocale!)) {
+        _mainLocale = pubspecConfig.mainLocale!;
       } else {
         warning(
             "Config parameter 'main_locale' requires value consisted of language code and optional script and country codes separated with underscore (e.g. 'en', 'en_GB', 'zh_Hans', 'zh_Hans_CN').");
@@ -44,8 +44,8 @@ class Generator {
 
     _arbDir = defaultArbDir;
     if (pubspecConfig.arbDir != null) {
-      if (isValidPath(pubspecConfig.arbDir)) {
-        _arbDir = pubspecConfig.arbDir;
+      if (isValidPath(pubspecConfig.arbDir!)) {
+        _arbDir = pubspecConfig.arbDir!;
       } else {
         warning(
             "Config parameter 'arb_dir' requires valid path value (e.g. 'lib', 'res/', 'lib\\l10n').");
@@ -54,8 +54,8 @@ class Generator {
 
     _outputDir = defaultOutputDir;
     if (pubspecConfig.outputDir != null) {
-      if (isValidPath(pubspecConfig.outputDir)) {
-        _outputDir = pubspecConfig.outputDir;
+      if (isValidPath(pubspecConfig.outputDir!)) {
+        _outputDir = pubspecConfig.outputDir!;
       } else {
         warning(
             "Config parameter 'output_dir' requires valid path value (e.g. 'lib', 'lib\\generated').");

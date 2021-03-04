@@ -12,7 +12,7 @@ String getRootDirectoryPath() => getRootDirectory().path;
 Directory getRootDirectory() => Directory.current;
 
 /// Gets the pubspec file.
-File getPubspecFile() {
+File? getPubspecFile() {
   var rootDirPath = getRootDirectoryPath();
   var pubspecFilePath = path.join(rootDirPath, 'pubspec.yaml');
   var pubspecFile = File(pubspecFilePath);
@@ -21,7 +21,7 @@ File getPubspecFile() {
 }
 
 /// Gets arb file for the given locale.
-File getArbFileForLocale(String locale, String arbDir) {
+File? getArbFileForLocale(String locale, String arbDir) {
   var rootDirPath = getRootDirectoryPath();
   var arbFilePath = path.join(rootDirPath, arbDir, 'intl_$locale.arb');
   var arbFile = File(arbFilePath);
@@ -103,7 +103,7 @@ String getIntlDirectoryPath(String outputDir) =>
     path.join(getRootDirectoryPath(), outputDir, 'intl');
 
 /// Gets intl directory.
-Directory getIntlDirectory(String outputDir) {
+Directory? getIntlDirectory(String outputDir) {
   var intlDirPath = getIntlDirectoryPath(outputDir);
   var intlDir = Directory(intlDirPath);
 
@@ -145,7 +145,7 @@ Future<void> removeUnusedGeneratedDartFiles(
 }
 
 /// Gets Localizely credentials file path.
-String getLocalizelyCredentialsFilePath() {
+String? getLocalizelyCredentialsFilePath() {
   var userHome = getUserHome();
   if (userHome == null) {
     return null;
@@ -155,7 +155,7 @@ String getLocalizelyCredentialsFilePath() {
 }
 
 /// Gets Localizely credentials file.
-File getLocalizelyCredentialsFile() {
+File? getLocalizelyCredentialsFile() {
   var credentialsFilePath = getLocalizelyCredentialsFilePath();
   if (credentialsFilePath == null) {
     return null;
@@ -167,7 +167,7 @@ File getLocalizelyCredentialsFile() {
 }
 
 /// Gets the user home directory path.
-String getUserHome() {
+String? getUserHome() {
   if (Platform.isMacOS || Platform.isLinux) {
     return Platform.environment['HOME'];
   } else if (Platform.isWindows) {

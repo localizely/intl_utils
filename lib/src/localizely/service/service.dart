@@ -45,7 +45,7 @@ class LocalizelyService {
     var pubspecConfig = PubspecConfig();
 
     var branch = pubspecConfig.localizelyConfig?.branch;
-    var exportEmptyAs = pubspecConfig?.localizelyConfig?.downloadEmptyAs;
+    var exportEmptyAs = pubspecConfig.localizelyConfig?.downloadEmptyAs;
     if (exportEmptyAs != null) {
       if (!isValidDownloadEmptyAsParam(exportEmptyAs)) {
         exportEmptyAs = defaultDownloadEmptyAs;

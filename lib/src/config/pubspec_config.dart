@@ -4,13 +4,13 @@ import '../utils/file_utils.dart';
 import 'config_exception.dart';
 
 class PubspecConfig {
-  bool _enabled;
-  String _className;
-  String _mainLocale;
-  String _arbDir;
-  String _outputDir;
-  bool _useDeferredLoading;
-  LocalizelyConfig _localizelyConfig;
+  bool? _enabled;
+  String? _className;
+  String? _mainLocale;
+  String? _arbDir;
+  String? _outputDir;
+  bool? _useDeferredLoading;
+  LocalizelyConfig? _localizelyConfig;
 
   PubspecConfig() {
     var pubspecFile = getPubspecFile();
@@ -48,30 +48,30 @@ class PubspecConfig {
         LocalizelyConfig.fromConfig(flutterIntlConfig['localizely']);
   }
 
-  bool get enabled => _enabled;
+  bool? get enabled => _enabled;
 
-  String get className => _className;
+  String? get className => _className;
 
-  String get mainLocale => _mainLocale;
+  String? get mainLocale => _mainLocale;
 
-  String get arbDir => _arbDir;
+  String? get arbDir => _arbDir;
 
-  String get outputDir => _outputDir;
+  String? get outputDir => _outputDir;
 
-  bool get useDeferredLoading => _useDeferredLoading;
+  bool? get useDeferredLoading => _useDeferredLoading;
 
-  LocalizelyConfig get localizelyConfig => _localizelyConfig;
+  LocalizelyConfig? get localizelyConfig => _localizelyConfig;
 }
 
 class LocalizelyConfig {
-  String _projectId;
-  String _branch;
-  bool _uploadAsReviewed;
-  bool _uploadOverwrite;
-  String _downloadEmptyAs;
-  bool _otaEnabled;
+  String? _projectId;
+  String? _branch;
+  bool? _uploadAsReviewed;
+  bool? _uploadOverwrite;
+  String? _downloadEmptyAs;
+  bool? _otaEnabled;
 
-  LocalizelyConfig.fromConfig(yaml.YamlMap localizelyConfig) {
+  LocalizelyConfig.fromConfig(yaml.YamlMap? localizelyConfig) {
     if (localizelyConfig == null) {
       return;
     }
@@ -96,15 +96,15 @@ class LocalizelyConfig {
         : null;
   }
 
-  String get projectId => _projectId;
+  String? get projectId => _projectId;
 
-  String get branch => _branch;
+  String? get branch => _branch;
 
-  bool get uploadAsReviewed => _uploadAsReviewed;
+  bool? get uploadAsReviewed => _uploadAsReviewed;
 
-  bool get uploadOverwrite => _uploadOverwrite;
+  bool? get uploadOverwrite => _uploadOverwrite;
 
-  String get downloadEmptyAs => _downloadEmptyAs;
+  String? get downloadEmptyAs => _downloadEmptyAs;
 
-  bool get otaEnabled => _otaEnabled;
+  bool? get otaEnabled => _otaEnabled;
 }

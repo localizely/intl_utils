@@ -22,7 +22,7 @@ import 'intl/messages_all.dart';
 class $className {
   $className();
   
-  static $className current;
+  static $className? current;
   
   static const AppLocalizationDelegate delegate =
     AppLocalizationDelegate();
@@ -34,11 +34,11 @@ class $className {
       Intl.defaultLocale = localeName;
       $className.current = $className();
       
-      return $className.current;
+      return $className.current!;
     });
   } 
 
-  static $className of(BuildContext context) {
+  static $className? of(BuildContext context) {
     return Localizations.of<$className>(context, $className);
   }
 ${otaEnabled ? '\n${_generateMetadata(labels)}\n' : ''}
@@ -62,11 +62,9 @@ ${locales.map((locale) => _generateLocale(locale)).join("\n")}
   bool shouldReload(AppLocalizationDelegate old) => false;
 
   bool _isSupported(Locale locale) {
-    if (locale != null) {
-      for (var supportedLocale in supportedLocales) {
-        if (supportedLocale.languageCode == locale.languageCode) {
-          return true;
-        }
+    for (var supportedLocale in supportedLocales) {
+      if (supportedLocale.languageCode == locale.languageCode) {
+        return true;
       }
     }
     return false;

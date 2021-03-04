@@ -9,9 +9,15 @@ final parser = IcuParser();
 enum ContentType { literal, argument, plural, gender, select, unsupported }
 
 class ValidationException implements Exception {
-  final String message;
+  final String? message;
 
   ValidationException([this.message]);
+}
+
+class ParseException implements Exception {
+  final String? message;
+
+  ParseException([this.message]);
 }
 
 class Argument {
@@ -39,9 +45,9 @@ class Argument {
 class Label {
   String name;
   String content;
-  String type;
-  String description;
-  List<String> placeholders;
+  String? type;
+  String? description;
+  List<String>? placeholders;
 
   Label(this.name, this.content,
       {this.type, this.description, this.placeholders});
@@ -53,6 +59,10 @@ class Label {
       var description = _escape(this.description ?? '');
 
       var parsedContent = parser.parse(content);
+      if (parsedContent == null) {
+        throw ParseException();
+      }
+
       var args = _getArgs(placeholders, parsedContent);
       var contentType = _getContentType(parsedContent, args);
 
@@ -99,7 +109,7 @@ class Label {
               '  String $name(${_generateDartMethodParameters(args)}) {',
               '    return Intl.plural(',
               '      ${pluralArg},',
-              _generatePluralOptions(parsedContent[0]),
+              _generatePluralOptions(parsedContent[0] as PluralElement),
               '      name: \'$name\',',
               '      desc: \'$description\',',
               '      args: [${_generateDartMethodArgs(args)}],',
@@ -116,7 +126,7 @@ class Label {
               '  String $name(${_generateDartMethodParameters(args)}) {',
               '    return Intl.gender(',
               '      ${genderArg},',
-              _generateGenderOptions(parsedContent[0]),
+              _generateGenderOptions(parsedContent[0] as GenderElement),
               '      name: \'$name\',',
               '      desc: \'$description\',',
               '      args: [${_generateDartMethodArgs(args)}],',
@@ -134,7 +144,7 @@ class Label {
               '  String $name(${_generateDartMethodParameters(args)}) {',
               '    return Intl.select(',
               '      ${choiceArg},',
-              _generateSelectOptions(parsedContent[0]),
+              _generateSelectOptions(parsedContent[0] as SelectElement),
               '      name: \'$name\',',
               '      desc: \'$description\',',
               '      args: [${_generateDartMethodArgs(args)}],',
@@ -173,6 +183,10 @@ class Label {
   String generateMetadata() {
     try {
       var parsedContent = parser.parse(content);
+      if (parsedContent == null) {
+        throw ParseException();
+      }
+
       var args = _getArgs(placeholders, parsedContent);
 
       var isValid = _validate(name, content, args, false);
@@ -240,7 +254,7 @@ class Label {
   }
 
   /// Merges meta args with extracted args from the message with preserved order.
-  List<Argument> _getArgs(List<String> placeholders, List<BaseElement> data) {
+  List<Argument> _getArgs(List<String>? placeholders, List<BaseElement> data) {
     var args = placeholders != null
         ? placeholders
             .map((placeholder) => Argument(Object, placeholder))
@@ -264,13 +278,13 @@ class Label {
         case ElementType.plural:
           {
             _updateArgsData(args, [Argument(num, item.value)]);
-            _updateArgsData(args, _getPluralOptionsArgs(item));
+            _updateArgsData(args, _getPluralOptionsArgs(item as PluralElement));
             break;
           }
         case ElementType.gender:
           {
             _updateArgsData(args, [Argument(String, item.value)]);
-            _updateArgsData(args, _getGenderOptionsArgs(item));
+            _updateArgsData(args, _getGenderOptionsArgs(item as GenderElement));
             break;
           }
         case ElementType.select:
@@ -282,7 +296,7 @@ class Label {
             }
 
             _updateArgsData(args, [choiceArg], forceBeginning: true);
-            _updateArgsData(args, _getSelectOptionsArgs(item));
+            _updateArgsData(args, _getSelectOptionsArgs(item as SelectElement));
             break;
           }
         default:

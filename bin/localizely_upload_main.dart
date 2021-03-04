@@ -42,9 +42,9 @@ Future<void> main(List<String> arguments) async {
       exit(0);
     }
 
-    var projectId = argResults['project-id'] as String;
-    var apiToken = argResults['api-token'] as String;
-    var arbDir = argResults['arb-dir'] as String;
+    var projectId = argResults['project-id'] as String?;
+    var apiToken = argResults['api-token'] as String?;
+    var arbDir = argResults['arb-dir'] as String?;
 
     if (projectId == null) {
       var pubspecConfig = PubspecConfig();
