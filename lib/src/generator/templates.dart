@@ -2,7 +2,7 @@ import '../utils/utils.dart';
 import 'label.dart';
 
 String generateL10nDartFileContent(
-    String className, List<Label> labels, List<String> locales,
+    String className, bool nonnullOfFunction, List<Label> labels, List<String> locales,
     [bool otaEnabled = false]) {
   return """
 // GENERATED CODE - DO NOT MODIFY BY HAND
@@ -21,9 +21,12 @@ import 'intl/messages_all.dart';
 
 class $className {
   $className();
-  
-  static $className? current;
-  
+
+${nonnullOfFunction ? """
+  static $className? _internalCurrent;
+
+  static $className get current => _internalCurrent!;""" : '  static $className? current;'}
+
   static const AppLocalizationDelegate delegate =
     AppLocalizationDelegate();
 
@@ -32,14 +35,14 @@ class $className {
     final localeName = Intl.canonicalizedLocale(name);${otaEnabled ? '\n${_generateMetadataSetter()}' : ''} 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
-      $className.current = $className();
-      
-      return $className.current!;
+      $className.${nonnullOfFunction ? '_internalCurrent' : 'current'} = $className();
+ 
+      return $className.current${nonnullOfFunction ? '' : '!'};
     });
   } 
 
-  static $className? of(BuildContext context) {
-    return Localizations.of<$className>(context, $className);
+  static $className${nonnullOfFunction ? '' : '?'} of(BuildContext context) {
+    return Localizations.of<$className>(context, $className)${nonnullOfFunction ? '!' : ''};
   }
 ${otaEnabled ? '\n${_generateMetadata(labels)}\n' : ''}
 ${labels.map((label) => label.generateDartGetter()).join("\n\n")}

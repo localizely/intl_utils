@@ -15,6 +15,7 @@ class Generator {
   late String _mainLocale;
   late String _arbDir;
   late String _outputDir;
+  late bool _nonnullOfFunction;
   late bool _useDeferredLoading;
   late bool _otaEnabled;
 
@@ -62,6 +63,9 @@ class Generator {
       }
     }
 
+    _nonnullOfFunction =
+        pubspecConfig.nonnullOfFunction ?? defaultNonnullOfFunction;
+
     _useDeferredLoading =
         pubspecConfig.useDeferredLoading ?? defaultUseDeferredLoading;
 
@@ -86,8 +90,8 @@ class Generator {
   Future<void> _updateGeneratedDir() async {
     var labels = _getLabelsFromMainArbFile();
     var locales = _orderLocales(getLocales(_arbDir));
-    var content =
-        generateL10nDartFileContent(_className, labels, locales, _otaEnabled);
+    var content = generateL10nDartFileContent(
+        _className, _nonnullOfFunction, labels, locales, _otaEnabled);
     await updateL10nDartFile(content, _outputDir);
 
     var intlDir = getIntlDirectory(_outputDir);

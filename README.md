@@ -23,6 +23,7 @@ flutter_intl:
   main_locale: en # Optional. Sets the main locale used for generating localization files. Provided value should consist of language code and optional script and country codes separated with underscore (e.g. 'en', 'en_GB', 'zh_Hans', 'zh_Hans_CN'). Default: en
   arb_dir: lib/l10n # Optional. Sets the directory of your ARB resource files. Provided value should be a valid path on your system. Default: lib/l10n
   output_dir: lib/generated # Optional. Sets the directory of generated localization files. Provided value should be a valid path on your system. Default: lib/generated
+  nonnull_of_function: false # Optional. If set to true, the result of S.of(context) and S.current will be non nullable. This is done by casting the value away from nullability, which can lead to errors when localization is missing. Default: false
   use_deferred_loading: false # Optional. Must be set to true to generate localization code that is loaded with deferred loading. Default: false
   localizely: # Optional settings if you use Localizely platform. Read more: https://localizely.com/flutter-localization-workflow
     project_id: # Get it from the https://app.localizely.com/projects page.
