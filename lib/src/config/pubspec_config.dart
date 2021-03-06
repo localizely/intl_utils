@@ -1,3 +1,4 @@
+import 'package:pub_semver/pub_semver.dart';
 import 'package:yaml/yaml.dart' as yaml;
 
 import '../utils/file_utils.dart';
@@ -11,6 +12,7 @@ class PubspecConfig {
   String? _outputDir;
   bool? _useDeferredLoading;
   LocalizelyConfig? _localizelyConfig;
+  bool? _usesNullSafeSdk;
 
   PubspecConfig() {
     var pubspecFile = getPubspecFile();
@@ -46,6 +48,8 @@ class PubspecConfig {
         : null;
     _localizelyConfig =
         LocalizelyConfig.fromConfig(flutterIntlConfig['localizely']);
+
+    _usesNullSafeSdk = _inferNullSafeSdk(pubspecYaml);
   }
 
   bool? get enabled => _enabled;
@@ -61,6 +65,8 @@ class PubspecConfig {
   bool? get useDeferredLoading => _useDeferredLoading;
 
   LocalizelyConfig? get localizelyConfig => _localizelyConfig;
+
+  bool? get usesNullSafeSdk => _usesNullSafeSdk;
 }
 
 class LocalizelyConfig {
@@ -108,3 +114,28 @@ class LocalizelyConfig {
 
   bool? get otaEnabled => _otaEnabled;
 }
+
+bool? _inferNullSafeSdk(dynamic pubspecYaml) {
+  var sdk = pubspecYaml['environment']?['sdk'];
+  if (sdk == null || sdk is! String) {
+    return null;
+  }
+
+  late VersionConstraint sdkVersion;
+  try {
+    sdkVersion = VersionConstraint.parse(sdk);
+  } on FormatException {
+    return null;
+  }
+
+  final intersection = sdkVersion.intersect(_sdkVersionRangeWithoutNullSafety);
+  final nullSafeSdk = intersection.isEmpty;
+  return nullSafeSdk;
+}
+
+final VersionRange _sdkVersionRangeWithoutNullSafety = VersionRange(
+  min: Version(0, 0, 0),
+  includeMin: true,
+  max: Version(2, 12, 0),
+  includeMax: false,
+);

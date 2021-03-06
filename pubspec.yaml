@@ -14,6 +14,7 @@ dependencies:
   intl: ^0.17.0
   path: ^1.8.0
   petitparser: ^4.0.0
+  pub_semver: ^2.0.0
   yaml: ^3.0.0
 
 dev_dependencies:

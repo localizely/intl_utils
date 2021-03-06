@@ -46,6 +46,7 @@
 library generate_localized;
 
 import 'package:intl/intl.dart';
+import 'package:intl_utils/src/utils/utils.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:path/path.dart' as path;
@@ -79,6 +80,9 @@ class MessageGeneration {
 
   /// Should we use deferred loading for the generated libraries.
   bool useDeferredLoading = true;
+
+  /// Should we use generate null safe code.
+  bool nnbd = true;
 
   /// The mode to generate in - either 'release' or 'debug'.
   ///
@@ -259,7 +263,8 @@ class MessageLookup extends MessageLookupByLibrary {
       output.write(loadOperation);
     }
     output.write('};\n');
-    output.write('\nMessageLookupByLibrary? _findExact(String localeName) {\n'
+    output.write(
+        '\n${genNullableTypeStr('MessageLookupByLibrary', nnbd: nnbd)} _findExact(String localeName) {\n'
         '  switch (localeName) {\n');
     for (var rawLocale in allLocales) {
       var locale = Intl.canonicalizedLocale(rawLocale);
@@ -322,7 +327,7 @@ bool _messagesExistFor(String locale) {
   }
 }
 
-MessageLookupByLibrary? _findGeneratedMessagesFor(String locale) {
+${genNullableTypeStr('MessageLookupByLibrary', nnbd: nnbd)} _findGeneratedMessagesFor(String locale) {
   var actualLocale = Intl.verifiedLocale(locale, _messagesExistFor,
       onFailure: (_) => null);
   if (actualLocale == null) return null;

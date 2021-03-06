@@ -38,3 +38,17 @@ String formatJsonMessage(String jsonMessage) {
   var decoded = convert.jsonDecode(jsonMessage);
   return convert.jsonEncode(decoded);
 }
+
+/// Returns the type with the nullable operation if null safe
+String genNullableTypeStr(String type, {required bool nnbd}) {
+  if (nnbd) {
+    return '$type?';
+  } else {
+    return type;
+  }
+}
+
+/// Returns the bang operator if null safe
+String genBang({required bool nnbd}) {
+  return nnbd ? '!' : '';
+}

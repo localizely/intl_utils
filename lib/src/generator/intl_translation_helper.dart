@@ -52,10 +52,14 @@ class IntlTranslationHelper {
   final Map<String, List<MainMessage>> messages =
       {}; // Track of all processed messages, keyed by message name
 
-  IntlTranslationHelper([bool useDeferredLoading = false]) {
+  IntlTranslationHelper({
+    bool useDeferredLoading = false,
+    bool nnbd = true,
+  }) {
     extraction.suppressWarnings = true;
     generation.useDeferredLoading = useDeferredLoading;
     generation.generatedFilePrefix = '';
+    generation.nnbd = nnbd;
   }
 
   void generateFromArb(

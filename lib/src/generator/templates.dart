@@ -2,8 +2,12 @@ import '../utils/utils.dart';
 import 'label.dart';
 
 String generateL10nDartFileContent(
-    String className, List<Label> labels, List<String> locales,
-    [bool otaEnabled = false]) {
+  String className,
+  List<Label> labels,
+  List<String> locales, {
+  bool otaEnabled = false,
+  bool nnbd = true,
+}) {
   return """
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
@@ -22,7 +26,7 @@ import 'intl/messages_all.dart';
 class $className {
   $className();
   
-  static $className? current;
+  static ${genNullableTypeStr(className, nnbd: nnbd)} current;
   
   static const AppLocalizationDelegate delegate =
     AppLocalizationDelegate();
@@ -34,11 +38,11 @@ class $className {
       Intl.defaultLocale = localeName;
       $className.current = $className();
       
-      return $className.current!;
+      return $className.current${genBang(nnbd: nnbd)};
     });
   } 
 
-  static $className? of(BuildContext context) {
+  static ${genNullableTypeStr(className, nnbd: nnbd)} of(BuildContext context) {
     return Localizations.of<$className>(context, $className);
   }
 ${otaEnabled ? '\n${_generateMetadata(labels)}\n' : ''}
@@ -62,6 +66,7 @@ ${locales.map((locale) => _generateLocale(locale)).join("\n")}
   bool shouldReload(AppLocalizationDelegate old) => false;
 
   bool _isSupported(Locale locale) {
+    ${nnbd ? '' : 'if (locale == null) return false;'}
     for (var supportedLocale in supportedLocales) {
       if (supportedLocale.languageCode == locale.languageCode) {
         return true;

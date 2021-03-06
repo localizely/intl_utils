@@ -17,6 +17,7 @@ class Generator {
   late String _outputDir;
   late bool _useDeferredLoading;
   late bool _otaEnabled;
+  late bool _nnbd;
 
   /// Creates a new generator with configuration from the 'pubspec.yaml' file.
   Generator() {
@@ -67,6 +68,13 @@ class Generator {
 
     _otaEnabled =
         pubspecConfig.localizelyConfig?.otaEnabled ?? defaultOtaEnabled;
+
+    _nnbd = true;
+    if (pubspecConfig.usesNullSafeSdk != null) {
+      _nnbd = pubspecConfig.usesNullSafeSdk!;
+    } else {
+      warning('The Dart SDK cannot be inferred from the pubspec.yaml file.');
+    }
   }
 
   /// Generates localization files.
@@ -86,8 +94,13 @@ class Generator {
   Future<void> _updateGeneratedDir() async {
     var labels = _getLabelsFromMainArbFile();
     var locales = _orderLocales(getLocales(_arbDir));
-    var content =
-        generateL10nDartFileContent(_className, labels, locales, _otaEnabled);
+    var content = generateL10nDartFileContent(
+      _className,
+      labels,
+      locales,
+      otaEnabled: _otaEnabled,
+      nnbd: _nnbd,
+    );
     await updateL10nDartFile(content, _outputDir);
 
     var intlDir = getIntlDirectory(_outputDir);
@@ -143,7 +156,10 @@ class Generator {
     var dartFiles = [getL10nDartFilePath(_outputDir)];
     var arbFiles = getArbFiles(_arbDir).map((file) => file.path).toList();
 
-    var helper = IntlTranslationHelper(_useDeferredLoading);
+    var helper = IntlTranslationHelper(
+      useDeferredLoading: _useDeferredLoading,
+      nnbd: _nnbd,
+    );
     helper.generateFromArb(outputDir, dartFiles, arbFiles);
   }
 }
