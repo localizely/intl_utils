@@ -9,7 +9,7 @@ class PubspecConfig {
   String? _mainLocale;
   String? _arbDir;
   String? _outputDir;
-  bool? _nonnullOfFunction;
+  bool? _nullableDelegate;
   bool? _useDeferredLoading;
   LocalizelyConfig? _localizelyConfig;
 
@@ -42,8 +42,8 @@ class PubspecConfig {
     _outputDir = flutterIntlConfig['output_dir'] is String
         ? flutterIntlConfig['output_dir']
         : null;
-    _nonnullOfFunction = flutterIntlConfig['nonnull_of_function'] is bool
-        ? flutterIntlConfig['nonnull_of_function']
+    _nullableDelegate = flutterIntlConfig['nullable_delegate'] is bool
+        ? flutterIntlConfig['nullable_delegate']
         : null;
     _useDeferredLoading = flutterIntlConfig['use_deferred_loading'] is bool
         ? flutterIntlConfig['use_deferred_loading']
@@ -62,7 +62,7 @@ class PubspecConfig {
 
   String? get outputDir => _outputDir;
 
-  bool? get nonnullOfFunction => _nonnullOfFunction;
+  bool? get nullableDelegate => _nullableDelegate;
 
   bool? get useDeferredLoading => _useDeferredLoading;
 

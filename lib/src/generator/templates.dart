@@ -1,8 +1,8 @@
 import '../utils/utils.dart';
 import 'label.dart';
 
-String generateL10nDartFileContent(
-    String className, bool nonnullOfFunction, List<Label> labels, List<String> locales,
+String generateL10nDartFileContent(String className, bool nullableDelegate,
+    List<Label> labels, List<String> locales,
     [bool otaEnabled = false]) {
   return """
 // GENERATED CODE - DO NOT MODIFY BY HAND
@@ -22,10 +22,13 @@ import 'intl/messages_all.dart';
 class $className {
   $className();
 
-${nonnullOfFunction ? """
-  static $className? _internalCurrent;
+${nullableDelegate ? '  static $className? current;' : """
+  static $className? _current;
 
-  static $className get current => _internalCurrent!;""" : '  static $className? current;'}
+  static $className get current {
+    assert(_current != null, 'No instance of $className was loaded. Try to call $className.load(locale) before accessing $className.current.');
+    return _current!;
+  }"""}
 
   static const AppLocalizationDelegate delegate =
     AppLocalizationDelegate();
@@ -35,15 +38,26 @@ ${nonnullOfFunction ? """
     final localeName = Intl.canonicalizedLocale(name);${otaEnabled ? '\n${_generateMetadataSetter()}' : ''} 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
-      $className.${nonnullOfFunction ? '_internalCurrent' : 'current'} = $className();
+      final delegate = $className();
+      $className.${nullableDelegate ? 'current' : '_current'} = delegate;
  
-      return $className.current${nonnullOfFunction ? '' : '!'};
+      return delegate;
     });
   } 
 
-  static $className${nonnullOfFunction ? '' : '?'} of(BuildContext context) {
-    return Localizations.of<$className>(context, $className)${nonnullOfFunction ? '!' : ''};
+${nullableDelegate ? """
+  static $className? of(BuildContext context) {
+    return Localizations.of<$className>(context, $className);
+  }""" : """
+  static $className of(BuildContext context) {
+    final delegate = $className.maybeOf(context);
+    assert(delegate != null, 'No instance of $className present in the widget tree. Did you add $className.delegate in localizationsDelegates?');
+    return delegate!;
   }
+
+  static $className? maybeOf(BuildContext context) {
+    return Localizations.of<$className>(context, $className);
+  }"""}
 ${otaEnabled ? '\n${_generateMetadata(labels)}\n' : ''}
 ${labels.map((label) => label.generateDartGetter()).join("\n\n")}
 }
