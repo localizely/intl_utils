@@ -4,7 +4,6 @@ const defaultClassName = 'S';
 const defaultMainLocale = 'en';
 final defaultArbDir = join('lib', 'l10n');
 final defaultOutputDir = join('lib', 'generated');
-const defaultNullableDelegate = true;
 const defaultUseDeferredLoading = false;
 const defaultUploadOverwrite = false;
 const defaultUploadAsReviewed = false;

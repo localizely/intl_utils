@@ -9,7 +9,6 @@ class PubspecConfig {
   String? _mainLocale;
   String? _arbDir;
   String? _outputDir;
-  bool? _nullableDelegate;
   bool? _useDeferredLoading;
   LocalizelyConfig? _localizelyConfig;
 
@@ -42,9 +41,6 @@ class PubspecConfig {
     _outputDir = flutterIntlConfig['output_dir'] is String
         ? flutterIntlConfig['output_dir']
         : null;
-    _nullableDelegate = flutterIntlConfig['nullable_delegate'] is bool
-        ? flutterIntlConfig['nullable_delegate']
-        : null;
     _useDeferredLoading = flutterIntlConfig['use_deferred_loading'] is bool
         ? flutterIntlConfig['use_deferred_loading']
         : null;
@@ -61,8 +57,6 @@ class PubspecConfig {
   String? get arbDir => _arbDir;
 
   String? get outputDir => _outputDir;
-
-  bool? get nullableDelegate => _nullableDelegate;
 
   bool? get useDeferredLoading => _useDeferredLoading;
 
