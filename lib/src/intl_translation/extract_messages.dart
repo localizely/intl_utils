@@ -659,13 +659,13 @@ class PluralAndGenderVisitor extends SimpleAstVisitor {
     var message;
     switch (node.methodName.name) {
       case 'gender':
-        message = new Gender();
+        message = Gender();
         break;
       case 'plural':
-        message = new Plural();
+        message = Plural();
         break;
       case 'select':
-        message = new Select();
+        message = Select();
         break;
       default:
         throw IntlMessageExtractionException(
