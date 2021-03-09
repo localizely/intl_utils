@@ -21,9 +21,14 @@ import 'intl/messages_all.dart';
 
 class $className {
   $className();
-  
-  static $className? current;
-  
+
+  static $className? _current;
+
+  static $className get current {
+    assert(_current != null, 'No instance of $className was loaded. Try to initialize the $className delegate before accessing $className.current.');
+    return _current!;
+  }
+
   static const AppLocalizationDelegate delegate =
     AppLocalizationDelegate();
 
@@ -32,13 +37,20 @@ class $className {
     final localeName = Intl.canonicalizedLocale(name);${otaEnabled ? '\n${_generateMetadataSetter()}' : ''} 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
-      $className.current = $className();
-      
-      return $className.current!;
+      final instance = $className();
+      $className._current = instance;
+ 
+      return instance;
     });
   } 
 
-  static $className? of(BuildContext context) {
+  static $className of(BuildContext context) {
+    final instance = $className.maybeOf(context);
+    assert(instance != null, 'No instance of $className present in the widget tree. Did you add $className.delegate in localizationsDelegates?');
+    return instance!;
+  }
+
+  static $className? maybeOf(BuildContext context) {
     return Localizations.of<$className>(context, $className);
   }
 ${otaEnabled ? '\n${_generateMetadata(labels)}\n' : ''}
