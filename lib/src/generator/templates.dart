@@ -1,7 +1,9 @@
 import '../utils/utils.dart';
 import 'label.dart';
 
-String generateL10nDartFileContent(String className, List<Label> labels, List<String> locales, [bool otaEnabled = false]) {
+String generateL10nDartFileContent(
+    String className, List<Label> labels, List<String> locales,
+    [bool otaEnabled = false]) {
   return """
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
@@ -23,7 +25,7 @@ class $className {
   static $className? _current;
 
   static $className get current {
-    assert(_current != null, 'No instance of $className was loaded. Try to call $className.load(locale) before accessing $className.current.');
+    assert(_current != null, 'No instance of $className was loaded. Try to initialize the $className delegate before accessing $className.current.');
     return _current!;
   }
 
@@ -35,17 +37,17 @@ class $className {
     final localeName = Intl.canonicalizedLocale(name);${otaEnabled ? '\n${_generateMetadataSetter()}' : ''} 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
-      final delegate = $className();
-      $className._current = delegate;
+      final instance = $className();
+      $className._current = instance;
  
-      return delegate;
+      return instance;
     });
   } 
 
   static $className of(BuildContext context) {
-    final delegate = $className.maybeOf(context);
-    assert(delegate != null, 'No instance of $className present in the widget tree. Did you add $className.delegate in localizationsDelegates?');
-    return delegate!;
+    final instance = $className.maybeOf(context);
+    assert(instance != null, 'No instance of $className present in the widget tree. Did you add $className.delegate in localizationsDelegates?');
+    return instance!;
   }
 
   static $className? maybeOf(BuildContext context) {

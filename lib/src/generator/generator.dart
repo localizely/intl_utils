@@ -86,7 +86,8 @@ class Generator {
   Future<void> _updateGeneratedDir() async {
     var labels = _getLabelsFromMainArbFile();
     var locales = _orderLocales(getLocales(_arbDir));
-    var content = generateL10nDartFileContent(_className, labels, locales, _otaEnabled);
+    var content =
+        generateL10nDartFileContent(_className, labels, locales, _otaEnabled);
     await updateL10nDartFile(content, _outputDir);
 
     var intlDir = getIntlDirectory(_outputDir);
