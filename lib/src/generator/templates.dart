@@ -25,7 +25,7 @@ class $className {
   static $className? _current;
 
   static $className get current {
-    assert(_current != null, 'No instance of $className was loaded. Try to initialize the $className delegate before accessing $className.current.');
+    if(_current == null) _current = $className();
     return _current!;
   }
 
