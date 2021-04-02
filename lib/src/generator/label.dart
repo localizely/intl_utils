@@ -6,7 +6,7 @@ import '../utils/utils.dart';
 
 final parser = IcuParser();
 
-enum ContentType { literal, argument, plural, gender, select, unsupported }
+enum ContentType { literal, argument, plural, gender, select, compound }
 
 class ValidationException implements Exception {
   final String? message;
@@ -87,12 +87,13 @@ class Label {
             ].join('\n');
           }
         case ContentType.argument:
+        case ContentType.compound:
           {
             return [
               _generateDartDoc(),
               '  String $name(${_generateDartMethodParameters(args)}) {',
               '    return Intl.message(',
-              '      \'${_generateArgumentContent(parsedContent)}\',',
+              '      \'${_generateCompoundContent(parsedContent)}\',',
               '      name: \'$name\',',
               '      desc: \'$description\',',
               '      args: [${_generateDartMethodArgs(args)}],',
@@ -147,23 +148,6 @@ class Label {
               _generateSelectOptions(parsedContent[0] as SelectElement),
               '      name: \'$name\',',
               '      desc: \'$description\',',
-              '      args: [${_generateDartMethodArgs(args)}],',
-              '    );',
-              '  }'
-            ].join('\n');
-          }
-        case ContentType.unsupported:
-        default:
-          {
-            warning("The '${name}' key has an unsupported content type.");
-
-            return [
-              _generateDartDoc(),
-              '  String ${args.isNotEmpty ? '${name}(${_generateDartMethodParameters(args)})' : 'get ${name}'} {',
-              '    return Intl.message(',
-              '      \'${content}\',',
-              '      name: \'${name}\',',
-              '      desc: \'${description}\',',
               '      args: [${_generateDartMethodArgs(args)}],',
               '    );',
               '  }'
@@ -401,7 +385,7 @@ class Label {
     } else if (_isSelect(data) && args.isNotEmpty) {
       return ContentType.select;
     } else {
-      return ContentType.unsupported; // other types which are not supported yet
+      return ContentType.compound;
     }
   }
 
@@ -431,7 +415,7 @@ class Label {
           .map((item) => item.type == ElementType.select)
           .reduce((bool acc, bool curr) => acc && curr));
 
-  String _generateArgumentContent(List<BaseElement> data) {
+  String _generateCompoundContent(List<BaseElement> data) {
     var content = data
         .asMap()
         .map((index, item) {
@@ -447,6 +431,18 @@ class Label {
                     _isArgumentBracingRequired(data, index)
                         ? '\${${item.value}}'
                         : '\$${item.value}');
+              }
+            case ElementType.plural:
+              {
+                return MapEntry(index, '\${${_generatePluralMessage(item as PluralElement)}}');
+              }
+            case ElementType.gender:
+            {
+              return MapEntry(index, '\${${_generateGenderMessage(item as GenderElement)}}');
+            }
+            case ElementType.select:
+              {
+                return MapEntry(index, '\${${_generateSelectMessage(item as SelectElement)}}');
               }
             default:
               {
@@ -652,6 +648,91 @@ class Label {
     });
 
     return sanitized;
+  }
+
+  String _generatePluralMessage(PluralElement element) {
+    var options = <String>[];
+
+    _sanitizePluralOptions(element.options).forEach((option) {
+      var message = _generatePluralOrSelectOptionMessage(option);
+
+      switch (option.name) {
+        case '=0':
+        case 'zero':
+          {
+            options.add("zero: '${message}'");
+            break;
+          }
+        case '=1':
+        case 'one':
+          {
+            options.add("one: '${message}'");
+            break;
+          }
+        case '=2':
+        case 'two':
+          {
+            options.add("two: '${message}'");
+            break;
+          }
+        case 'few':
+          {
+            options.add("few: '${message}'");
+            break;
+          }
+        case 'many':
+          {
+            options.add("many: '${message}'");
+            break;
+          }
+        case 'other':
+          {
+            options.add("other: '${message}'");
+            break;
+          }
+      }
+    });
+
+    return 'Intl.plural(${element.value}, ${options.join(', ')})';
+  }
+
+  String _generateGenderMessage(GenderElement element) {
+    var options = <String>[];
+
+    _sanitizeGenderOptions(element.options).forEach((option) {
+      var message = _generatePluralOrSelectOptionMessage(option);
+      switch (option.name) {
+        case 'male':
+          {
+            options.add("male: '${message}'");
+            break;
+          }
+        case 'female':
+          {
+            options.add("female: '${message}'");
+            break;
+          }
+        case 'other':
+          {
+            options.add("other: '${message}'");
+            break;
+          }
+        default:
+          {}
+      }
+    });
+
+    return 'Intl.gender(${element.value}, ${options.join(', ')})';
+  }
+
+  String _generateSelectMessage(SelectElement element) {
+    var options = <String>[];
+
+    _sanitizeSelectOptions(element.options).forEach((option) {
+      options.add("'${option.name}': '${_generatePluralOrSelectOptionMessage(option)}'");
+    });
+
+    return 'Intl.select(${element.value}, {${options.join(', ')}})';
   }
 
   String _generatePluralOrSelectOptionMessage(option) {
