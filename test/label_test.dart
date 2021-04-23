@@ -113,39 +113,83 @@ void main() {
           equals("  // skipped getter for the 'page.home.title' key"));
     });
 
-    // Note: check parser impl.
+    // Note: the generated message may differ from the one in the `messages_<locale>.dart` file
     test('Test dart getter when content has an empty placeholder', () {
       var label = Label('labelName', 'Content {} with empty placeholder');
 
-      expect(label.generateDartGetter(),
-          equals("  // skipped getter for the 'labelName' key"));
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Content {} with empty placeholder`',
+            '  String get labelName {',
+            '    return Intl.message(',
+            '      \'Content {} with empty placeholder\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [],',
+            '    );',
+            '  }'
+          ].join('\n')));
     });
 
-    // Note: check parser impl.
+    // Note: the generated message may differ from the one in the `messages_<locale>.dart` file
     test('Test dart getter when content has digit placeholder', () {
       var label = Label('labelName', 'Content {0} with digit placeholder');
 
-      expect(label.generateDartGetter(),
-          equals("  // skipped getter for the 'labelName' key"));
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Content {0} with digit placeholder`',
+            '  String get labelName {',
+            '    return Intl.message(',
+            '      \'Content {0} with digit placeholder\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [],',
+            '    );',
+            '  }'
+          ].join('\n')));
     });
 
-    // Note: check parser impl.
+    // Note: the generated message may differ from the one in the `messages_<locale>.dart` file
     test('Test dart getter when content has hash placeholder', () {
       var label = Label('labelName', 'Content {#} with hash placeholder');
 
-      expect(label.generateDartGetter(),
-          equals("  // skipped getter for the 'labelName' key"));
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Content {#} with hash placeholder`',
+            '  String get labelName {',
+            '    return Intl.message(',
+            '      \'Content {#} with hash placeholder\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [],',
+            '    );',
+            '  }'
+          ].join('\n')));
     });
 
-    // Note: check parser impl.
+    // Note: the generated message may differ from the one in the `messages_<locale>.dart` file
     test(
         'Test dart getter when content has placeholder which name does not follow naming convention',
         () {
       var label = Label('labelName',
           'Content {invalid-placeholder-name} with invalid placeholder name');
 
-      expect(label.generateDartGetter(),
-          equals("  // skipped getter for the 'labelName' key"));
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Content {invalid-placeholder-name} with invalid placeholder name`',
+            '  String get labelName {',
+            '    return Intl.message(',
+            '      \'Content {invalid-placeholder-name} with invalid placeholder name\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [],',
+            '    );',
+            '  }'
+          ].join('\n')));
     });
   });
 
@@ -1436,8 +1480,19 @@ void main() {
       var label = Label('labelName',
           '{count, plural, one {one message} unsupportedPluralForm {unsupported plural form message} other {other message}}');
 
-      expect(label.generateDartGetter(),
-          equals("  // skipped getter for the 'labelName' key"));
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{count, plural, one {one message} unsupportedPluralForm {unsupported plural form message} other {other message}}`',
+            '  String get labelName {',
+            '    return Intl.message(',
+            '      \'{count, plural, one {one message} unsupportedPluralForm {unsupported plural form message} other {other message}}\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [],',
+            '    );',
+            '  }'
+          ].join('\n')));
     });
 
     test(
@@ -2463,6 +2518,200 @@ void main() {
     });
   });
 
+  group('Compound getters', () {
+    test(
+        'Test compound message of literal and plural dart getter with name and content set',
+        () {
+      var label = Label('labelName',
+          'John has {count, plural, one {{count} apple} other {{count} apples}}.');
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `John has {count, plural, one {{count} apple} other {{count} apples}}.`',
+            '  String labelName(num count) {',
+            '    return Intl.message(',
+            '      \'John has \${Intl.plural(count, one: \'\$count apple\', other: \'\$count apples\')}.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test compound message of literal and plural dart getter with name, content and placeholders set',
+        () {
+      var label = Label('labelName',
+          'John has {count, plural, one {{count} apple} other {{count} apples}}.',
+          placeholders: ['count']);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `John has {count, plural, one {{count} apple} other {{count} apples}}.`',
+            '  String labelName(num count) {',
+            '    return Intl.message(',
+            '      \'John has \${Intl.plural(count, one: \'\$count apple\', other: \'\$count apples\')}.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test compound message of literal and gender dart getter with name and content set',
+        () {
+      var label = Label('labelName',
+          'Welcome {gender, select, male {Mr {name}} female {Mrs {name}} other {dear {name}}}.');
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Welcome {gender, select, male {Mr {name}} female {Mrs {name}} other {dear {name}}}.`',
+            '  String labelName(String gender, Object name) {',
+            '    return Intl.message(',
+            '      \'Welcome \${Intl.gender(gender, male: \'Mr \$name\', female: \'Mrs \$name\', other: \'dear \$name\')}.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [gender, name],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test compound message of literal and gender dart getter with name, content and placeholders set',
+        () {
+      var label = Label('labelName',
+          'Welcome {gender, select, male {Mr {name}} female {Mrs {name}} other {dear {name}}}.',
+          placeholders: ['gender', 'name']);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Welcome {gender, select, male {Mr {name}} female {Mrs {name}} other {dear {name}}}.`',
+            '  String labelName(String gender, Object name) {',
+            '    return Intl.message(',
+            '      \'Welcome \${Intl.gender(gender, male: \'Mr \$name\', female: \'Mrs \$name\', other: \'dear \$name\')}.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [gender, name],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test compound message of literal and select dart getter with name and content set',
+        () {
+      var label = Label('labelName',
+          'The {choice, select, admin {admin {name}} owner {owner {name}} other {user {name}}}.');
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `The {choice, select, admin {admin {name}} owner {owner {name}} other {user {name}}}.`',
+            '  String labelName(Object choice, Object name) {',
+            '    return Intl.message(',
+            '      \'The \${Intl.select(choice, {\'admin\': \'admin \$name\', \'owner\': \'owner \$name\', \'other\': \'user \$name\'})}.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, name],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test compound message of literal and select dart getter with name, content and placeholders set',
+        () {
+      var label = Label('labelName',
+          'The {choice, select, admin {admin {name}} owner {owner {name}} other {user {name}}}.',
+          placeholders: ['choice', 'name']);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `The {choice, select, admin {admin {name}} owner {owner {name}} other {user {name}}}.`',
+            '  String labelName(Object choice, Object name) {',
+            '    return Intl.message(',
+            '      \'The \${Intl.select(choice, {\'admin\': \'admin \$name\', \'owner\': \'owner \$name\', \'other\': \'user \$name\'})}.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, name],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test compound message of argument and plural dart getter with name and content set',
+        () {
+      var label = Label('labelName',
+          '{name} has {count, plural, one {{count} apple} other {{count} apples}} in the bag.');
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{name} has {count, plural, one {{count} apple} other {{count} apples}} in the bag.`',
+            '  String labelName(Object name, num count) {',
+            '    return Intl.message(',
+            '      \'\$name has \${Intl.plural(count, one: \'\$count apple\', other: \'\$count apples\')} in the bag.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [name, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test compound message of argument and gender dart getter with name and content set',
+        () {
+      var label = Label('labelName',
+          'The {gender, select, male {Mr {name}} female {Mrs {name}} other {dear {name}}} has the {device}.');
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `The {gender, select, male {Mr {name}} female {Mrs {name}} other {dear {name}}} has the {device}.`',
+            '  String labelName(String gender, Object name, Object device) {',
+            '    return Intl.message(',
+            '      \'The \${Intl.gender(gender, male: \'Mr \$name\', female: \'Mrs \$name\', other: \'dear \$name\')} has the \$device.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [gender, name, device],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test compound message of argument and select dart getter with name and content set',
+        () {
+      var label = Label('labelName',
+          'The one {choice, select, coffee {{name} coffee} tea {{name} tea} other {{name} drink}} please for the {client}.');
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `The one {choice, select, coffee {{name} coffee} tea {{name} tea} other {{name} drink}} please for the {client}.`',
+            '  String labelName(Object choice, Object name, Object client) {',
+            '    return Intl.message(',
+            '      \'The one \${Intl.select(choice, {\'coffee\': \'\$name coffee\', \'tea\': \'\$name tea\', \'other\': \'\$name drink\'})} please for the \$client.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, name, client],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+  });
+
   group('Label metadata', () {
     test('Test label metadata generator when label name is invalid', () {
       var label = Label('Invalid label name', 'Some content');
@@ -2489,7 +2738,29 @@ void main() {
 
       expect(
         label.generateMetadata(),
-        equals('    // skipped metadata for the \'labelName\' key'),
+        equals('    \'labelName\': []'),
+      );
+    });
+
+    test(
+        'Test label metadata generator when label content contains number within curly braces',
+        () {
+      var label = Label('labelName', '{0}');
+
+      expect(
+        label.generateMetadata(),
+        equals('    \'labelName\': []'),
+      );
+    });
+
+    test(
+        'Test label metadata generator when label content contains hash within curly braces',
+        () {
+      var label = Label('labelName', '{#}');
+
+      expect(
+        label.generateMetadata(),
+        equals('    \'labelName\': []'),
       );
     });
 
@@ -2516,13 +2787,61 @@ void main() {
     });
 
     test(
+        'Test label metadata generator when label content contains plural message',
+        () {
+      var label = Label('labelName',
+          '{count, plural, one {{count} item} other {{count} items}}');
+
+      expect(
+        label.generateMetadata(),
+        equals('    \'labelName\': [\'count\']'),
+      );
+    });
+
+    test(
+        'Test label metadata generator when label content contains gender message',
+        () {
+      var label = Label('labelName',
+          '{gender, select, male {Mr {name}} female {Mrs {name}} other {user {name}}}');
+
+      expect(
+        label.generateMetadata(),
+        equals('    \'labelName\': [\'gender\', \'name\']'),
+      );
+    });
+
+    test(
+        'Test label metadata generator when label content contains select message',
+        () {
+      var label = Label('labelName',
+          '{choice, select, admin {admin {name}} owner {owner {name}} other {user {name}}}');
+
+      expect(
+        label.generateMetadata(),
+        equals('    \'labelName\': [\'choice\', \'name\']'),
+      );
+    });
+
+    test(
+        'Test label metadata generator when label content contains compound message',
+        () {
+      var label = Label('labelName',
+          'The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}}.');
+
+      expect(
+        label.generateMetadata(),
+        equals('    \'labelName\': [\'gender\', \'name\', \'count\']'),
+      );
+    });
+
+    test(
         'Test label metadata generator when label content contains invalid placeholder name',
         () {
       var label = Label('labelName', 'Hi {invalie-placeholder}!');
 
       expect(
         label.generateMetadata(),
-        equals('    // skipped metadata for the \'labelName\' key'),
+        equals('    \'labelName\': []'),
       );
     });
 
@@ -2533,7 +2852,7 @@ void main() {
 
       expect(
         label.generateMetadata(),
-        equals('    // skipped metadata for the \'labelName\' key'),
+        equals('    \'labelName\': []'),
       );
     });
   });

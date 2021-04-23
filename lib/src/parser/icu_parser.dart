@@ -136,7 +136,7 @@ class IcuParser {
       (openCurly & id & closeCurly).map((result) => ArgumentElement(result[1]));
 
   List<BaseElement>? parse(String message) {
-    var parsed = (pluralOrGenderOrSelect | simpleText | empty)
+    var parsed = interiorText
         .map((result) =>
             List<BaseElement>.from(result is List ? result : [result]))
         .parse(message);
