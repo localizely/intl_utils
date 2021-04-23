@@ -118,8 +118,7 @@ class IcuParser {
 
   /// The primary entry point for parsing. Accepts a string and produces
   /// a parsed representation of it as a Message.
-  Parser get message => interiorText
-      .map((chunk) => Message.from(chunk, null));
+  Parser get message => interiorText.map((chunk) => Message.from(chunk, null));
 
   /// Represents an ordinary message, i.e. not a plural/gender/select, although
   /// it may have parameters.

@@ -434,15 +434,18 @@ class Label {
               }
             case ElementType.plural:
               {
-                return MapEntry(index, '\${${_generatePluralMessage(item as PluralElement)}}');
+                return MapEntry(index,
+                    '\${${_generatePluralMessage(item as PluralElement)}}');
               }
             case ElementType.gender:
-            {
-              return MapEntry(index, '\${${_generateGenderMessage(item as GenderElement)}}');
-            }
+              {
+                return MapEntry(index,
+                    '\${${_generateGenderMessage(item as GenderElement)}}');
+              }
             case ElementType.select:
               {
-                return MapEntry(index, '\${${_generateSelectMessage(item as SelectElement)}}');
+                return MapEntry(index,
+                    '\${${_generateSelectMessage(item as SelectElement)}}');
               }
             default:
               {
@@ -729,7 +732,8 @@ class Label {
     var options = <String>[];
 
     _sanitizeSelectOptions(element.options).forEach((option) {
-      options.add("'${option.name}': '${_generatePluralOrSelectOptionMessage(option)}'");
+      options.add(
+          "'${option.name}': '${_generatePluralOrSelectOptionMessage(option)}'");
     });
 
     return 'Intl.select(${element.value}, {${options.join(', ')}})';
