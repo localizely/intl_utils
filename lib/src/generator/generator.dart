@@ -88,7 +88,9 @@ class Generator {
     var locales = _orderLocales(getLocales(_arbDir));
     var content =
         generateL10nDartFileContent(_className, labels, locales, _otaEnabled);
-    await updateL10nDartFile(content, _outputDir);
+    var formattedContent = formatDartContent(content, 'l10n.dart');
+
+    await updateL10nDartFile(formattedContent, _outputDir);
 
     var intlDir = getIntlDirectory(_outputDir);
     if (intlDir == null) {

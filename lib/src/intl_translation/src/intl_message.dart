@@ -605,7 +605,7 @@ class MainMessage extends ComplexMessage {
   /// keyed by name with values the function that calls Intl.message.
   String toCodeForLocale(String locale, String name) {
     var out = StringBuffer()
-      ..write('static $name(')
+      ..write('static String $name(')
       ..write((arguments ?? []).join(', '))
       ..write(') => "')
       ..write(translations[locale])

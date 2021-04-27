@@ -5,6 +5,18 @@ All notable changes to the "flutter-intl" extension will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2.2.0 - 2021-04-27
+
+- Add support for compound messages
+
+- Format generated files
+
+- Add missing return types in generated files
+
+- Ignore avoid_escaping_inner_quotes lint rule in generated files
+
+- Fix escaping special chars
+
 ## 2.1.0 - 2021-03-09
 
 - Make `of(context)` non-null

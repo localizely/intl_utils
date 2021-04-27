@@ -848,13 +848,23 @@ class Label {
 
   String _escape(String value) {
     return value
-        .replaceAll('\r', '\\r')
+        .replaceAll('\\', '\\\\')
         .replaceAll('\n', '\\n')
+        .replaceAll('\r', '\\r')
+        .replaceAll('\t', '\\t')
+        .replaceAll('\b', '\\b')
+        .replaceAll('\f', '\\f')
         .replaceAll('\'', '\\\'')
         .replaceAll('\$', '\\\$');
   }
 
   String _escapeDartDoc(String value) {
-    return value.replaceAll('\n', '\\n').replaceAll('`', '\'');
+    return value
+        .replaceAll('\n', '\\n')
+        .replaceAll('\r', '\\r')
+        .replaceAll('\t', '\\t')
+        .replaceAll('\b', '\\b')
+        .replaceAll('\f', '\\f')
+        .replaceAll('`', '\'');
   }
 }

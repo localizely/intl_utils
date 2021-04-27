@@ -51,6 +51,7 @@ import 'dart:io';
 import 'package:path/path.dart' as path;
 
 import './src/intl_message.dart';
+import '../utils/utils.dart';
 
 class MessageGeneration {
   /// If the import path following package: is something else, modify the
@@ -107,13 +108,14 @@ class MessageGeneration {
   /// for the [translations] in [locale] and put it in [targetDir].
   void generateIndividualMessageFile(String basicLocale,
       Iterable<TranslatedMessage> translations, String targetDir) {
+    final fileName = '${generatedFilePrefix}messages_$basicLocale.dart';
     final content = contentForLocale(basicLocale, translations);
+    final formattedContent = formatDartContent(content, fileName);
 
     // To preserve compatibility, we don't use the canonical version of the
     // locale in the file name.
-    final filename = path.join(
-        targetDir, '${generatedFilePrefix}messages_$basicLocale.dart');
-    File(filename).writeAsStringSync(content);
+    final filePath = path.join(targetDir, fileName);
+    File(filePath).writeAsStringSync(formattedContent);
   }
 
   /// Generate a string that contains the dart code
@@ -183,7 +185,7 @@ class MessageGeneration {
       // 24356
       '''
   final messages = _notInlinedMessages(_notInlinedMessages);
-  static _notInlinedMessages(_) => <String, Function> {
+  static Map<String, Function> _notInlinedMessages(_) => <String, Function> {
 ''';
 
   /// [generateIndividualMessageFile] for the beginning of the file,
@@ -199,7 +201,7 @@ class MessageGeneration {
 // ignore_for_file:unnecessary_brace_in_string_interps, unnecessary_new
 // ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
 // ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
-// ignore_for_file:unused_import, file_names
+// ignore_for_file:unused_import, file_names, avoid_escaping_inner_quotes
 
 import 'package:$intlImportPath/intl.dart';
 import 'package:$intlImportPath/message_lookup_by_library.dart';

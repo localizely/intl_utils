@@ -75,9 +75,13 @@ class IntlTranslationHelper {
       _generateLocaleFile(locale, data, outputDir);
     });
 
-    var mainImportFile = File(path.join(
-        outputDir, '${generation.generatedFilePrefix}messages_all.dart'));
-    mainImportFile.writeAsStringSync(generation.generateMainImportFile());
+    var fileName = '${generation.generatedFilePrefix}messages_all.dart';
+    var mainImportFile = File(path.join(outputDir, fileName));
+
+    var content = generation.generateMainImportFile();
+    var formattedContent = formatDartContent(content, fileName);
+
+    mainImportFile.writeAsStringSync(formattedContent);
   }
 
   void _loadData(String filename, Map<String, List<Map>> messagesByLocale) {

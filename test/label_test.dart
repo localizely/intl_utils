@@ -325,6 +325,24 @@ void main() {
           ].join('\n')));
     });
 
+    test('Test literal dart getter when content has escaping chars set', () {
+      var label = Label('labelName', 'Escaping chars: \\\n\r\t\b\f\'"');
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Escaping chars: \\\\n\\r\\t\\b\\f\'"`',
+            '  String get labelName {',
+            '    return Intl.message(',
+            '      \'Escaping chars: \\\\\\n\\r\\t\\b\\f\\\'"\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
     test('Test literal dart getter when description has new line set', () {
       var label = Label('labelName', 'Literal message',
           description: 'Description \n with new line');
@@ -378,6 +396,26 @@ void main() {
             '      \'Literal message\',',
             '      name: \'labelName\',',
             '      desc: \'Description \\\$ with dollar sign\',',
+            '      args: [],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test('Test literal dart getter when description has escaping chars set',
+        () {
+      var label = Label('labelName', 'Literal message',
+          description: 'Escaping chars: \\\n\r\t\b\f\'"');
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Literal message`',
+            '  String get labelName {',
+            '    return Intl.message(',
+            '      \'Literal message\',',
+            '      name: \'labelName\',',
+            '      desc: \'Escaping chars: \\\\\\n\\r\\t\\b\\f\\\'"\',',
             '      args: [],',
             '    );',
             '  }'

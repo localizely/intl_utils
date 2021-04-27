@@ -1,6 +1,8 @@
 import 'dart:convert' as convert;
 import 'dart:io';
 
+import 'package:dart_style/dart_style.dart' show DartFormatter;
+
 bool isValidClassName(String value) =>
     RegExp(r'^[A-Z][a-zA-Z0-9]*$').hasMatch(value);
 
@@ -37,4 +39,15 @@ void exitWithError(String message) {
 String formatJsonMessage(String jsonMessage) {
   var decoded = convert.jsonDecode(jsonMessage);
   return convert.jsonEncode(decoded);
+}
+
+/// Formats Dart file content.
+String formatDartContent(String content, String fileName) {
+  try {
+    var formatter = DartFormatter();
+    return formatter.format(content);
+  } catch (e) {
+    info('Failed to format \'$fileName\' file.');
+    return content;
+  }
 }
