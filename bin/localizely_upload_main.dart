@@ -14,26 +14,71 @@ import 'package:intl_utils/src/utils/file_utils.dart';
 import 'package:intl_utils/src/utils/utils.dart';
 
 Future<void> main(List<String> arguments) async {
-  final argParser = args.ArgParser();
-  argParser.addFlag(
-    'help',
-    abbr: 'h',
-    defaultsTo: false,
-    negatable: false,
-    help: 'Print this usage information.',
-  );
-  argParser.addOption(
-    'project-id',
-    help: 'Localizely project ID.',
-  );
-  argParser.addOption(
-    'api-token',
-    help: 'Localizely API token.',
-  );
-  argParser.addOption(
-    'arb-dir',
-    help: 'Directory of the arb files.',
-  );
+  late bool usePubspec;
+  late String? projectId;
+  late String? apiToken;
+  late String arbDir;
+  late String mainLocale;
+  late String? branch;
+  late bool uploadOverwrite;
+  late bool uploadAsReviewed;
+
+  final argParser = args.ArgParser()
+    ..addFlag(
+      'use-pubspec',
+      defaultsTo: true,
+      help:
+          'Set this flag to false in order to run the executable from command line instead of from a configured pubspec.yaml. Default: true',
+      callback: ((x) => usePubspec = x),
+    )
+    ..addFlag(
+      'help',
+      abbr: 'h',
+      defaultsTo: false,
+      negatable: false,
+      help: 'Print this usage information.',
+    )
+    ..addOption(
+      'project-id',
+      help: 'Localizely project ID.',
+      callback: ((x) => projectId = x),
+    )
+    ..addOption(
+      'api-token',
+      help: 'Localizely API token.',
+      callback: ((x) => apiToken = x),
+    )
+    ..addOption(
+      'arb-dir',
+      help: 'Directory of the arb files.',
+      callback: ((x) => arbDir = x!),
+      defaultsTo: defaultArbDir,
+    )
+    ..addOption(
+      'main-locale',
+      help:
+          "Optional. Sets the main locale used for generating localization files. Provided value should consist of language code and optional script and country codes separated with underscore (e.g. 'en', 'en_GB', 'zh_Hans', 'zh_Hans_CN')",
+      callback: ((x) => mainLocale = x!),
+      defaultsTo: defaultMainLocale,
+    )
+    ..addOption(
+      'branch',
+      help:
+          'Get it from the “Branches” page on the Localizely platform, in case branching is enabled and you want to use a non-main branch.',
+      callback: ((x) => branch = x),
+    )
+    ..addFlag(
+      'upload-overwrite',
+      defaultsTo: defaultUploadOverwrite,
+      help: 'Set to true if you want to overwrite translations with upload. Default: false',
+      callback: ((x) => uploadOverwrite = x),
+    )
+    ..addFlag(
+      'upload-as-reviewed',
+      defaultsTo: defaultUploadAsReviewed,
+      help: 'Set to true if you want to mark uploaded translations as reviewed. Default: false',
+      callback: ((x) => uploadAsReviewed = x),
+    );
 
   try {
     final argResults = argParser.parse(arguments);
@@ -42,36 +87,42 @@ Future<void> main(List<String> arguments) async {
       exit(0);
     }
 
-    var projectId = argResults['project-id'] as String?;
-    var apiToken = argResults['api-token'] as String?;
-    var arbDir = argResults['arb-dir'] as String?;
+    if (usePubspec) {
+      final pubspecConfig = PubspecConfig();
+      projectId = pubspecConfig.localizelyConfig?.projectId;
+      apiToken = CredentialsConfig().apiToken;
+      arbDir = pubspecConfig.arbDir ?? defaultArbDir;
+      mainLocale = pubspecConfig.mainLocale ?? defaultMainLocale;
+      branch = pubspecConfig.localizelyConfig?.branch;
+      uploadOverwrite = pubspecConfig.localizelyConfig?.uploadOverwrite ?? defaultUploadOverwrite;
+      uploadAsReviewed = pubspecConfig.localizelyConfig?.uploadAsReviewed ?? defaultUploadAsReviewed;
+    }
 
     if (projectId == null) {
-      var pubspecConfig = PubspecConfig();
-      projectId = pubspecConfig.localizelyConfig?.projectId;
-
-      if (projectId == null) {
-        throw ConfigException(
-            "Argument 'project-id' was not provided, nor 'project_id' config was set within the 'flutter_intl/localizely' section of the 'pubspec.yaml' file.");
-      }
+      throw ConfigException(
+          "Argument 'project-id' was not provided, nor 'project_id' config was set within the 'flutter_intl/localizely' section of the 'pubspec.yaml' file.");
     }
 
     if (apiToken == null) {
-      var credentialsConfig = CredentialsConfig();
-      apiToken = credentialsConfig.apiToken;
-
-      if (apiToken == null) {
-        throw ConfigException(
-            "Argument 'api-token' was not provided, nor 'api_token' config was set within the '${getLocalizelyCredentialsFilePath()}' file.");
-      }
+      throw ConfigException(
+          "Argument 'api-token' was not provided, nor 'api_token' config was set within the '${getLocalizelyCredentialsFilePath()}' file.");
     }
 
-    if (arbDir == null) {
-      var pubspecConfig = PubspecConfig();
-      arbDir = pubspecConfig.arbDir ?? defaultArbDir;
+    if (!isValidLocale(mainLocale)) {
+      throw ConfigException(
+        "Config parameter 'main_locale' requires value consisted of language code and optional script and country codes separated with underscore (e.g. 'en', 'en_GB', 'zh_Hans', 'zh_Hans_CN').",
+      );
     }
 
-    await LocalizelyService.uploadMainArbFile(projectId, apiToken, arbDir);
+    await LocalizelyService.uploadMainArbFile(
+      projectId!,
+      apiToken!,
+      arbDir,
+      mainLocale,
+      branch,
+      uploadOverwrite,
+      uploadAsReviewed,
+    );
   } on args.ArgParserException catch (e) {
     exitWithError('${e.message}\n\n${argParser.usage}');
   } on ConfigException catch (e) {
