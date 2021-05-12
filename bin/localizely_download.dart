@@ -60,7 +60,8 @@ Future<void> main(List<String> arguments) async {
     )
     ..addOption(
       'download-empty-as',
-      help: "Config parameter 'download_empty_as' expects one of the following values: 'empty', 'main' or 'skip'.",
+      help:
+          "Config parameter 'download_empty_as' expects one of the following values: 'empty', 'main' or 'skip'.",
       defaultsTo: defaultDownloadEmptyAs,
       callback: ((x) => exportEmptyAs = x!),
     );
@@ -77,7 +78,8 @@ Future<void> main(List<String> arguments) async {
       projectId = pubspecConfig.localizelyConfig?.projectId;
       apiToken = CredentialsConfig().apiToken;
       arbDir = pubspecConfig.arbDir ?? defaultArbDir;
-      exportEmptyAs = pubspecConfig.localizelyConfig?.downloadEmptyAs ?? defaultDownloadEmptyAs;
+      exportEmptyAs = pubspecConfig.localizelyConfig?.downloadEmptyAs ??
+          defaultDownloadEmptyAs;
       branch = pubspecConfig.localizelyConfig?.branch;
     }
 

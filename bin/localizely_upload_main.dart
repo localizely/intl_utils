@@ -70,13 +70,15 @@ Future<void> main(List<String> arguments) async {
     ..addFlag(
       'upload-overwrite',
       defaultsTo: defaultUploadOverwrite,
-      help: 'Set to true if you want to overwrite translations with upload. Default: false',
+      help:
+          'Set to true if you want to overwrite translations with upload. Default: false',
       callback: ((x) => uploadOverwrite = x),
     )
     ..addFlag(
       'upload-as-reviewed',
       defaultsTo: defaultUploadAsReviewed,
-      help: 'Set to true if you want to mark uploaded translations as reviewed. Default: false',
+      help:
+          'Set to true if you want to mark uploaded translations as reviewed. Default: false',
       callback: ((x) => uploadAsReviewed = x),
     );
 
@@ -94,8 +96,10 @@ Future<void> main(List<String> arguments) async {
       arbDir = pubspecConfig.arbDir ?? defaultArbDir;
       mainLocale = pubspecConfig.mainLocale ?? defaultMainLocale;
       branch = pubspecConfig.localizelyConfig?.branch;
-      uploadOverwrite = pubspecConfig.localizelyConfig?.uploadOverwrite ?? defaultUploadOverwrite;
-      uploadAsReviewed = pubspecConfig.localizelyConfig?.uploadAsReviewed ?? defaultUploadAsReviewed;
+      uploadOverwrite = pubspecConfig.localizelyConfig?.uploadOverwrite ??
+          defaultUploadOverwrite;
+      uploadAsReviewed = pubspecConfig.localizelyConfig?.uploadAsReviewed ??
+          defaultUploadAsReviewed;
     }
 
     if (projectId == null) {
