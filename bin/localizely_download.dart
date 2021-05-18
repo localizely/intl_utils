@@ -14,32 +14,28 @@ import 'package:intl_utils/src/utils/file_utils.dart';
 import 'package:intl_utils/src/utils/utils.dart';
 
 Future<void> main(List<String> arguments) async {
-  late bool usePubspec;
   late String? projectId;
   late String? apiToken;
   late String arbDir;
   late String exportEmptyAs;
   late String? branch;
 
+  final pubspecConfig = PubspecConfig();
+  final credentialsConfig = CredentialsConfig();
+
   final argParser = args.ArgParser()
-    ..addFlag(
-      'use-pubspec',
-      defaultsTo: true,
-      help:
-          'Set this flag to false in order to run the executable from command line instead of from a configured pubspec.yaml. Default: true',
-      callback: ((x) => usePubspec = x),
-    )
     ..addFlag(
       'help',
       abbr: 'h',
-      defaultsTo: false,
-      negatable: false,
       help: 'Print this usage information.',
+      negatable: false,
+      defaultsTo: false,
     )
     ..addOption(
       'project-id',
       help: 'Localizely project ID.',
       callback: ((x) => projectId = x),
+      defaultsTo: pubspecConfig.localizelyConfig?.projectId,
     )
     ..addOption(
       'api-token',
@@ -50,20 +46,22 @@ Future<void> main(List<String> arguments) async {
       'arb-dir',
       help: 'Directory of the arb files.',
       callback: ((x) => arbDir = x!),
-      defaultsTo: defaultArbDir,
+      defaultsTo: pubspecConfig.arbDir ?? defaultArbDir,
     )
     ..addOption(
       'branch',
       help:
           'Get it from the “Branches” page on the Localizely platform, in case branching is enabled and you want to use a non-main branch.',
       callback: ((x) => branch = x),
+      defaultsTo: pubspecConfig.localizelyConfig?.branch,
     )
     ..addOption(
       'download-empty-as',
       help:
           "Config parameter 'download_empty_as' expects one of the following values: 'empty', 'main' or 'skip'.",
-      defaultsTo: defaultDownloadEmptyAs,
       callback: ((x) => exportEmptyAs = x!),
+      defaultsTo: pubspecConfig.localizelyConfig?.downloadEmptyAs ??
+          defaultDownloadEmptyAs,
     );
 
   try {
@@ -73,21 +71,12 @@ Future<void> main(List<String> arguments) async {
       exit(0);
     }
 
-    if (usePubspec) {
-      final pubspecConfig = PubspecConfig();
-      projectId = pubspecConfig.localizelyConfig?.projectId;
-      apiToken = CredentialsConfig().apiToken;
-      arbDir = pubspecConfig.arbDir ?? defaultArbDir;
-      exportEmptyAs = pubspecConfig.localizelyConfig?.downloadEmptyAs ??
-          defaultDownloadEmptyAs;
-      branch = pubspecConfig.localizelyConfig?.branch;
-    }
-
     if (projectId == null) {
       throw ConfigException(
           "Argument 'project-id' was not provided, nor 'project_id' config was set within the 'flutter_intl/localizely' section of the 'pubspec.yaml' file.");
     }
 
+    apiToken ??= credentialsConfig.apiToken;
     if (apiToken == null) {
       throw ConfigException(
           "Argument 'api-token' was not provided, nor 'api_token' config was set within the '${getLocalizelyCredentialsFilePath()}' file.");

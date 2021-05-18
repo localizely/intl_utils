@@ -5,6 +5,10 @@ All notable changes to the "flutter-intl" extension will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2.3.0 - 2021-05-18
+
+- Add missing upload and download command line arg options
+
 ## 2.2.0 - 2021-04-27
 
 - Add support for compound messages

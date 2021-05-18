@@ -55,15 +55,15 @@ You can also change the output folder from `lib/generated` to a custom directory
 
 #### Upload main ARB file
 
-      flutter pub run intl_utils:localizely_upload_main --project-id <PROJECT_ID> --api-token <API_TOKEN> [--arb-dir <ARB_DIR>]
+      flutter pub run intl_utils:localizely_upload_main [--project-id <PROJECT_ID> --api-token <API_TOKEN> --arb-dir <ARB_DIR> --main-locale <MAIN_LOCALE> --branch <BRANCH> --[no-]upload-overwrite --[no-]upload-as-reviewed]
 
-This will upload your main ARB file to Localizely. Check out the 'Configure package' section for additional upload configuration.
+This will upload your main ARB file to Localizely.<br />All args are optional. If not provided, the `intl_utils` will use configuration from the `pubspec.yaml` file or default values (check the [Configure package](#configure-package) section for more details).
 
 #### Download ARB files
 
-      flutter pub run intl_utils:localizely_download --project-id <PROJECT_ID> --api-token <API_TOKEN> [--arb-dir <ARB_DIR>]
+      flutter pub run intl_utils:localizely_download [--project-id <PROJECT_ID> --api-token <API_TOKEN> --arb-dir <ARB_DIR> --download-empty-as <DOWNLOAD_EMPTY_AS> --branch <BRANCH>]
 
-This will download all available ARB files from the Localizely platform and put them under `lib/l10n` folder, if you did not give a different `arb-dir`, inside your project.
+This will download all available ARB files from the Localizely platform and put them under `arb-dir` folder.<br />All args are optional. If not provided, the `intl_utils` will use configuration from the `pubspec.yaml` file or default values (check the [Configure package](#configure-package) section for more details).
 
 Notes:  
 Argument `project-id` can be omitted if `pubspec.yaml` file contains `project_id` configuration under `flutter_intl/localizely` section.  
