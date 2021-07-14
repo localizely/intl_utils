@@ -400,20 +400,14 @@ class Label {
               [ElementType.argument, ElementType.literal].contains(item.type))
           .reduce((bool acc, bool curr) => acc && curr));
 
-  bool _isPlural(List<BaseElement> data) => (data.isNotEmpty &&
-      data
-          .map((item) => item.type == ElementType.plural)
-          .reduce((bool acc, bool curr) => acc && curr));
+  bool _isPlural(List<BaseElement> data) =>
+      (data.length == 1 && data[0].type == ElementType.plural);
 
-  bool _isGender(List<BaseElement> data) => (data.isNotEmpty &&
-      data
-          .map((item) => item.type == ElementType.gender)
-          .reduce((bool acc, bool curr) => acc && curr));
+  bool _isGender(List<BaseElement> data) =>
+      (data.length == 1 && data[0].type == ElementType.gender);
 
-  bool _isSelect(List<BaseElement> data) => (data.isNotEmpty &&
-      data
-          .map((item) => item.type == ElementType.select)
-          .reduce((bool acc, bool curr) => acc && curr));
+  bool _isSelect(List<BaseElement> data) =>
+      (data.length == 1 && data[0].type == ElementType.select);
 
   String _generateCompoundContent(List<BaseElement> data) {
     var content = data

@@ -107,6 +107,13 @@ class IcuParser {
   Parser get intlSelect =>
       generalSelect.map((values) => Select.from(values.first, values[3], null));
 
+  Parser get compound => (((parameter | nonIcuMessageText).plus() &
+              pluralOrGenderOrSelect &
+              (pluralOrGenderOrSelect | parameter | nonIcuMessageText).star()) |
+          (pluralOrGenderOrSelect &
+              (pluralOrGenderOrSelect | parameter | nonIcuMessageText).plus()))
+      .map((result) => result.expand((x) => x is List ? x : [x]).toList());
+
   Parser get pluralOrGenderOrSelect => intlPlural | intlGender | intlSelect;
 
   Parser get contents => pluralOrGenderOrSelect | parameter | messageText;
@@ -118,7 +125,8 @@ class IcuParser {
 
   /// The primary entry point for parsing. Accepts a string and produces
   /// a parsed representation of it as a Message.
-  Parser get message => interiorText.map((chunk) => Message.from(chunk, null));
+  Parser get message => (compound | pluralOrGenderOrSelect | empty)
+      .map((chunk) => Message.from(chunk, null));
 
   /// Represents an ordinary message, i.e. not a plural/gender/select, although
   /// it may have parameters.

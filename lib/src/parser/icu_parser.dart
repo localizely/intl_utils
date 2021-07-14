@@ -124,6 +124,13 @@ class IcuParser {
   Parser get intlSelect => generalSelect
       .map((result) => SelectElement(result[0], List<Option>.from(result[3])));
 
+  Parser get compound => (((parameter | nonIcuMessageText).plus() &
+              pluralOrGenderOrSelect &
+              (pluralOrGenderOrSelect | parameter | nonIcuMessageText).star()) |
+          (pluralOrGenderOrSelect &
+              (pluralOrGenderOrSelect | parameter | nonIcuMessageText).plus()))
+      .map((result) => result.expand((x) => x is List ? x : [x]).toList());
+
   Parser get pluralOrGenderOrSelect => (intlPlural | intlGender | intlSelect);
 
   Parser get contents => pluralOrGenderOrSelect | parameter | messageText;
@@ -136,7 +143,7 @@ class IcuParser {
       (openCurly & id & closeCurly).map((result) => ArgumentElement(result[1]));
 
   List<BaseElement>? parse(String message) {
-    var parsed = interiorText
+    var parsed = (compound | pluralOrGenderOrSelect | simpleText | empty)
         .map((result) =>
             List<BaseElement>.from(result is List ? result : [result]))
         .parse(message);

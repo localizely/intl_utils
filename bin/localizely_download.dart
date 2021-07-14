@@ -17,7 +17,9 @@ Future<void> main(List<String> arguments) async {
   late String? projectId;
   late String? apiToken;
   late String arbDir;
-  late String exportEmptyAs;
+  late String downloadEmptyAs;
+  late List<String>? downloadIncludeTags;
+  late List<String>? downloadExcludeTags;
   late String? branch;
 
   final pubspecConfig = PubspecConfig();
@@ -59,9 +61,21 @@ Future<void> main(List<String> arguments) async {
       'download-empty-as',
       help:
           "Config parameter 'download_empty_as' expects one of the following values: 'empty', 'main' or 'skip'.",
-      callback: ((x) => exportEmptyAs = x!),
+      callback: ((x) => downloadEmptyAs = x!),
       defaultsTo: pubspecConfig.localizelyConfig?.downloadEmptyAs ??
           defaultDownloadEmptyAs,
+    )
+    ..addMultiOption(
+      'download-include-tags',
+      help: 'Optional list of tags to be downloaded.',
+      callback: ((x) => downloadIncludeTags = x),
+      defaultsTo: pubspecConfig.localizelyConfig?.downloadIncludeTags,
+    )
+    ..addMultiOption(
+      'download-exclude-tags',
+      help: 'Optional list of tags to be excluded from download.',
+      callback: ((x) => downloadExcludeTags = x),
+      defaultsTo: pubspecConfig.localizelyConfig?.downloadExcludeTags,
     );
 
   try {
@@ -82,19 +96,14 @@ Future<void> main(List<String> arguments) async {
           "Argument 'api-token' was not provided, nor 'api_token' config was set within the '${getLocalizelyCredentialsFilePath()}' file.");
     }
 
-    if (!isValidDownloadEmptyAsParam(exportEmptyAs)) {
+    if (!isValidDownloadEmptyAsParam(downloadEmptyAs)) {
       throw ConfigException(
         "Config parameter 'download_empty_as' expects one of the following values: 'empty', 'main' or 'skip'.",
       );
     }
 
-    await LocalizelyService.download(
-      projectId!,
-      apiToken!,
-      arbDir,
-      exportEmptyAs,
-      branch,
-    );
+    await LocalizelyService.download(projectId!, apiToken!, arbDir,
+        downloadEmptyAs, branch, downloadIncludeTags, downloadExcludeTags);
   } on args.ArgParserException catch (e) {
     exitWithError('${e.message}\n\n${argParser.usage}');
   } on ConfigException catch (e) {

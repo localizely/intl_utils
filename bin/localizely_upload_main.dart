@@ -21,6 +21,9 @@ Future<void> main(List<String> arguments) async {
   late String? branch;
   late bool uploadOverwrite;
   late bool uploadAsReviewed;
+  late List<String>? uploadTagAdded;
+  late List<String>? uploadTagUpdated;
+  late List<String>? uploadTagRemoved;
 
   final pubspecConfig = PubspecConfig();
   final credentialsConfig = CredentialsConfig();
@@ -78,6 +81,24 @@ Future<void> main(List<String> arguments) async {
       callback: ((x) => uploadAsReviewed = x),
       defaultsTo: pubspecConfig.localizelyConfig?.uploadAsReviewed ??
           defaultUploadAsReviewed,
+    )
+    ..addMultiOption(
+      'upload-tag-added',
+      help: 'Optional list of tags to add to new translations with upload.',
+      callback: ((x) => uploadTagAdded = x),
+      defaultsTo: pubspecConfig.localizelyConfig?.uploadTagAdded,
+    )
+    ..addMultiOption(
+      'upload-tag-updated',
+      help: 'Optional list of tags to add to updated translations with upload.',
+      callback: ((x) => uploadTagUpdated = x),
+      defaultsTo: pubspecConfig.localizelyConfig?.uploadTagUpdated,
+    )
+    ..addMultiOption(
+      'upload-tag-removed',
+      help: 'Optional list of tags to add to removed translations with upload.',
+      callback: ((x) => uploadTagRemoved = x),
+      defaultsTo: pubspecConfig.localizelyConfig?.uploadTagRemoved,
     );
 
   try {
@@ -105,14 +126,16 @@ Future<void> main(List<String> arguments) async {
     }
 
     await LocalizelyService.uploadMainArbFile(
-      projectId!,
-      apiToken!,
-      arbDir,
-      mainLocale,
-      branch,
-      uploadOverwrite,
-      uploadAsReviewed,
-    );
+        projectId!,
+        apiToken!,
+        arbDir,
+        mainLocale,
+        branch,
+        uploadOverwrite,
+        uploadAsReviewed,
+        uploadTagAdded,
+        uploadTagUpdated,
+        uploadTagRemoved);
   } on args.ArgParserException catch (e) {
     exitWithError('${e.message}\n\n${argParser.usage}');
   } on ConfigException catch (e) {

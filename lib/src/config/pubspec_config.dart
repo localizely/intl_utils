@@ -68,7 +68,12 @@ class LocalizelyConfig {
   String? _branch;
   bool? _uploadAsReviewed;
   bool? _uploadOverwrite;
+  List<String>? _uploadTagAdded;
+  List<String>? _uploadTagUpdated;
+  List<String>? _uploadTagRemoved;
   String? _downloadEmptyAs;
+  List<String>? _downloadIncludeTags;
+  List<String>? _downloadExcludeTags;
   bool? _otaEnabled;
 
   LocalizelyConfig.fromConfig(yaml.YamlMap? localizelyConfig) {
@@ -88,9 +93,26 @@ class LocalizelyConfig {
     _uploadOverwrite = localizelyConfig['upload_overwrite'] is bool
         ? localizelyConfig['upload_overwrite']
         : null;
+    _uploadTagAdded = localizelyConfig['upload_tag_added'] is yaml.YamlList
+        ? List<String>.from(localizelyConfig['upload_tag_added'])
+        : null;
+    _uploadTagUpdated = localizelyConfig['upload_tag_updated'] is yaml.YamlList
+        ? List<String>.from(localizelyConfig['upload_tag_updated'])
+        : null;
+    _uploadTagRemoved = localizelyConfig['upload_tag_removed'] is yaml.YamlList
+        ? List<String>.from(localizelyConfig['upload_tag_removed'])
+        : null;
     _downloadEmptyAs = localizelyConfig['download_empty_as'] is String
         ? localizelyConfig['download_empty_as']
         : null;
+    _downloadIncludeTags =
+        localizelyConfig['download_include_tags'] is yaml.YamlList
+            ? List<String>.from(localizelyConfig['download_include_tags'])
+            : null;
+    _downloadExcludeTags =
+        localizelyConfig['download_exclude_tags'] is yaml.YamlList
+            ? List<String>.from(localizelyConfig['download_exclude_tags'])
+            : null;
     _otaEnabled = localizelyConfig['ota_enabled'] is bool
         ? localizelyConfig['ota_enabled']
         : null;
@@ -104,7 +126,17 @@ class LocalizelyConfig {
 
   bool? get uploadOverwrite => _uploadOverwrite;
 
+  List<String>? get uploadTagAdded => _uploadTagAdded;
+
+  List<String>? get uploadTagUpdated => _uploadTagUpdated;
+
+  List<String>? get uploadTagRemoved => _uploadTagRemoved;
+
   String? get downloadEmptyAs => _downloadEmptyAs;
+
+  List<String>? get downloadIncludeTags => _downloadIncludeTags;
+
+  List<String>? get downloadExcludeTags => _downloadExcludeTags;
 
   bool? get otaEnabled => _otaEnabled;
 }

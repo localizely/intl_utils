@@ -7,28 +7,23 @@ class LocalizelyService {
 
   /// Uploads main ARB file on Localizely.
   static Future<void> uploadMainArbFile(
-    String projectId,
-    String apiToken,
-    String arbPath,
-    String mainLocale,
-    String? branch,
-    bool uploadOverwrite,
-    bool uploadAsReviewed,
-  ) async {
-    final mainArbFile = getArbFileForLocale(mainLocale, arbPath);
+      String projectId,
+      String apiToken,
+      String arbDir,
+      String mainLocale,
+      String? branch,
+      bool overwrite,
+      bool reviewed,
+      List<String>? tagAdded,
+      List<String>? tagUpdated,
+      List<String>? tagRemoved) async {
+    final mainArbFile = getArbFileForLocale(mainLocale, arbDir);
     if (mainArbFile == null) {
       throw ServiceException("Can't find ARB file for the main locale.");
     }
 
-    await LocalizelyApi.upload(
-      projectId,
-      apiToken,
-      mainLocale,
-      mainArbFile,
-      branch,
-      uploadOverwrite,
-      uploadAsReviewed,
-    );
+    await LocalizelyApi.upload(projectId, apiToken, mainLocale, mainArbFile,
+        branch, overwrite, reviewed, tagAdded, tagUpdated, tagRemoved);
   }
 
   /// Downloads all ARB files from Localizely.
@@ -38,13 +33,11 @@ class LocalizelyService {
     String arbDir,
     String exportEmptyAs,
     String? branch,
+    List<String>? includeTags,
+    List<String>? excludeTags,
   ) async {
     final response = await LocalizelyApi.download(
-      projectId,
-      apiToken,
-      branch,
-      exportEmptyAs,
-    );
+        projectId, apiToken, branch, exportEmptyAs, includeTags, excludeTags);
 
     for (var fileData in response.files) {
       await updateArbFile(
