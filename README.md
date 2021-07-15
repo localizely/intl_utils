@@ -29,12 +29,12 @@ flutter_intl:
     branch: # Get it from the “Branches” page on the Localizely platform, in case branching is enabled and you want to use a non-main branch.
     upload_overwrite: # Set to true if you want to overwrite translations with upload. Default: false
     upload_as_reviewed: # Set to true if you want to mark uploaded translations as reviewed. Default: false
-    upload_tag_added: # Optional list of tags to add to new translations with upload.
-    upload_tag_updated: # Optional list of tags to add to updated translations with upload.
-    upload_tag_removed: # Optional list of tags to add to removed translations with upload.
+    upload_tag_added: # Optional list of tags to add to new translations with upload (e.g. ['new', 'New translation']). Default: []
+    upload_tag_updated: # Optional list of tags to add to updated translations with upload (e.g. ['updated', 'Updated translation']). Default: []
+    upload_tag_removed: # Optional list of tags to add to removed translations with upload (e.g. ['removed', 'Removed translation']). Default: []
     download_empty_as: # Set to empty|main|skip, to configure how empty translations should be exported from the Localizely platform. Default: empty
-    download_include_tags: # Optional list of tags to be downloaded. If not set, all string keys will be considered for download.
-    download_exclude_tags: # Optional list of tags to be excluded from download. If not set, all string keys will be considered for download.
+    download_include_tags: # Optional list of tags to be downloaded (e.g. ['include', 'Include key']). If not set, all string keys will be considered for download. Default: []
+    download_exclude_tags: # Optional list of tags to be excluded from download (e.g. ['exclude', 'Exclude key']). If not set, all string keys will be considered for download. Default: []
     ota_enabled: # Set to true if you want to use Localizely Over-the-air functionality. Default: false
 </pre>
 
