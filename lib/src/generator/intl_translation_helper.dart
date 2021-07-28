@@ -41,6 +41,7 @@ import '../intl_translation/src/icu_parser.dart';
 import '../intl_translation/src/intl_message.dart';
 
 import '../utils/utils.dart';
+import 'data_helper.dart';
 
 class IntlTranslationHelper {
   final pluralAndGenderParser = IcuParser().message;
@@ -88,6 +89,9 @@ class IntlTranslationHelper {
     var file = File(filename);
     var src = file.readAsStringSync();
     var data = jsonDecoder.decode(src);
+    //add by kecson
+    data = processData(data);
+
     var locale = data['@@locale'] ?? data['_locale'];
     if (locale == null) {
       // Get the locale from the end of the file name. This assumes that the file
