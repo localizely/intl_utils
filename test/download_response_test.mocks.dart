@@ -10,7 +10,7 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: comment_references
 // ignore_for_file: unnecessary_parenthesis
 
-class _FakeUint8List extends _i1.Fake implements _i2.Uint8List {}
+// class _FakeUint8List extends _i1.Fake implements _i2.Uint8List {}
 
 /// A class which mocks [Response].
 ///
@@ -23,7 +23,7 @@ class MockResponse extends _i1.Mock implements _i3.Response {
   @override
   _i2.Uint8List get bodyBytes =>
       (super.noSuchMethod(Invocation.getter(#bodyBytes),
-          returnValue: _FakeUint8List()) as _i2.Uint8List);
+          returnValue: _i2.Uint8List(0)) as _i2.Uint8List);
   @override
   String get body =>
       (super.noSuchMethod(Invocation.getter(#body), returnValue: '') as String);
