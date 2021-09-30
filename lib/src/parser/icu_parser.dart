@@ -33,9 +33,9 @@ import 'package:petitparser/petitparser.dart';
 import 'message_format.dart';
 
 class IcuParser {
-  Parser get openCurly => char('{');
+  Parser get openCurly => char('{').map((_) => LiteralElement('{'));
 
-  Parser get closeCurly => char('}');
+  Parser get closeCurly => char('}').map((_) => LiteralElement('}'));
 
   Parser get quotedCurly => (string("'{'") | string("'}'")).map((x) => x[1]);
 
