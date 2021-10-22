@@ -36,7 +36,7 @@ class Argument {
   String toString() => '$type $name';
 
   @override
-  bool operator ==(obj) => obj is Argument && obj.name == name;
+  bool operator ==(Object other) => other is Argument && other.name == name;
 
   @override
   int get hashCode => name.hashCode;
@@ -109,7 +109,7 @@ class Label {
               _generateDartDoc(),
               '  String $name(${_generateDartMethodParameters(args)}) {',
               '    return Intl.plural(',
-              '      ${pluralArg},',
+              '      $pluralArg,',
               _generatePluralOptions(parsedContent[0] as PluralElement),
               '      name: \'$name\',',
               '      desc: \'$description\',',
@@ -126,7 +126,7 @@ class Label {
               _generateDartDoc(),
               '  String $name(${_generateDartMethodParameters(args)}) {',
               '    return Intl.gender(',
-              '      ${genderArg},',
+              '      $genderArg,',
               _generateGenderOptions(parsedContent[0] as GenderElement),
               '      name: \'$name\',',
               '      desc: \'$description\',',
@@ -144,7 +144,7 @@ class Label {
               _generateDartDoc(),
               '  String $name(${_generateDartMethodParameters(args)}) {',
               '    return Intl.select(',
-              '      ${choiceArg},',
+              '      $choiceArg,',
               _generateSelectOptions(parsedContent[0] as SelectElement),
               '      name: \'$name\',',
               '      desc: \'$description\',',
@@ -155,8 +155,8 @@ class Label {
           }
       }
     } catch (e) {
-      if (!(e is ValidationException)) {
-        error("The '${name}' key will be ignored due to parsing errors.");
+      if (e is! ValidationException) {
+        error("The '$name' key will be ignored due to parsing errors.");
       }
 
       return "  // skipped getter for the '${_escape(name)}' key";
@@ -178,11 +178,11 @@ class Label {
         throw ValidationException();
       }
 
-      return "    '${name}': [${args.map((arg) => '\'${arg.name}\'').join(', ')}]";
+      return "    '$name': [${args.map((arg) => '\'${arg.name}\'').join(', ')}]";
     } catch (e) {
-      if (!(e is ValidationException)) {
+      if (e is! ValidationException) {
         error(
-            "The '${name}' key metadata will be ignored due to parsing errors.");
+            "The '$name' key metadata will be ignored due to parsing errors.");
       }
 
       return "    // skipped metadata for the '${_escape(name)}' key";
@@ -206,7 +206,7 @@ class Label {
     if (!variableRegex.hasMatch(name)) {
       if (showWarnings) {
         warning(
-            "The '${name}' key will be ignored as its name does not follow naming convention.");
+            "The '$name' key will be ignored as its name does not follow naming convention.");
       }
       return false;
     }
@@ -214,7 +214,7 @@ class Label {
     if (reservedKeywords.contains(name)) {
       if (showWarnings) {
         warning(
-            "The '${name}' key will be ignored as '${name}' is a reserved keyword.");
+            "The '$name' key will be ignored as '$name' is a reserved keyword.");
       }
       return false;
     }
@@ -223,7 +223,7 @@ class Label {
       if (!variableRegex.hasMatch(arg.name)) {
         if (showWarnings) {
           warning(
-              "The '${name}' key will be ignored as its placeholder '${arg.name}' does not follow naming convention.");
+              "The '$name' key will be ignored as its placeholder '${arg.name}' does not follow naming convention.");
         }
         return false;
       }
@@ -231,7 +231,7 @@ class Label {
 
     if (placeholderRegex.hasMatch(content) && showWarnings) {
       warning(
-          "Did you mean to use placeholders within the '${name}' key? Try wrapping them within curly braces.");
+          "Did you mean to use placeholders within the '$name' key? Try wrapping them within curly braces.");
     }
 
     return true;
@@ -276,7 +276,7 @@ class Label {
             var choiceArg = Argument(Object, item.value);
             if (args.isNotEmpty && args.indexOf(choiceArg) != 0) {
               warning(
-                  "The '${name}' key contains a select message which requires '${item.value}' placeholder as a first item in 'placeholders' declaration map.");
+                  "The '$name' key contains a select message which requires '${item.value}' placeholder as a first item in 'placeholders' declaration map.");
             }
 
             _updateArgsData(args, [choiceArg], forceBeginning: true);
@@ -293,7 +293,7 @@ class Label {
 
   void _updateArgsData(List<Argument> existingArgs, List<Argument> newArgs,
       {bool forceBeginning = false}) {
-    newArgs.forEach((newArg) {
+    for (var newArg in newArgs) {
       var index = existingArgs.indexOf(newArg);
 
       if (index != -1) {
@@ -312,7 +312,7 @@ class Label {
           existingArgs.add(newArg);
         }
       }
-    });
+    }
   }
 
   List<Argument> _getPluralOptionsArgs(PluralElement pluralElement) {
@@ -350,8 +350,9 @@ class Label {
   List<Argument> _getSelectOptionsArgs(SelectElement selectElement) {
     var args = <Argument>[];
 
-    selectElement.options.forEach((option) =>
-        args.addAll(_getArgumentOrPluralOrSelectArgs(option.value)));
+    for (var option in selectElement.options) {
+      args.addAll(_getArgumentOrPluralOrSelectArgs(option.value));
+    }
 
     return LinkedHashSet<Argument>.from(args).toList();
   }
@@ -472,39 +473,39 @@ class Label {
         case 'zero':
           {
             var message = _generatePluralOrSelectOptionMessage(option);
-            options.add("      zero: '${message}',");
+            options.add("      zero: '$message',");
             break;
           }
         case '=1':
         case 'one':
           {
             var message = _generatePluralOrSelectOptionMessage(option);
-            options.add("      one: '${message}',");
+            options.add("      one: '$message',");
             break;
           }
         case '=2':
         case 'two':
           {
             var message = _generatePluralOrSelectOptionMessage(option);
-            options.add("      two: '${message}',");
+            options.add("      two: '$message',");
             break;
           }
         case 'few':
           {
             var message = _generatePluralOrSelectOptionMessage(option);
-            options.add("      few: '${message}',");
+            options.add("      few: '$message',");
             break;
           }
         case 'many':
           {
             var message = _generatePluralOrSelectOptionMessage(option);
-            options.add("      many: '${message}',");
+            options.add("      many: '$message',");
             break;
           }
         case 'other':
           {
             var message = _generatePluralOrSelectOptionMessage(option);
-            options.add("      other: '${message}',");
+            options.add("      other: '$message',");
             break;
           }
       }
@@ -532,19 +533,19 @@ class Label {
             options.firstWhere((option) => option.name == uniqueKey))
         .toList();
     if (sanitized.length != options.length) {
-      warning("Detected plural irregularity for the '${name}' key.");
+      warning("Detected plural irregularity for the '$name' key.");
     } else if (!uniqueKeys.contains('other')) {
-      warning("The '${name}' key lacks mandatory plural form 'other'.");
+      warning("The '$name' key lacks mandatory plural form 'other'.");
     }
 
-    sanitized.forEach((option) {
+    for (var option in sanitized) {
       if (option.value.length == 1 &&
           option.value[0] is LiteralElement &&
           (option.value[0] as LiteralElement).value.isEmpty) {
         warning(
-            "The '${name}' key lacks translation for the plural form '${option.name}'.");
+            "The '$name' key lacks translation for the plural form '${option.name}'.");
       }
-    });
+    }
 
     return sanitized;
   }
@@ -557,19 +558,19 @@ class Label {
         case 'male':
           {
             var message = _generatePluralOrSelectOptionMessage(option);
-            options.add("      male: '${message}',");
+            options.add("      male: '$message',");
             break;
           }
         case 'female':
           {
             var message = _generatePluralOrSelectOptionMessage(option);
-            options.add("      female: '${message}',");
+            options.add("      female: '$message',");
             break;
           }
         case 'other':
           {
             var message = _generatePluralOrSelectOptionMessage(option);
-            options.add("      other: '${message}',");
+            options.add("      other: '$message',");
             break;
           }
         default:
@@ -590,19 +591,19 @@ class Label {
             options.firstWhere((option) => option.name == uniqueKey))
         .toList();
     if (sanitized.length != options.length) {
-      warning("Detected gender irregularity for the '${name}' key.");
+      warning("Detected gender irregularity for the '$name' key.");
     } else if (!uniqueKeys.contains('other')) {
-      warning("The '${name}' key lacks mandatory gender form 'other'.");
+      warning("The '$name' key lacks mandatory gender form 'other'.");
     }
 
-    sanitized.forEach((option) {
+    for (var option in sanitized) {
       if (option.value.length == 1 &&
           option.value[0] is LiteralElement &&
           (option.value[0] as LiteralElement).value.isEmpty) {
         warning(
-            "The '${name}' key lacks translation for the gender form '${option.name}'.");
+            "The '$name' key lacks translation for the gender form '${option.name}'.");
       }
-    });
+    }
 
     return sanitized;
   }
@@ -630,19 +631,19 @@ class Label {
             options.firstWhere((option) => option.name == uniqueKey))
         .toList();
     if (sanitized.length != options.length) {
-      warning("Detected select irregularity for the '${name}' key.");
+      warning("Detected select irregularity for the '$name' key.");
     } else if (!uniqueKeys.contains('other')) {
-      warning("The '${name}' key lacks mandatory select case 'other'.");
+      warning("The '$name' key lacks mandatory select case 'other'.");
     }
 
-    sanitized.forEach((option) {
+    for (var option in sanitized) {
       if (option.value.length == 1 &&
           option.value[0] is LiteralElement &&
           (option.value[0] as LiteralElement).value.isEmpty) {
         warning(
-            "The '${name}' key lacks translation for the select case '${option.name}'.");
+            "The '$name' key lacks translation for the select case '${option.name}'.");
       }
-    });
+    }
 
     return sanitized;
   }
@@ -657,34 +658,34 @@ class Label {
         case '=0':
         case 'zero':
           {
-            options.add("zero: '${message}'");
+            options.add("zero: '$message'");
             break;
           }
         case '=1':
         case 'one':
           {
-            options.add("one: '${message}'");
+            options.add("one: '$message'");
             break;
           }
         case '=2':
         case 'two':
           {
-            options.add("two: '${message}'");
+            options.add("two: '$message'");
             break;
           }
         case 'few':
           {
-            options.add("few: '${message}'");
+            options.add("few: '$message'");
             break;
           }
         case 'many':
           {
-            options.add("many: '${message}'");
+            options.add("many: '$message'");
             break;
           }
         case 'other':
           {
-            options.add("other: '${message}'");
+            options.add("other: '$message'");
             break;
           }
       }
@@ -701,17 +702,17 @@ class Label {
       switch (option.name) {
         case 'male':
           {
-            options.add("male: '${message}'");
+            options.add("male: '$message'");
             break;
           }
         case 'female':
           {
-            options.add("female: '${message}'");
+            options.add("female: '$message'");
             break;
           }
         case 'other':
           {
-            options.add("other: '${message}'");
+            options.add("other: '$message'");
             break;
           }
         default:

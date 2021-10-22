@@ -4,5 +4,5 @@ class GeneratorException implements Exception {
   GeneratorException(this.message);
 
   @override
-  String toString() => 'GeneratorException: ${message}';
+  String toString() => 'GeneratorException: $message';
 }

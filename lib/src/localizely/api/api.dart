@@ -20,19 +20,24 @@ class LocalizelyApi {
       List<String>? tagAdded,
       List<String>? tagUpdated,
       List<String>? tagRemoved]) async {
-    var branchParam = branch != null ? '&branch=${branch}' : '';
-    var tagAddedParam = tagAdded != null
-        ? tagAdded.map((tag) => '&tag_added=${tag}').toList().join()
-        : '';
-    var tagUpdatedParam = tagUpdated != null
-        ? tagUpdated.map((tag) => '&tag_updated=${tag}').toList().join()
-        : '';
-    var tagRemovedParam = tagRemoved != null
-        ? tagRemoved.map((tag) => '&tag_removed=${tag}').toList().join()
-        : '';
+    var queryParams = [
+      '?lang_code=$langCode',
+      '&overwrite=$overwrite',
+      '&reviewed=$reviewed',
+      branch != null ? '&branch=$branch' : '',
+      tagAdded != null
+          ? tagAdded.map((tag) => '&tag_added=$tag').toList().join()
+          : '',
+      tagUpdated != null
+          ? tagUpdated.map((tag) => '&tag_updated=$tag').toList().join()
+          : '',
+      tagRemoved != null
+          ? tagRemoved.map((tag) => '&tag_removed=$tag').toList().join()
+          : ''
+    ].join();
 
-    var uri = Uri.parse(
-        '$_baseUrl/v1/projects/$projectId/files/upload?lang_code=$langCode&overwrite=$overwrite&reviewed=$reviewed${branchParam}${tagAddedParam}${tagUpdatedParam}${tagRemovedParam}');
+    var uri =
+        Uri.parse('$_baseUrl/v1/projects/$projectId/files/upload$queryParams');
     var headers = {'X-Api-Token': apiToken};
 
     var request = http.MultipartRequest('POST', uri)
@@ -55,18 +60,20 @@ class LocalizelyApi {
       String? exportEmptyAs,
       List<String>? includeTags,
       List<String>? excludeTags]) async {
-    var branchParam = branch != null ? '&branch=${branch}' : '';
-    var exportEmptyAsParam =
-        exportEmptyAs != null ? '&export_empty_as=${exportEmptyAs}' : '';
-    var includeTagsParam = includeTags != null
-        ? includeTags.map((tag) => '&include_tags=${tag}').toList().join()
-        : '';
-    var excludeTagsParam = excludeTags != null
-        ? excludeTags.map((tag) => '&exclude_tags=${tag}').toList().join()
-        : '';
+    var queryParams = [
+      '?type=flutter_arb',
+      branch != null ? '&branch=$branch' : '',
+      exportEmptyAs != null ? '&export_empty_as=$exportEmptyAs' : '',
+      includeTags != null
+          ? includeTags.map((tag) => '&include_tags=$tag').toList().join()
+          : '',
+      excludeTags != null
+          ? excludeTags.map((tag) => '&exclude_tags=$tag').toList().join()
+          : ''
+    ].join();
 
     var uri = Uri.parse(
-        '$_baseUrl/v1/projects/$projectId/files/download?type=flutter_arb${branchParam}${exportEmptyAsParam}${includeTagsParam}${excludeTagsParam}');
+        '$_baseUrl/v1/projects/$projectId/files/download$queryParams');
     var headers = {'X-Api-Token': apiToken};
 
     var response = await http.get(uri, headers: headers);

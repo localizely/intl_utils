@@ -19,7 +19,7 @@ void main() {
         () => expect(isValidPath(''), isTrue));
 
     test('Test path validation with Windows path',
-        () => expect(isValidPath('lib\l10n'), isTrue));
+        () => expect(isValidPath(r'lib\l10n'), isTrue));
 
     test('Test path validation with UNIX path',
         () => expect(isValidPath('lib/l10n'), isTrue));

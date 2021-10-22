@@ -37,13 +37,13 @@ class DownloadResponse {
 
   String? _getFileName(String contentDisposition) {
     var patterns = [
-      RegExp('filename\*=[^\']+\'\w*\'"([^"]+)";?', caseSensitive: false),
-      RegExp('filename\*=[^\']+\'\w*\'([^;]+);?', caseSensitive: false),
+      RegExp('filename\\*=[^\']+\'\\w*\'"([^"]+)";?', caseSensitive: false),
+      RegExp('filename\\*=[^\']+\'\\w*\'([^;]+);?', caseSensitive: false),
       RegExp('filename="([^;]*);?"', caseSensitive: false),
       RegExp('filename=([^;]*);?', caseSensitive: false)
     ];
 
-    var fileName;
+    String? fileName;
     for (var i = 0; i < patterns.length; i++) {
       var allMatches = patterns[i].allMatches(contentDisposition);
       if (allMatches.isNotEmpty && allMatches.elementAt(0).groupCount == 1) {

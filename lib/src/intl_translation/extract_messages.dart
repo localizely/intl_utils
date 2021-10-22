@@ -53,6 +53,8 @@
 /// is to run it on all .dart files in a directory.
 library extract_messages;
 
+// ignore_for_file: implementation_imports
+
 import 'dart:io';
 
 import 'package:analyzer/dart/analysis/utilities.dart';
@@ -404,9 +406,10 @@ class MessageFindingVisitor extends GeneralizingAstVisitor {
   /// [messageFromIntlMessageCall] and [messageFromDirectPluralOrGenderCall].
   MainMessage? _messageFromNode(
       MethodInvocation node,
-      MainMessage? extract(MainMessage message, List<AstNode> arguments),
-      void setAttribute(
-          MainMessage message, String fieldName, Object? fieldValue)) {
+      MainMessage? Function(MainMessage message, List<AstNode> arguments)
+          extract,
+      void Function(MainMessage message, String fieldName, Object? fieldValue)
+          setAttribute) {
     var message = MainMessage();
     message.sourcePosition = node.offset;
     message.endPosition = node.end;
@@ -640,7 +643,7 @@ class PluralAndGenderVisitor extends SimpleAstVisitor {
     if (!['plural', 'gender', 'select'].contains(node.methodName.name)) {
       return false;
     }
-    if (!(node.target is SimpleIdentifier)) return false;
+    if (node.target is! SimpleIdentifier) return false;
     var target = node.target as SimpleIdentifier;
     return target.token.toString() == 'Intl';
   }
@@ -656,7 +659,7 @@ class PluralAndGenderVisitor extends SimpleAstVisitor {
   /// parameters of the last function/method declaration we encountered
   /// and the parameters to the Intl.message call.
   Message messageFromMethodInvocation(MethodInvocation node) {
-    var message;
+    var message; // ignore: prefer_typing_uninitialized_variables
     switch (node.methodName.name) {
       case 'gender':
         message = Gender();
@@ -719,5 +722,5 @@ class PluralAndGenderVisitor extends SimpleAstVisitor {
 // NOTE: THIS LOGIC IS DUPLICATED IN intl AND THE TWO MUST MATCH.
 String? computeMessageName(String? name, String? text, String? meaning) {
   if (name != null && name != '') return name;
-  return meaning == null ? text : '${text}_${meaning}';
+  return meaning == null ? text : '${text}_$meaning';
 }
