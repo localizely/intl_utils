@@ -119,7 +119,11 @@ class Generator {
       var type = meta['type'];
       var description = meta['description'];
       var placeholders = meta['placeholders'] != null
-          ? (meta['placeholders'] as Map<String, dynamic>).keys.toList()
+          ? (meta['placeholders'] as Map<String, dynamic>)
+              .keys
+              .map((placeholder) => Placeholder(
+                  key, placeholder, meta['placeholders'][placeholder]))
+              .toList()
           : null;
 
       return Label(name, content,

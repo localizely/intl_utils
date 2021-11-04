@@ -144,7 +144,11 @@ abstract class Message {
     }
     var everythingMatches = true;
     both.forEach((name, parameterName) {
-      if (name != parameterName) everythingMatches = false;
+      // Method parameters can be formatted before passing to the 'args' argument.
+      // Thus, args argument should have the same name as the method parameter or with the suffix 'String'.
+      if (!(name == parameterName || name == '${parameterName}String')) {
+        everythingMatches = false;
+      }
     });
     return everythingMatches;
   }

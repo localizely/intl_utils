@@ -586,7 +586,14 @@ class InterpolationVisitor extends SimpleAstVisitor {
   }
 
   void handleSimpleInterpolation(InterpolationExpression node) {
-    var index = arguments.indexOf(node.expression.toString());
+    // Method parameters can be formatted before passing to the 'args' argument.
+    // Thus, args argument should have the same name as the method parameter or with the suffix 'String'.
+    var regularIndex = arguments.indexOf(node.expression.toString());
+    var formattedIndex = arguments
+        .indexWhere((arg) => '${arg}String' == node.expression.toString());
+
+    var index = regularIndex != -1 ? regularIndex : formattedIndex;
+
     if (index == -1) {
       throw IntlMessageExtractionException(
           'Cannot find argument ${node.expression}');
