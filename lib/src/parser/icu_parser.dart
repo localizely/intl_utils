@@ -135,7 +135,10 @@ class IcuParser {
 
   Parser get contents => pluralOrGenderOrSelect | parameter | messageText;
 
-  Parser get simpleText => (nonIcuMessageText | parameter | openCurly).plus();
+  Parser get simpleText =>
+      (nonIcuMessageText | parameter | openCurly).plus().map((result) => result
+          .map((item) => item is String ? LiteralElement(item) : item)
+          .toList());
 
   Parser get empty => epsilon().map((_) => LiteralElement(''));
 

@@ -88,6 +88,18 @@ void main() {
       expect(label.placeholders, isNull);
     });
 
+    test('Test instantiation when content contains a simple json string', () {
+      var label =
+          Label('labelName', '{ "firstName": "John", "lastName": "Doe" }');
+
+      expect(label.name, equals('labelName'));
+      expect(
+          label.content, equals('{ "firstName": "John", "lastName": "Doe" }'));
+      expect(label.type, isNull);
+      expect(label.description, isNull);
+      expect(label.placeholders, isNull);
+    });
+
     test('Test instantiation when description contains a tag', () {
       var label = Label('labelName', 'Content',
           description: 'Description with a <b>tag</b>');
@@ -183,22 +195,55 @@ void main() {
     test('Test dart getter when content contains an empty placeholder', () {
       var label = Label('labelName', 'Content {} with empty placeholder');
 
-      expect(label.generateDartGetter(),
-          equals("  // skipped getter for the 'labelName' key"));
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Content {} with empty placeholder`',
+            '  String get labelName {',
+            '    return Intl.message(',
+            '      \'Content {} with empty placeholder\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [],',
+            '    );',
+            '  }'
+          ].join("\n")));
     });
 
     test('Test dart getter when content contains a digit placeholder', () {
       var label = Label('labelName', 'Content {0} with digit placeholder');
 
-      expect(label.generateDartGetter(),
-          equals("  // skipped getter for the 'labelName' key"));
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Content {0} with digit placeholder`',
+            '  String get labelName {',
+            '    return Intl.message(',
+            '      \'Content {0} with digit placeholder\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [],',
+            '    );',
+            '  }'
+          ].join("\n")));
     });
 
     test('Test dart getter when content contains a hash placeholder', () {
       var label = Label('labelName', 'Content {#} with hash placeholder');
 
-      expect(label.generateDartGetter(),
-          equals("  // skipped getter for the 'labelName' key"));
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Content {#} with hash placeholder`',
+            '  String get labelName {',
+            '    return Intl.message(',
+            '      \'Content {#} with hash placeholder\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [],',
+            '    );',
+            '  }'
+          ].join("\n")));
     });
 
     test(
@@ -207,8 +252,19 @@ void main() {
       var label = Label('labelName',
           'Content {invalid-placeholder-name} with invalid placeholder name');
 
-      expect(label.generateDartGetter(),
-          equals("  // skipped getter for the 'labelName' key"));
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Content {invalid-placeholder-name} with invalid placeholder name`',
+            '  String get labelName {',
+            '    return Intl.message(',
+            '      \'Content {invalid-placeholder-name} with invalid placeholder name\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [],',
+            '    );',
+            '  }'
+          ].join("\n")));
     });
   });
 
@@ -429,6 +485,87 @@ void main() {
             '  String get labelName {',
             '    return Intl.message(',
             '      \'Escaping chars: \\\\\\n\\r\\t\\b\\f\\\'"\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test('Test literal dart getter when content contains a simple json string',
+        () {
+      var label =
+          Label('labelName', '{ "firstName": "John", "lastName": "Doe" }');
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{ "firstName": "John", "lastName": "Doe" }`',
+            '  String get labelName {',
+            '    return Intl.message(',
+            '      \'{ "firstName": "John", "lastName": "Doe" }\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test('Test literal dart getter when content contains a nested json string',
+        () {
+      var label = Label('labelName',
+          '{ "firstName": "John", "lastName": "Doe", "address": { "street": "Some street 123", "city": "Some city" } }');
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{ "firstName": "John", "lastName": "Doe", "address": { "street": "Some street 123", "city": "Some city" } }`',
+            '  String get labelName {',
+            '    return Intl.message(',
+            '      \'{ "firstName": "John", "lastName": "Doe", "address": { "street": "Some street 123", "city": "Some city" } }\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test('Test literal dart getter when content contains a complex json string',
+        () {
+      var label = Label('labelName',
+          '{ "firstName": "John", "lastName": "Doe", "address": { "street": "Some street 123", "city": "Some city" }, "skills": [ { "name": "programming" }, { "name": "design" } ] }');
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{ "firstName": "John", "lastName": "Doe", "address": { "street": "Some street 123", "city": "Some city" }, "skills": [ { "name": "programming" }, { "name": "design" } ] }`',
+            '  String get labelName {',
+            '    return Intl.message(',
+            '      \'{ "firstName": "John", "lastName": "Doe", "address": { "street": "Some street 123", "city": "Some city" }, "skills": [ { "name": "programming" }, { "name": "design" } ] }\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test literal dart getter when content contains a json string with special chars',
+        () {
+      var label = Label('labelName',
+          '{ "special_chars": "abc !@#\$%^&*()_+-=`~[]{};\'\\:"|,./<>?*ÄäÖöÜüẞ你好أهلا" }');
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{ "special_chars": "abc !@#\$%^&*()_+-=\'~[]{};\'\\:"|,./<>?*ÄäÖöÜüẞ你好أهلا" }`',
+            '  String get labelName {',
+            '    return Intl.message(',
+            '      \'{ "special_chars": "abc !@#\\\$%^&*()_+-=`~[]{};\\\'\\\\:"|,./<>?*ÄäÖöÜüẞ你好أهلا" }\',',
             '      name: \'labelName\',',
             '      desc: \'\',',
             '      args: [],',
@@ -1157,6 +1294,137 @@ void main() {
             '      name: \'labelName\',',
             '      desc: \'\',',
             '      args: [name],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test('Test argument dart getter when content contains a simple json string',
+        () {
+      var label = Label('labelName',
+          'Argument message: {name} - { "firstName": "John", "lastName": "Doe" }');
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Argument message: {name} - { "firstName": "John", "lastName": "Doe" }`',
+            '  String labelName(Object name) {',
+            '    return Intl.message(',
+            '      \'Argument message: \$name - { "firstName": "John", "lastName": "Doe" }\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [name],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test('Test argument dart getter when content contains a nested json string',
+        () {
+      var label = Label('labelName',
+          'Argument message: {name} - { "firstName": "John", "lastName": "Doe", "address": { "street": "Some street 123", "city": "Some city" } }');
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Argument message: {name} - { "firstName": "John", "lastName": "Doe", "address": { "street": "Some street 123", "city": "Some city" } }`',
+            '  String labelName(Object name) {',
+            '    return Intl.message(',
+            '      \'Argument message: \$name - { "firstName": "John", "lastName": "Doe", "address": { "street": "Some street 123", "city": "Some city" } }\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [name],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test argument dart getter when content contains a complex json string',
+        () {
+      var label = Label('labelName',
+          'Argument message: {name} - { "firstName": "John", "lastName": "Doe", "address": { "street": "Some street 123", "city": "Some city" }, "skills": [ { "name": "programming" }, { "name": "design" } ] }');
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Argument message: {name} - { "firstName": "John", "lastName": "Doe", "address": { "street": "Some street 123", "city": "Some city" }, "skills": [ { "name": "programming" }, { "name": "design" } ] }`',
+            '  String labelName(Object name) {',
+            '    return Intl.message(',
+            '      \'Argument message: \$name - { "firstName": "John", "lastName": "Doe", "address": { "street": "Some street 123", "city": "Some city" }, "skills": [ { "name": "programming" }, { "name": "design" } ] }\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [name],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test argument dart getter when content contains a json string with special chars',
+        () {
+      var label = Label('labelName',
+          'Argument message: {name} - { "special_chars": "abc !@#\$%^&*()_+-=`~[]{};\'\\:"|,./<>?*ÄäÖöÜüẞ你好أهلا" }');
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Argument message: {name} - { "special_chars": "abc !@#\$%^&*()_+-=\'~[]{};\'\\:"|,./<>?*ÄäÖöÜüẞ你好أهلا" }`',
+            '  String labelName(Object name) {',
+            '    return Intl.message(',
+            '      \'Argument message: \$name - { "special_chars": "abc !@#\\\$%^&*()_+-=`~[]{};\\\'\\\\:"|,./<>?*ÄäÖöÜüẞ你好أهلا" }\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [name],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test argument dart getter when content contains a json string with placeholders',
+        () {
+      var label = Label('labelName',
+          '{ "name": "{name}", "address": { "street": "{street}", "city": "{city}" } }');
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{ "name": "{name}", "address": { "street": "{street}", "city": "{city}" } }`',
+            '  String labelName(Object name, Object street, Object city) {',
+            '    return Intl.message(',
+            '      \'{ "name": "\$name", "address": { "street": "\$street", "city": "\$city" } }\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [name, street, city],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test argument dart getter when content contains a json string with formatted placeholder',
+        () {
+      var label = Label('labelName', '{ "name": "{name}", "date": "{date}" }',
+          placeholders: [
+            Placeholder('labelName', 'name', {'type': 'String'}),
+            Placeholder(
+                'labelName', 'date', {'type': 'DateTime', 'format': 'yMd'})
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{ "name": "{name}", "date": "{date}" }`',
+            '  String labelName(String name, DateTime date) {',
+            '    final DateFormat dateDateFormat = DateFormat.yMd(Intl.getCurrentLocale());',
+            '    final String dateString = dateDateFormat.format(date);',
+            '',
+            '    return Intl.message(',
+            '      \'{ "name": "\$name", "date": "\$dateString" }\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [name, dateString],',
             '    );',
             '  }'
           ].join('\n')));
@@ -4315,6 +4583,33 @@ void main() {
             '  }'
           ].join('\n')));
     });
+
+    // Note: JSON strings are not supported in plural messages with the current parser implementation.
+    test('Test plural dart getter when content contains a simple json string',
+        () {
+      var label = Label('labelName',
+          '{count, plural, zero {zero message { "firstName": "John", "lastName": "Doe" }} one {one message { "firstName": "John", "lastName": "Doe" }} two {two message { "firstName": "John", "lastName": "Doe" }} few {few message { "firstName": "John", "lastName": "Doe" }} many {many message { "firstName": "John", "lastName": "Doe" }} other {other message { "firstName": "John", "lastName": "Doe" }}}');
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{count, plural, zero {zero message { "firstName": "John", "lastName": "Doe" }} one {one message { "firstName": "John", "lastName": "Doe" }} two {two message { "firstName": "John", "lastName": "Doe" }} few {few message { "firstName": "John", "lastName": "Doe" }} many {many message { "firstName": "John", "lastName": "Doe" }} other {other message { "firstName": "John", "lastName": "Doe" }}}`',
+            '  String labelName(num count) {',
+            '    return Intl.plural(',
+            '      count,',
+            '      zero: \'zero message { "firstName": "John", "lastName": "Doe" }\',',
+            '      one: \'one message { "firstName": "John", "lastName": "Doe" }\',',
+            '      two: \'two message { "firstName": "John", "lastName": "Doe" }\',',
+            '      few: \'few message { "firstName": "John", "lastName": "Doe" }\',',
+            '      many: \'many message { "firstName": "John", "lastName": "Doe" }\',',
+            '      other: \'other message { "firstName": "John", "lastName": "Doe" }\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    }, skip: true);
 
     test(
         'Test plural dart getter when placeholder has type DateTime and format is not provided',
@@ -7934,8 +8229,19 @@ void main() {
       var label = Label('labelName',
           '{count, plural, one {one message} unsupportedPluralForm {unsupported plural form message} other {other message}}');
 
-      expect(label.generateDartGetter(),
-          equals("  // skipped getter for the 'labelName' key"));
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{count, plural, one {one message} unsupportedPluralForm {unsupported plural form message} other {other message}}`',
+            '  String get labelName {',
+            '    return Intl.message(',
+            '      \'{count, plural, one {one message} unsupportedPluralForm {unsupported plural form message} other {other message}}\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [],',
+            '    );',
+            '  }'
+          ].join("\n")));
     });
 
     test(
@@ -8322,6 +8628,30 @@ void main() {
             '  }'
           ].join('\n')));
     });
+
+    // Note: JSON strings are not supported in gender messages with the current parser implementation.
+    test('Test gender dart getter when content contains a simple json string',
+        () {
+      var label = Label('labelName',
+          '{gender, select, male {male { "firstName": "John", "lastName": "Doe" }} female {female { "firstName": "John", "lastName": "Doe" }} other {other { "firstName": "John", "lastName": "Doe" }}}');
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{gender, select, male {male { "firstName": "John", "lastName": "Doe" }} female {female { "firstName": "John", "lastName": "Doe" }} other {other { "firstName": "John", "lastName": "Doe" }}}`',
+            '  String labelName(String gender) {',
+            '    return Intl.gender(',
+            '      gender,',
+            '      male: \'male { "firstName": "John", "lastName": "Doe" }\',',
+            '      female: \'female { "firstName": "John", "lastName": "Doe" }\',',
+            '      other: \'other { "firstName": "John", "lastName": "Doe" }\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [gender],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    }, skip: true);
 
     test(
         'Test gender dart getter when placeholder has type DateTime and format is not provided',
@@ -11994,6 +12324,32 @@ void main() {
             '  }'
           ].join('\n')));
     });
+
+    // Note: JSON strings are not supported in select messages with the current parser implementation.
+    test('Test select dart getter when content contains a simple json string',
+        () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo message { "firstName": "John", "lastName": "Doe" }} bar {bar message { "firstName": "John", "lastName": "Doe" }} other {other message { "firstName": "John", "lastName": "Doe" }}}');
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{choice, select, foo {foo message { "firstName": "John", "lastName": "Doe" }} bar {bar message { "firstName": "John", "lastName": "Doe" }} other {other message { "firstName": "John", "lastName": "Doe" }}}`',
+            '  String labelName(Object choice) {',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message { "firstName": "John", "lastName": "Doe" }\',',
+            '        \'bar\': \'bar message { "firstName": "John", "lastName": "Doe" }\',',
+            '        \'other\': \'other message { "firstName": "John", "lastName": "Doe" }\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    }, skip: true);
 
     test(
         'Test select dart getter when placeholder has type DateTime and format is not provided',
@@ -16436,6 +16792,28 @@ void main() {
           ].join('\n')));
     });
 
+    // Note: JSON strings are not supported in compound messages with the current parser implementation.
+    test(
+        'Test compound message dart getter when content contains a simple json string',
+        () {
+      var label = Label('labelName',
+          'The {gender, select, male {Mr} female {Mrs} other {User}} {name} ({choice, select, ADMIN {Admin} MANAGER {Manager} other {User}} with {count, plural, one {{count} badge} other {{count} badges}}): { "firstName": "John", "lastName": "Doe" }');
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `The {gender, select, male {Mr} female {Mrs} other {User}} {name} ({choice, select, ADMIN {Admin} MANAGER {Manager} other {User}} with {count, plural, one {{count} badge} other {{count} badges}}): { "firstName": "John", "lastName": "Doe" }`',
+            '  String labelName(Object choice, String gender, Object name, num count) {',
+            '    return Intl.message(',
+            '      \'The \${Intl.gender(gender, male: \'Mr\', female: \'Mrs\', other: \'User\')} \$name (\${Intl.select(choice, {\'ADMIN\': \'Admin\', \'MANAGER\': \'Manager\', \'other\': \'User\'})} with \${Intl.plural(count, one: \'\$count badge\', other: \'\$count badges\')}): { "firstName": "John", "lastName": "Doe" }\','
+                '      name: \'labelName\',\n'
+                '      desc: \'\',\n'
+                '      args: [choice, gender, name, count],\n'
+                '    );\n'
+                '  }'
+          ].join('\n')));
+    }, skip: true);
+
     test(
         'Test compound message dart getter when placeholder has type DateTime and format is not provided',
         () {
@@ -19229,7 +19607,7 @@ void main() {
 
       expect(
         label.generateMetadata(),
-        equals('    // skipped metadata for the \'labelName\' key'),
+        equals('    \'labelName\': []'),
       );
     });
 
@@ -19240,7 +19618,7 @@ void main() {
 
       expect(
         label.generateMetadata(),
-        equals('    // skipped metadata for the \'labelName\' key'),
+        equals('    \'labelName\': []'),
       );
     });
 
@@ -19251,7 +19629,7 @@ void main() {
 
       expect(
         label.generateMetadata(),
-        equals('    // skipped metadata for the \'labelName\' key'),
+        equals('    \'labelName\': []'),
       );
     });
 
@@ -19332,7 +19710,7 @@ void main() {
 
       expect(
         label.generateMetadata(),
-        equals('    // skipped metadata for the \'labelName\' key'),
+        equals('    \'labelName\': []'),
       );
     });
 
@@ -19343,7 +19721,7 @@ void main() {
 
       expect(
         label.generateMetadata(),
-        equals('    // skipped metadata for the \'labelName\' key'),
+        equals('    \'labelName\': [\'year\']'),
       );
     });
   });

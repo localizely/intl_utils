@@ -92,6 +92,91 @@ void main() {
       expect(response?.elementAt(0).value,
           equals('Literal message with a > sign.'));
     });
+
+    test('Test literal message with a simple json string', () {
+      var response =
+          IcuParser().parse('{ "firstName": "John", "lastName": "Doe" }');
+
+      expect(response, isNotNull);
+      expect(response?.length, equals(2));
+      expect(response?.elementAt(0).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(0).type, equals(ElementType.literal));
+      expect(response?.elementAt(0).value, equals('{'));
+
+      expect(response?.elementAt(1).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(1).type, equals(ElementType.literal));
+      expect(response?.elementAt(1).value,
+          equals(' "firstName": "John", "lastName": "Doe" }'));
+    });
+
+    test('Test literal message with a nested json string', () {
+      var response = IcuParser().parse(
+          '{ "firstName": "John", "lastName": "Doe", "address": { "street": "Some street 123", "city": "Some city" } }');
+
+      expect(response, isNotNull);
+      expect(response?.length, equals(4));
+      expect(response?.elementAt(0).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(0).type, equals(ElementType.literal));
+      expect(response?.elementAt(0).value, equals('{'));
+
+      expect(response?.elementAt(1).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(1).type, equals(ElementType.literal));
+      expect(response?.elementAt(1).value,
+          equals(' "firstName": "John", "lastName": "Doe", "address": '));
+
+      expect(response?.elementAt(2).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(2).type, equals(ElementType.literal));
+      expect(response?.elementAt(2).value, equals('{'));
+
+      expect(response?.elementAt(3).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(3).type, equals(ElementType.literal));
+      expect(response?.elementAt(3).value,
+          equals(' "street": "Some street 123", "city": "Some city" } }'));
+    });
+
+    test('Test literal message with a complex json string', () {
+      var response = IcuParser().parse(
+          '{ "firstName": "John", "lastName": "Doe", "address": { "street": "Some street 123", "city": "Some city" }, "skills": [ { "name": "programming" }, { "name": "design" } ] }');
+
+      expect(response, isNotNull);
+      expect(response?.length, equals(8));
+      expect(response?.elementAt(0).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(0).type, equals(ElementType.literal));
+      expect(response?.elementAt(0).value, equals('{'));
+
+      expect(response?.elementAt(1).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(1).type, equals(ElementType.literal));
+      expect(response?.elementAt(1).value,
+          equals(' "firstName": "John", "lastName": "Doe", "address": '));
+
+      expect(response?.elementAt(2).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(2).type, equals(ElementType.literal));
+      expect(response?.elementAt(2).value, equals('{'));
+
+      expect(response?.elementAt(3).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(3).type, equals(ElementType.literal));
+      expect(
+          response?.elementAt(3).value,
+          equals(
+              ' "street": "Some street 123", "city": "Some city" }, "skills": [ '));
+
+      expect(response?.elementAt(4).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(4).type, equals(ElementType.literal));
+      expect(response?.elementAt(4).value, equals('{'));
+
+      expect(response?.elementAt(5).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(5).type, equals(ElementType.literal));
+      expect(
+          response?.elementAt(5).value, equals(' "name": "programming" }, '));
+
+      expect(response?.elementAt(6).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(6).type, equals(ElementType.literal));
+      expect(response?.elementAt(6).value, equals('{'));
+
+      expect(response?.elementAt(7).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(7).type, equals(ElementType.literal));
+      expect(response?.elementAt(7).value, equals(' "name": "design" } ] }'));
+    });
   });
 
   group('Argument messages', () {
@@ -295,6 +380,183 @@ void main() {
       expect(response?.elementAt(2).runtimeType, equals(LiteralElement));
       expect(response?.elementAt(2).type, equals(ElementType.literal));
       expect(response?.elementAt(2).value, equals(' and > sign.'));
+    });
+
+    test('Test argument message when content contains a simple json string',
+        () {
+      var response = IcuParser().parse(
+          'Argument message: {name} - { "firstName": "John", "lastName": "Doe" }');
+
+      expect(response, isNotNull);
+      expect(response?.length, equals(5));
+
+      expect(response?.elementAt(0).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(0).type, equals(ElementType.literal));
+      expect(response?.elementAt(0).value, equals('Argument message: '));
+
+      expect(response?.elementAt(1).runtimeType, equals(ArgumentElement));
+      expect(response?.elementAt(1).type, equals(ElementType.argument));
+      expect(response?.elementAt(1).value, equals('name'));
+
+      expect(response?.elementAt(2).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(2).type, equals(ElementType.literal));
+      expect(response?.elementAt(2).value, equals(' - '));
+
+      expect(response?.elementAt(3).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(3).type, equals(ElementType.literal));
+      expect(response?.elementAt(3).value, equals('{'));
+
+      expect(response?.elementAt(4).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(4).type, equals(ElementType.literal));
+      expect(response?.elementAt(4).value,
+          equals(' "firstName": "John", "lastName": "Doe" }'));
+    });
+
+    test('Test argument message when content contains a nested json string',
+        () {
+      var response = IcuParser().parse(
+          'Argument message: {name} - { "firstName": "John", "lastName": "Doe", "address": { "street": "Some street 123", "city": "Some city" } }');
+
+      expect(response, isNotNull);
+      expect(response?.length, equals(7));
+
+      expect(response?.elementAt(0).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(0).type, equals(ElementType.literal));
+      expect(response?.elementAt(0).value, equals('Argument message: '));
+
+      expect(response?.elementAt(1).runtimeType, equals(ArgumentElement));
+      expect(response?.elementAt(1).type, equals(ElementType.argument));
+      expect(response?.elementAt(1).value, equals('name'));
+
+      expect(response?.elementAt(2).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(2).type, equals(ElementType.literal));
+      expect(response?.elementAt(2).value, equals(' - '));
+
+      expect(response?.elementAt(3).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(3).type, equals(ElementType.literal));
+      expect(response?.elementAt(3).value, equals('{'));
+
+      expect(response?.elementAt(4).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(4).type, equals(ElementType.literal));
+      expect(response?.elementAt(4).value,
+          equals(' "firstName": "John", "lastName": "Doe", "address": '));
+
+      expect(response?.elementAt(5).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(5).type, equals(ElementType.literal));
+      expect(response?.elementAt(5).value, equals('{'));
+
+      expect(response?.elementAt(6).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(6).type, equals(ElementType.literal));
+      expect(response?.elementAt(6).value,
+          equals(' "street": "Some street 123", "city": "Some city" } }'));
+    });
+
+    test('Test argument message when content contains a complex json string',
+        () {
+      var response = IcuParser().parse(
+          'Argument message: {name} - { "firstName": "John", "lastName": "Doe", "address": { "street": "Some street 123", "city": "Some city" }, "skills": [ { "name": "programming" }, { "name": "design" } ] }');
+
+      expect(response, isNotNull);
+      expect(response?.length, equals(11));
+
+      expect(response?.elementAt(0).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(0).type, equals(ElementType.literal));
+      expect(response?.elementAt(0).value, equals('Argument message: '));
+
+      expect(response?.elementAt(1).runtimeType, equals(ArgumentElement));
+      expect(response?.elementAt(1).type, equals(ElementType.argument));
+      expect(response?.elementAt(1).value, equals('name'));
+
+      expect(response?.elementAt(2).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(2).type, equals(ElementType.literal));
+      expect(response?.elementAt(2).value, equals(' - '));
+
+      expect(response?.elementAt(3).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(3).type, equals(ElementType.literal));
+      expect(response?.elementAt(3).value, equals('{'));
+
+      expect(response?.elementAt(4).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(4).type, equals(ElementType.literal));
+      expect(response?.elementAt(4).value,
+          equals(' "firstName": "John", "lastName": "Doe", "address": '));
+
+      expect(response?.elementAt(5).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(5).type, equals(ElementType.literal));
+      expect(response?.elementAt(5).value, equals('{'));
+
+      expect(response?.elementAt(6).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(6).type, equals(ElementType.literal));
+      expect(
+          response?.elementAt(6).value,
+          equals(
+              ' "street": "Some street 123", "city": "Some city" }, "skills": [ '));
+
+      expect(response?.elementAt(7).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(7).type, equals(ElementType.literal));
+      expect(response?.elementAt(7).value, equals('{'));
+
+      expect(response?.elementAt(8).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(8).type, equals(ElementType.literal));
+      expect(
+          response?.elementAt(8).value, equals(' "name": "programming" }, '));
+
+      expect(response?.elementAt(9).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(9).type, equals(ElementType.literal));
+      expect(response?.elementAt(9).value, equals('{'));
+
+      expect(response?.elementAt(10).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(10).type, equals(ElementType.literal));
+      expect(response?.elementAt(10).value, equals(' "name": "design" } ] }'));
+    });
+
+    test(
+        'Test argument message when content contains a json string with placeholders',
+        () {
+      var response = IcuParser().parse(
+          '{ "name": "{name}", "address": { "street": "{street}", "city": "{city}" } }');
+
+      expect(response, isNotNull);
+      expect(response?.length, equals(10));
+
+      expect(response?.elementAt(0).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(0).type, equals(ElementType.literal));
+      expect(response?.elementAt(0).value, equals('{'));
+
+      expect(response?.elementAt(1).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(1).type, equals(ElementType.literal));
+      expect(response?.elementAt(1).value, equals(' "name": "'));
+
+      expect(response?.elementAt(2).runtimeType, equals(ArgumentElement));
+      expect(response?.elementAt(2).type, equals(ElementType.argument));
+      expect(response?.elementAt(2).value, equals('name'));
+
+      expect(response?.elementAt(3).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(3).type, equals(ElementType.literal));
+      expect(response?.elementAt(3).value, equals('", "address": '));
+
+      expect(response?.elementAt(4).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(4).type, equals(ElementType.literal));
+      expect(response?.elementAt(4).value, equals('{'));
+
+      expect(response?.elementAt(5).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(5).type, equals(ElementType.literal));
+      expect(response?.elementAt(5).value, equals(' "street": "'));
+
+      expect(response?.elementAt(6).runtimeType, equals(ArgumentElement));
+      expect(response?.elementAt(6).type, equals(ElementType.argument));
+      expect(response?.elementAt(6).value, equals('street'));
+
+      expect(response?.elementAt(7).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(7).type, equals(ElementType.literal));
+      expect(response?.elementAt(7).value, equals('", "city": "'));
+
+      expect(response?.elementAt(8).runtimeType, equals(ArgumentElement));
+      expect(response?.elementAt(8).type, equals(ElementType.argument));
+      expect(response?.elementAt(8).value, equals('city'));
+
+      expect(response?.elementAt(9).runtimeType, equals(LiteralElement));
+      expect(response?.elementAt(9).type, equals(ElementType.literal));
+      expect(response?.elementAt(9).value, equals('" } }'));
     });
   });
 
