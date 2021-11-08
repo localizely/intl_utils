@@ -448,7 +448,7 @@ class Label {
                 if (parameter.value is num) {
                   return '${parameter.name}: ${parameter.value}';
                 } else {
-                  return '${parameter.name}: ${_escape(parameter.value.toString())}';
+                  return '${parameter.name}: \'${_escape(parameter.value.toString())}\'';
                 }
               },
             );

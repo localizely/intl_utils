@@ -2931,6 +2931,45 @@ void main() {
     });
 
     test(
+        'Test argument dart getter when placeholder has type int, format compactCurrency, and optionalParameters contains name, symbol, and decimalDigits',
+        () {
+      var label =
+          Label('labelName', 'Argument message {value}.', placeholders: [
+        Placeholder('labelName', 'value', {
+          'type': 'int',
+          'format': 'compactCurrency',
+          'optionalParameters': {
+            'name': 'EUR',
+            'symbol': '€',
+            'decimalDigits': 2
+          }
+        })
+      ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Argument message {value}.`',
+            '  String labelName(int value) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'Argument message \$valueString.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
         'Test argument dart getter when placeholder has type int, format compactSimpleCurrency, and optionalParameters contains decimalDigits',
         () {
       var label =
@@ -2949,6 +2988,40 @@ void main() {
             '  String labelName(int value) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'Argument message \$valueString.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test argument dart getter when placeholder has type int, format compactSimpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label =
+          Label('labelName', 'Argument message {value}.', placeholders: [
+        Placeholder('labelName', 'value', {
+          'type': 'int',
+          'format': 'compactSimpleCurrency',
+          'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+        })
+      ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Argument message {value}.`',
+            '  String labelName(int value) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -2983,6 +3056,47 @@ void main() {
             '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
             '      locale: Intl.getCurrentLocale(),',
             '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'Argument message \$valueString.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test argument dart getter when placeholder has type int, format currency, and optionalParameters contains name, symbol, decimalDigits, and customPattern',
+        () {
+      var label =
+          Label('labelName', 'Argument message {value}.', placeholders: [
+        Placeholder('labelName', 'value', {
+          'type': 'int',
+          'format': 'currency',
+          'optionalParameters': {
+            'name': 'EUR',
+            'symbol': '€',
+            'decimalDigits': 2,
+            'customPattern': '\u00A4#,##0.00'
+          }
+        })
+      ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Argument message {value}.`',
+            '  String labelName(int value) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2,',
+            '      customPattern: \'\u00A4#,##0.00\'',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
             '',
@@ -3048,6 +3162,40 @@ void main() {
             '  String labelName(int value) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'Argument message \$valueString.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test argument dart getter when placeholder has type int, format simpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label =
+          Label('labelName', 'Argument message {value}.', placeholders: [
+        Placeholder('labelName', 'value', {
+          'type': 'int',
+          'format': 'simpleCurrency',
+          'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+        })
+      ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Argument message {value}.`',
+            '  String labelName(int value) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -3435,6 +3583,45 @@ void main() {
     });
 
     test(
+        'Test argument dart getter when placeholder has type double, format compactCurrency, and optionalParameters contains name, symbol, and decimalDigits',
+        () {
+      var label =
+          Label('labelName', 'Argument message {value}.', placeholders: [
+        Placeholder('labelName', 'value', {
+          'type': 'double',
+          'format': 'compactCurrency',
+          'optionalParameters': {
+            'name': 'EUR',
+            'symbol': '€',
+            'decimalDigits': 2
+          }
+        })
+      ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Argument message {value}.`',
+            '  String labelName(double value) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'Argument message \$valueString.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
         'Test argument dart getter when placeholder has type double, format compactSimpleCurrency, and optionalParameters contains decimalDigits',
         () {
       var label =
@@ -3453,6 +3640,40 @@ void main() {
             '  String labelName(double value) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'Argument message \$valueString.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test argument dart getter when placeholder has type double, format compactSimpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label =
+          Label('labelName', 'Argument message {value}.', placeholders: [
+        Placeholder('labelName', 'value', {
+          'type': 'double',
+          'format': 'compactSimpleCurrency',
+          'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+        })
+      ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Argument message {value}.`',
+            '  String labelName(double value) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -3487,6 +3708,47 @@ void main() {
             '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
             '      locale: Intl.getCurrentLocale(),',
             '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'Argument message \$valueString.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test argument dart getter when placeholder has type double, format currency, and optionalParameters contains name, symbol, decimalDigits, and customPattern',
+        () {
+      var label =
+          Label('labelName', 'Argument message {value}.', placeholders: [
+        Placeholder('labelName', 'value', {
+          'type': 'double',
+          'format': 'currency',
+          'optionalParameters': {
+            'name': 'EUR',
+            'symbol': '€',
+            'decimalDigits': 2,
+            'customPattern': '\u00A4#,##0.00'
+          }
+        })
+      ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Argument message {value}.`',
+            '  String labelName(double value) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2,',
+            '      customPattern: \'\u00A4#,##0.00\'',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
             '',
@@ -3552,6 +3814,40 @@ void main() {
             '  String labelName(double value) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'Argument message \$valueString.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test argument dart getter when placeholder has type double, format simpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label =
+          Label('labelName', 'Argument message {value}.', placeholders: [
+        Placeholder('labelName', 'value', {
+          'type': 'double',
+          'format': 'simpleCurrency',
+          'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+        })
+      ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Argument message {value}.`',
+            '  String labelName(double value) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -3937,6 +4233,45 @@ void main() {
     });
 
     test(
+        'Test argument dart getter when placeholder has type num, format compactCurrency, and optionalParameters contains name, symbol, and decimalDigits',
+        () {
+      var label =
+          Label('labelName', 'Argument message {value}.', placeholders: [
+        Placeholder('labelName', 'value', {
+          'type': 'num',
+          'format': 'compactCurrency',
+          'optionalParameters': {
+            'name': 'EUR',
+            'symbol': '€',
+            'decimalDigits': 2
+          }
+        })
+      ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Argument message {value}.`',
+            '  String labelName(num value) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'Argument message \$valueString.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
         'Test argument dart getter when placeholder has type num, format compactSimpleCurrency, and optionalParameters contains decimalDigits',
         () {
       var label =
@@ -3955,6 +4290,40 @@ void main() {
             '  String labelName(num value) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'Argument message \$valueString.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test argument dart getter when placeholder has type num, format compactSimpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label =
+          Label('labelName', 'Argument message {value}.', placeholders: [
+        Placeholder('labelName', 'value', {
+          'type': 'num',
+          'format': 'compactSimpleCurrency',
+          'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+        })
+      ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Argument message {value}.`',
+            '  String labelName(num value) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -3989,6 +4358,47 @@ void main() {
             '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
             '      locale: Intl.getCurrentLocale(),',
             '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'Argument message \$valueString.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test argument dart getter when placeholder has type num, format currency, and optionalParameters contains name, symbol, decimalDigits, and customPattern',
+        () {
+      var label =
+          Label('labelName', 'Argument message {value}.', placeholders: [
+        Placeholder('labelName', 'value', {
+          'type': 'num',
+          'format': 'currency',
+          'optionalParameters': {
+            'name': 'EUR',
+            'symbol': '€',
+            'decimalDigits': 2,
+            'customPattern': '\u00A4#,##0.00'
+          }
+        })
+      ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Argument message {value}.`',
+            '  String labelName(num value) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2,',
+            '      customPattern: \'\u00A4#,##0.00\'',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
             '',
@@ -4054,6 +4464,40 @@ void main() {
             '  String labelName(num value) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'Argument message \$valueString.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test argument dart getter when placeholder has type num, format simpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label =
+          Label('labelName', 'Argument message {value}.', placeholders: [
+        Placeholder('labelName', 'value', {
+          'type': 'num',
+          'format': 'simpleCurrency',
+          'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+        })
+      ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Argument message {value}.`',
+            '  String labelName(num value) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -6522,6 +6966,52 @@ void main() {
     });
 
     test(
+        'Test plural dart getter when placeholder has type int, format compactCurrency, and optionalParameters contains name, symbol, and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'int',
+              'format': 'compactCurrency',
+              'optionalParameters': {
+                'name': 'EUR',
+                'symbol': '€',
+                'decimalDigits': 2
+              }
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}`',
+            '  String labelName(int value, num count) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.plural(',
+            '      count,',
+            '      zero: \'zero message \$valueString\',',
+            '      one: \'one message \$valueString\',',
+            '      two: \'two message \$valueString\',',
+            '      few: \'few message \$valueString\',',
+            '      many: \'many message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
         'Test plural dart getter when placeholder has type int, format compactSimpleCurrency, and optionalParameters contains decimalDigits',
         () {
       var label = Label('labelName',
@@ -6541,6 +7031,47 @@ void main() {
             '  String labelName(int value, num count) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.plural(',
+            '      count,',
+            '      zero: \'zero message \$valueString\',',
+            '      one: \'one message \$valueString\',',
+            '      two: \'two message \$valueString\',',
+            '      few: \'few message \$valueString\',',
+            '      many: \'many message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test plural dart getter when placeholder has type int, format compactSimpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'int',
+              'format': 'compactSimpleCurrency',
+              'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}`',
+            '  String labelName(int value, num count) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -6582,6 +7113,54 @@ void main() {
             '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
             '      locale: Intl.getCurrentLocale(),',
             '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.plural(',
+            '      count,',
+            '      zero: \'zero message \$valueString\',',
+            '      one: \'one message \$valueString\',',
+            '      two: \'two message \$valueString\',',
+            '      few: \'few message \$valueString\',',
+            '      many: \'many message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test plural dart getter when placeholder has type int, format currency, and optionalParameters contains name, symbol, decimalDigits, and customPattern',
+        () {
+      var label = Label('labelName',
+          '{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'int',
+              'format': 'currency',
+              'optionalParameters': {
+                'name': 'EUR',
+                'symbol': '€',
+                'decimalDigits': 2,
+                'customPattern': '\u00A4#,##0.00'
+              }
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}`',
+            '  String labelName(int value, num count) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2,',
+            '      customPattern: \'\u00A4#,##0.00\'',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
             '',
@@ -6661,6 +7240,47 @@ void main() {
             '  String labelName(int value, num count) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.plural(',
+            '      count,',
+            '      zero: \'zero message \$valueString\',',
+            '      one: \'one message \$valueString\',',
+            '      two: \'two message \$valueString\',',
+            '      few: \'few message \$valueString\',',
+            '      many: \'many message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test plural dart getter when placeholder has type int, format simpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'int',
+              'format': 'simpleCurrency',
+              'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}`',
+            '  String labelName(int value, num count) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -7140,6 +7760,52 @@ void main() {
     });
 
     test(
+        'Test plural dart getter when placeholder has type double, format compactCurrency, and optionalParameters contains name, symbol, and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'double',
+              'format': 'compactCurrency',
+              'optionalParameters': {
+                'name': 'EUR',
+                'symbol': '€',
+                'decimalDigits': 2
+              }
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}`',
+            '  String labelName(double value, num count) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.plural(',
+            '      count,',
+            '      zero: \'zero message \$valueString\',',
+            '      one: \'one message \$valueString\',',
+            '      two: \'two message \$valueString\',',
+            '      few: \'few message \$valueString\',',
+            '      many: \'many message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
         'Test plural dart getter when placeholder has type double, format compactSimpleCurrency, and optionalParameters contains decimalDigits',
         () {
       var label = Label('labelName',
@@ -7159,6 +7825,47 @@ void main() {
             '  String labelName(double value, num count) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.plural(',
+            '      count,',
+            '      zero: \'zero message \$valueString\',',
+            '      one: \'one message \$valueString\',',
+            '      two: \'two message \$valueString\',',
+            '      few: \'few message \$valueString\',',
+            '      many: \'many message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test plural dart getter when placeholder has type double, format compactSimpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'double',
+              'format': 'compactSimpleCurrency',
+              'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}`',
+            '  String labelName(double value, num count) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -7200,6 +7907,54 @@ void main() {
             '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
             '      locale: Intl.getCurrentLocale(),',
             '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.plural(',
+            '      count,',
+            '      zero: \'zero message \$valueString\',',
+            '      one: \'one message \$valueString\',',
+            '      two: \'two message \$valueString\',',
+            '      few: \'few message \$valueString\',',
+            '      many: \'many message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test plural dart getter when placeholder has type double, format currency, and optionalParameters contains name, symbol, decimalDigits, and customPattern',
+        () {
+      var label = Label('labelName',
+          '{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'double',
+              'format': 'currency',
+              'optionalParameters': {
+                'name': 'EUR',
+                'symbol': '€',
+                'decimalDigits': 2,
+                'customPattern': '\u00A4#,##0.00'
+              }
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}`',
+            '  String labelName(double value, num count) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2,',
+            '      customPattern: \'\u00A4#,##0.00\'',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
             '',
@@ -7279,6 +8034,47 @@ void main() {
             '  String labelName(double value, num count) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.plural(',
+            '      count,',
+            '      zero: \'zero message \$valueString\',',
+            '      one: \'one message \$valueString\',',
+            '      two: \'two message \$valueString\',',
+            '      few: \'few message \$valueString\',',
+            '      many: \'many message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test plural dart getter when placeholder has type double, format simpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'double',
+              'format': 'simpleCurrency',
+              'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}`',
+            '  String labelName(double value, num count) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -7758,6 +8554,52 @@ void main() {
     });
 
     test(
+        'Test plural dart getter when placeholder has type num, format compactCurrency, and optionalParameters contains name, symbol, and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'num',
+              'format': 'compactCurrency',
+              'optionalParameters': {
+                'name': 'EUR',
+                'symbol': '€',
+                'decimalDigits': 2
+              }
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}`',
+            '  String labelName(num value, num count) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.plural(',
+            '      count,',
+            '      zero: \'zero message \$valueString\',',
+            '      one: \'one message \$valueString\',',
+            '      two: \'two message \$valueString\',',
+            '      few: \'few message \$valueString\',',
+            '      many: \'many message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
         'Test plural dart getter when placeholder has type num, format compactSimpleCurrency, and optionalParameters contains decimalDigits',
         () {
       var label = Label('labelName',
@@ -7777,6 +8619,47 @@ void main() {
             '  String labelName(num value, num count) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.plural(',
+            '      count,',
+            '      zero: \'zero message \$valueString\',',
+            '      one: \'one message \$valueString\',',
+            '      two: \'two message \$valueString\',',
+            '      few: \'few message \$valueString\',',
+            '      many: \'many message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test plural dart getter when placeholder has type num, format compactSimpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'num',
+              'format': 'compactSimpleCurrency',
+              'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}`',
+            '  String labelName(num value, num count) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -7818,6 +8701,54 @@ void main() {
             '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
             '      locale: Intl.getCurrentLocale(),',
             '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.plural(',
+            '      count,',
+            '      zero: \'zero message \$valueString\',',
+            '      one: \'one message \$valueString\',',
+            '      two: \'two message \$valueString\',',
+            '      few: \'few message \$valueString\',',
+            '      many: \'many message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test plural dart getter when placeholder has type num, format currency, and optionalParameters contains name, symbol, decimalDigits, and customPattern',
+        () {
+      var label = Label('labelName',
+          '{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'num',
+              'format': 'currency',
+              'optionalParameters': {
+                'name': 'EUR',
+                'symbol': '€',
+                'decimalDigits': 2,
+                'customPattern': '\u00A4#,##0.00'
+              }
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}`',
+            '  String labelName(num value, num count) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2,',
+            '      customPattern: \'\u00A4#,##0.00\'',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
             '',
@@ -7897,6 +8828,47 @@ void main() {
             '  String labelName(num value, num count) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.plural(',
+            '      count,',
+            '      zero: \'zero message \$valueString\',',
+            '      one: \'one message \$valueString\',',
+            '      two: \'two message \$valueString\',',
+            '      few: \'few message \$valueString\',',
+            '      many: \'many message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test plural dart getter when placeholder has type num, format simpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'num',
+              'format': 'simpleCurrency',
+              'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}`',
+            '  String labelName(num value, num count) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -10402,6 +11374,49 @@ void main() {
     });
 
     test(
+        'Test gender dart getter when placeholder has type int, format compactCurrency, and optionalParameters contains name, symbol, and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'int',
+              'format': 'compactCurrency',
+              'optionalParameters': {
+                'name': 'EUR',
+                'symbol': '€',
+                'decimalDigits': 2
+              }
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}`',
+            '  String labelName(int value, String gender) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.gender(',
+            '      gender,',
+            '      male: \'male message \$valueString\',',
+            '      female: \'female message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, gender],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
         'Test gender dart getter when placeholder has type int, format compactSimpleCurrency, and optionalParameters contains decimalDigits',
         () {
       var label = Label('labelName',
@@ -10421,6 +11436,44 @@ void main() {
             '  String labelName(int value, String gender) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.gender(',
+            '      gender,',
+            '      male: \'male message \$valueString\',',
+            '      female: \'female message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, gender],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test gender dart getter when placeholder has type int, format compactSimpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'int',
+              'format': 'compactSimpleCurrency',
+              'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}`',
+            '  String labelName(int value, String gender) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -10459,6 +11512,51 @@ void main() {
             '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
             '      locale: Intl.getCurrentLocale(),',
             '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.gender(',
+            '      gender,',
+            '      male: \'male message \$valueString\',',
+            '      female: \'female message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, gender],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test gender dart getter when placeholder has type int, format currency, and optionalParameters contains name, symbol, decimalDigits, and customPattern',
+        () {
+      var label = Label('labelName',
+          '{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'int',
+              'format': 'currency',
+              'optionalParameters': {
+                'name': 'EUR',
+                'symbol': '€',
+                'decimalDigits': 2,
+                'customPattern': '\u00A4#,##0.00'
+              }
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}`',
+            '  String labelName(int value, String gender) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2,',
+            '      customPattern: \'\u00A4#,##0.00\'',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
             '',
@@ -10532,6 +11630,44 @@ void main() {
             '  String labelName(int value, String gender) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.gender(',
+            '      gender,',
+            '      male: \'male message \$valueString\',',
+            '      female: \'female message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, gender],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test gender dart getter when placeholder has type int, format simpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'int',
+              'format': 'simpleCurrency',
+              'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}`',
+            '  String labelName(int value, String gender) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -10972,6 +12108,49 @@ void main() {
     });
 
     test(
+        'Test gender dart getter when placeholder has type double, format compactCurrency, and optionalParameters contains name, symbol, and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'double',
+              'format': 'compactCurrency',
+              'optionalParameters': {
+                'name': 'EUR',
+                'symbol': '€',
+                'decimalDigits': 2
+              }
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}`',
+            '  String labelName(double value, String gender) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.gender(',
+            '      gender,',
+            '      male: \'male message \$valueString\',',
+            '      female: \'female message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, gender],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
         'Test gender dart getter when placeholder has type double, format compactSimpleCurrency, and optionalParameters contains decimalDigits',
         () {
       var label = Label('labelName',
@@ -10991,6 +12170,44 @@ void main() {
             '  String labelName(double value, String gender) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.gender(',
+            '      gender,',
+            '      male: \'male message \$valueString\',',
+            '      female: \'female message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, gender],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test gender dart getter when placeholder has type double, format compactSimpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'double',
+              'format': 'compactSimpleCurrency',
+              'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}`',
+            '  String labelName(double value, String gender) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -11029,6 +12246,51 @@ void main() {
             '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
             '      locale: Intl.getCurrentLocale(),',
             '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.gender(',
+            '      gender,',
+            '      male: \'male message \$valueString\',',
+            '      female: \'female message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, gender],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test gender dart getter when placeholder has type double, format currency, and optionalParameters contains name, symbol, decimalDigits, and customPattern',
+        () {
+      var label = Label('labelName',
+          '{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'double',
+              'format': 'currency',
+              'optionalParameters': {
+                'name': 'EUR',
+                'symbol': '€',
+                'decimalDigits': 2,
+                'customPattern': '\u00A4#,##0.00'
+              }
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}`',
+            '  String labelName(double value, String gender) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2,',
+            '      customPattern: \'\u00A4#,##0.00\'',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
             '',
@@ -11102,6 +12364,44 @@ void main() {
             '  String labelName(double value, String gender) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.gender(',
+            '      gender,',
+            '      male: \'male message \$valueString\',',
+            '      female: \'female message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, gender],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test gender dart getter when placeholder has type double, format simpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'double',
+              'format': 'simpleCurrency',
+              'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}`',
+            '  String labelName(double value, String gender) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -11542,6 +12842,49 @@ void main() {
     });
 
     test(
+        'Test gender dart getter when placeholder has type num, format compactCurrency, and optionalParameters contains name, symbol, and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'num',
+              'format': 'compactCurrency',
+              'optionalParameters': {
+                'name': 'EUR',
+                'symbol': '€',
+                'decimalDigits': 2
+              }
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}`',
+            '  String labelName(num value, String gender) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.gender(',
+            '      gender,',
+            '      male: \'male message \$valueString\',',
+            '      female: \'female message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, gender],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
         'Test gender dart getter when placeholder has type num, format compactSimpleCurrency, and optionalParameters contains decimalDigits',
         () {
       var label = Label('labelName',
@@ -11561,6 +12904,44 @@ void main() {
             '  String labelName(num value, String gender) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.gender(',
+            '      gender,',
+            '      male: \'male message \$valueString\',',
+            '      female: \'female message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, gender],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test gender dart getter when placeholder has type num, format compactSimpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'num',
+              'format': 'compactSimpleCurrency',
+              'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}`',
+            '  String labelName(num value, String gender) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -11599,6 +12980,51 @@ void main() {
             '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
             '      locale: Intl.getCurrentLocale(),',
             '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.gender(',
+            '      gender,',
+            '      male: \'male message \$valueString\',',
+            '      female: \'female message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, gender],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test gender dart getter when placeholder has type num, format currency, and optionalParameters contains name, symbol, decimalDigits, and customPattern',
+        () {
+      var label = Label('labelName',
+          '{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'num',
+              'format': 'currency',
+              'optionalParameters': {
+                'name': 'EUR',
+                'symbol': '€',
+                'decimalDigits': 2,
+                'customPattern': '\u00A4#,##0.00'
+              }
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}`',
+            '  String labelName(num value, String gender) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2,',
+            '      customPattern: \'\u00A4#,##0.00\'',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
             '',
@@ -11672,6 +13098,44 @@ void main() {
             '  String labelName(num value, String gender) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.gender(',
+            '      gender,',
+            '      male: \'male message \$valueString\',',
+            '      female: \'female message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, gender],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test gender dart getter when placeholder has type num, format simpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'num',
+              'format': 'simpleCurrency',
+              'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}`',
+            '  String labelName(num value, String gender) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -14208,6 +15672,51 @@ void main() {
     });
 
     test(
+        'Test select dart getter when placeholder has type int, format compactCurrency, and optionalParameters contains name, symbol, and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'int',
+              'format': 'compactCurrency',
+              'optionalParameters': {
+                'name': 'EUR',
+                'symbol': '€',
+                'decimalDigits': 2
+              }
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}`',
+            '  String labelName(Object choice, int value) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message \$valueString\',',
+            '        \'bar\': \'bar message \$valueString\',',
+            '        \'other\': \'other message \$valueString\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
         'Test select dart getter when placeholder has type int, format compactSimpleCurrency, and optionalParameters contains decimalDigits',
         () {
       var label = Label('labelName',
@@ -14227,6 +15736,46 @@ void main() {
             '  String labelName(Object choice, int value) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message \$valueString\',',
+            '        \'bar\': \'bar message \$valueString\',',
+            '        \'other\': \'other message \$valueString\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test select dart getter when placeholder has type int, format compactSimpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'int',
+              'format': 'compactSimpleCurrency',
+              'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}`',
+            '  String labelName(Object choice, int value) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -14267,6 +15816,53 @@ void main() {
             '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
             '      locale: Intl.getCurrentLocale(),',
             '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message \$valueString\',',
+            '        \'bar\': \'bar message \$valueString\',',
+            '        \'other\': \'other message \$valueString\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test select dart getter when placeholder has type int, format currency, and optionalParameters contains name, symbol, decimalDigits, and customPattern',
+        () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'int',
+              'format': 'currency',
+              'optionalParameters': {
+                'name': 'EUR',
+                'symbol': '€',
+                'decimalDigits': 2,
+                'customPattern': '\u00A4#,##0.00'
+              }
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}`',
+            '  String labelName(Object choice, int value) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2,',
+            '      customPattern: \'\u00A4#,##0.00\'',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
             '',
@@ -14344,6 +15940,46 @@ void main() {
             '  String labelName(Object choice, int value) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message \$valueString\',',
+            '        \'bar\': \'bar message \$valueString\',',
+            '        \'other\': \'other message \$valueString\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test select dart getter when placeholder has type int, format simpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'int',
+              'format': 'simpleCurrency',
+              'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}`',
+            '  String labelName(Object choice, int value) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -14810,6 +16446,51 @@ void main() {
     });
 
     test(
+        'Test select dart getter when placeholder has type double, format compactCurrency, and optionalParameters contains name, symbol, and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'double',
+              'format': 'compactCurrency',
+              'optionalParameters': {
+                'name': 'EUR',
+                'symbol': '€',
+                'decimalDigits': 2
+              }
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}`',
+            '  String labelName(Object choice, double value) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message \$valueString\',',
+            '        \'bar\': \'bar message \$valueString\',',
+            '        \'other\': \'other message \$valueString\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
         'Test select dart getter when placeholder has type double, format compactSimpleCurrency, and optionalParameters contains decimalDigits',
         () {
       var label = Label('labelName',
@@ -14829,6 +16510,46 @@ void main() {
             '  String labelName(Object choice, double value) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message \$valueString\',',
+            '        \'bar\': \'bar message \$valueString\',',
+            '        \'other\': \'other message \$valueString\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test select dart getter when placeholder has type double, format compactSimpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'double',
+              'format': 'compactSimpleCurrency',
+              'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}`',
+            '  String labelName(Object choice, double value) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -14869,6 +16590,53 @@ void main() {
             '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
             '      locale: Intl.getCurrentLocale(),',
             '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message \$valueString\',',
+            '        \'bar\': \'bar message \$valueString\',',
+            '        \'other\': \'other message \$valueString\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test select dart getter when placeholder has type double, format currency, and optionalParameters contains name, symbol, decimalDigits, and customPattern',
+        () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'double',
+              'format': 'currency',
+              'optionalParameters': {
+                'name': 'EUR',
+                'symbol': '€',
+                'decimalDigits': 2,
+                'customPattern': '\u00A4#,##0.00'
+              }
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}`',
+            '  String labelName(Object choice, double value) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2,',
+            '      customPattern: \'\u00A4#,##0.00\'',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
             '',
@@ -14946,6 +16714,46 @@ void main() {
             '  String labelName(Object choice, double value) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message \$valueString\',',
+            '        \'bar\': \'bar message \$valueString\',',
+            '        \'other\': \'other message \$valueString\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test select dart getter when placeholder has type double, format simpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'double',
+              'format': 'simpleCurrency',
+              'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}`',
+            '  String labelName(Object choice, double value) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -15412,6 +17220,51 @@ void main() {
     });
 
     test(
+        'Test select dart getter when placeholder has type num, format compactCurrency, and optionalParameters contains name, symbol, and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'num',
+              'format': 'compactCurrency',
+              'optionalParameters': {
+                'name': 'EUR',
+                'symbol': '€',
+                'decimalDigits': 2
+              }
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}`',
+            '  String labelName(Object choice, num value) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message \$valueString\',',
+            '        \'bar\': \'bar message \$valueString\',',
+            '        \'other\': \'other message \$valueString\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
         'Test select dart getter when placeholder has type num, format compactSimpleCurrency, and optionalParameters contains decimalDigits',
         () {
       var label = Label('labelName',
@@ -15431,6 +17284,46 @@ void main() {
             '  String labelName(Object choice, num value) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message \$valueString\',',
+            '        \'bar\': \'bar message \$valueString\',',
+            '        \'other\': \'other message \$valueString\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test select dart getter when placeholder has type num, format compactSimpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'num',
+              'format': 'compactSimpleCurrency',
+              'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}`',
+            '  String labelName(Object choice, num value) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -15471,6 +17364,53 @@ void main() {
             '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
             '      locale: Intl.getCurrentLocale(),',
             '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message \$valueString\',',
+            '        \'bar\': \'bar message \$valueString\',',
+            '        \'other\': \'other message \$valueString\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test select dart getter when placeholder has type num, format currency, and optionalParameters contains name, symbol, decimalDigits, and customPattern',
+        () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'num',
+              'format': 'currency',
+              'optionalParameters': {
+                'name': 'EUR',
+                'symbol': '€',
+                'decimalDigits': 2,
+                'customPattern': '\u00A4#,##0.00'
+              }
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}`',
+            '  String labelName(Object choice, num value) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2,',
+            '      customPattern: \'\u00A4#,##0.00\'',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
             '',
@@ -15548,6 +17488,46 @@ void main() {
             '  String labelName(Object choice, num value) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message \$valueString\',',
+            '        \'bar\': \'bar message \$valueString\',',
+            '        \'other\': \'other message \$valueString\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test select dart getter when placeholder has type num, format simpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'num',
+              'format': 'simpleCurrency',
+              'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}`',
+            '  String labelName(Object choice, num value) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -18401,6 +20381,46 @@ void main() {
     });
 
     test(
+        'Test compound message dart getter when placeholder has type int, format compactCurrency, and optionalParameters contains name, symbol, and decimalDigits',
+        () {
+      var label = Label('labelName',
+          'The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'int',
+              'format': 'compactCurrency',
+              'optionalParameters': {
+                'name': 'EUR',
+                'symbol': '€',
+                'decimalDigits': 2
+              }
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}`',
+            '  String labelName(Object choice, int value, String gender, Object name, num count) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'The \${Intl.gender(gender, male: \'Mr\', female: \'Mrs\', other: \'user\')} \$name has \${Intl.plural(count, one: \'\$count apple\', other: \'\$count apples\')} in \${Intl.select(choice, {\'fridge\': \'fridge\', \'pocket\': \'pocket\', \'other\': \'bag\'})} - \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString, gender, name, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
         'Test compound message dart getter when placeholder has type int, format compactSimpleCurrency, and optionalParameters contains decimalDigits',
         () {
       var label = Label('labelName',
@@ -18420,6 +20440,41 @@ void main() {
             '  String labelName(Object choice, int value, String gender, Object name, num count) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'The \${Intl.gender(gender, male: \'Mr\', female: \'Mrs\', other: \'user\')} \$name has \${Intl.plural(count, one: \'\$count apple\', other: \'\$count apples\')} in \${Intl.select(choice, {\'fridge\': \'fridge\', \'pocket\': \'pocket\', \'other\': \'bag\'})} - \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString, gender, name, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test compound message dart getter when placeholder has type int, format compactSimpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label = Label('labelName',
+          'The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'int',
+              'format': 'compactSimpleCurrency',
+              'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}`',
+            '  String labelName(Object choice, int value, String gender, Object name, num count) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -18455,6 +20510,48 @@ void main() {
             '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
             '      locale: Intl.getCurrentLocale(),',
             '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'The \${Intl.gender(gender, male: \'Mr\', female: \'Mrs\', other: \'user\')} \$name has \${Intl.plural(count, one: \'\$count apple\', other: \'\$count apples\')} in \${Intl.select(choice, {\'fridge\': \'fridge\', \'pocket\': \'pocket\', \'other\': \'bag\'})} - \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString, gender, name, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test compound message dart getter when placeholder has type int, format currency, and optionalParameters contains name, symbol, decimalDigits, and customPattern',
+        () {
+      var label = Label('labelName',
+          'The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'int',
+              'format': 'currency',
+              'optionalParameters': {
+                'name': 'EUR',
+                'symbol': '€',
+                'decimalDigits': 2,
+                'customPattern': '\u00A4#,##0.00'
+              }
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}`',
+            '  String labelName(Object choice, int value, String gender, Object name, num count) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2,',
+            '      customPattern: \'\u00A4#,##0.00\'',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
             '',
@@ -18522,6 +20619,41 @@ void main() {
             '  String labelName(Object choice, int value, String gender, Object name, num count) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'The \${Intl.gender(gender, male: \'Mr\', female: \'Mrs\', other: \'user\')} \$name has \${Intl.plural(count, one: \'\$count apple\', other: \'\$count apples\')} in \${Intl.select(choice, {\'fridge\': \'fridge\', \'pocket\': \'pocket\', \'other\': \'bag\'})} - \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString, gender, name, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test compound message dart getter when placeholder has type int, format simpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label = Label('labelName',
+          'The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'int',
+              'format': 'simpleCurrency',
+              'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}`',
+            '  String labelName(Object choice, int value, String gender, Object name, num count) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -18923,6 +21055,46 @@ void main() {
     });
 
     test(
+        'Test compound message dart getter when placeholder has type double, format compactCurrency, and optionalParameters contains name, symbol, and decimalDigits',
+        () {
+      var label = Label('labelName',
+          'The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'double',
+              'format': 'compactCurrency',
+              'optionalParameters': {
+                'name': 'EUR',
+                'symbol': '€',
+                'decimalDigits': 2
+              }
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}`',
+            '  String labelName(Object choice, double value, String gender, Object name, num count) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'The \${Intl.gender(gender, male: \'Mr\', female: \'Mrs\', other: \'user\')} \$name has \${Intl.plural(count, one: \'\$count apple\', other: \'\$count apples\')} in \${Intl.select(choice, {\'fridge\': \'fridge\', \'pocket\': \'pocket\', \'other\': \'bag\'})} - \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString, gender, name, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
         'Test compound message dart getter when placeholder has type double, format compactSimpleCurrency, and optionalParameters contains decimalDigits',
         () {
       var label = Label('labelName',
@@ -18942,6 +21114,41 @@ void main() {
             '  String labelName(Object choice, double value, String gender, Object name, num count) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'The \${Intl.gender(gender, male: \'Mr\', female: \'Mrs\', other: \'user\')} \$name has \${Intl.plural(count, one: \'\$count apple\', other: \'\$count apples\')} in \${Intl.select(choice, {\'fridge\': \'fridge\', \'pocket\': \'pocket\', \'other\': \'bag\'})} - \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString, gender, name, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test compound message dart getter when placeholder has type double, format compactSimpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label = Label('labelName',
+          'The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'double',
+              'format': 'compactSimpleCurrency',
+              'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}`',
+            '  String labelName(Object choice, double value, String gender, Object name, num count) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -18977,6 +21184,48 @@ void main() {
             '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
             '      locale: Intl.getCurrentLocale(),',
             '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'The \${Intl.gender(gender, male: \'Mr\', female: \'Mrs\', other: \'user\')} \$name has \${Intl.plural(count, one: \'\$count apple\', other: \'\$count apples\')} in \${Intl.select(choice, {\'fridge\': \'fridge\', \'pocket\': \'pocket\', \'other\': \'bag\'})} - \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString, gender, name, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test compound message dart getter when placeholder has type double, format currency, and optionalParameters contains name, symbol, decimalDigits, and customPattern',
+        () {
+      var label = Label('labelName',
+          'The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'double',
+              'format': 'currency',
+              'optionalParameters': {
+                'name': 'EUR',
+                'symbol': '€',
+                'decimalDigits': 2,
+                'customPattern': '\u00A4#,##0.00'
+              }
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}`',
+            '  String labelName(Object choice, double value, String gender, Object name, num count) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2,',
+            '      customPattern: \'\u00A4#,##0.00\'',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
             '',
@@ -19044,6 +21293,41 @@ void main() {
             '  String labelName(Object choice, double value, String gender, Object name, num count) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'The \${Intl.gender(gender, male: \'Mr\', female: \'Mrs\', other: \'user\')} \$name has \${Intl.plural(count, one: \'\$count apple\', other: \'\$count apples\')} in \${Intl.select(choice, {\'fridge\': \'fridge\', \'pocket\': \'pocket\', \'other\': \'bag\'})} - \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString, gender, name, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test compound message dart getter when placeholder has type double, format simpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label = Label('labelName',
+          'The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'double',
+              'format': 'simpleCurrency',
+              'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}`',
+            '  String labelName(Object choice, double value, String gender, Object name, num count) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -19445,6 +21729,46 @@ void main() {
     });
 
     test(
+        'Test compound message dart getter when placeholder has type num, format compactCurrency, and optionalParameters contains name, symbol, and decimalDigits',
+        () {
+      var label = Label('labelName',
+          'The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'num',
+              'format': 'compactCurrency',
+              'optionalParameters': {
+                'name': 'EUR',
+                'symbol': '€',
+                'decimalDigits': 2
+              }
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}`',
+            '  String labelName(Object choice, num value, String gender, Object name, num count) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'The \${Intl.gender(gender, male: \'Mr\', female: \'Mrs\', other: \'user\')} \$name has \${Intl.plural(count, one: \'\$count apple\', other: \'\$count apples\')} in \${Intl.select(choice, {\'fridge\': \'fridge\', \'pocket\': \'pocket\', \'other\': \'bag\'})} - \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString, gender, name, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
         'Test compound message dart getter when placeholder has type num, format compactSimpleCurrency, and optionalParameters contains decimalDigits',
         () {
       var label = Label('labelName',
@@ -19464,6 +21788,41 @@ void main() {
             '  String labelName(Object choice, num value, String gender, Object name, num count) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'The \${Intl.gender(gender, male: \'Mr\', female: \'Mrs\', other: \'user\')} \$name has \${Intl.plural(count, one: \'\$count apple\', other: \'\$count apples\')} in \${Intl.select(choice, {\'fridge\': \'fridge\', \'pocket\': \'pocket\', \'other\': \'bag\'})} - \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString, gender, name, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test compound message dart getter when placeholder has type num, format compactSimpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label = Label('labelName',
+          'The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'num',
+              'format': 'compactSimpleCurrency',
+              'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}`',
+            '  String labelName(Object choice, num value, String gender, Object name, num count) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.compactSimpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
@@ -19499,6 +21858,48 @@ void main() {
             '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
             '      locale: Intl.getCurrentLocale(),',
             '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'The \${Intl.gender(gender, male: \'Mr\', female: \'Mrs\', other: \'user\')} \$name has \${Intl.plural(count, one: \'\$count apple\', other: \'\$count apples\')} in \${Intl.select(choice, {\'fridge\': \'fridge\', \'pocket\': \'pocket\', \'other\': \'bag\'})} - \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString, gender, name, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test compound message dart getter when placeholder has type num, format currency, and optionalParameters contains name, symbol, decimalDigits, and customPattern',
+        () {
+      var label = Label('labelName',
+          'The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'num',
+              'format': 'currency',
+              'optionalParameters': {
+                'name': 'EUR',
+                'symbol': '€',
+                'decimalDigits': 2,
+                'customPattern': '\u00A4#,##0.00'
+              }
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}`',
+            '  String labelName(Object choice, num value, String gender, Object name, num count) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.currency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
+            '      symbol: \'€\',',
+            '      decimalDigits: 2,',
+            '      customPattern: \'\u00A4#,##0.00\'',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
             '',
@@ -19566,6 +21967,41 @@ void main() {
             '  String labelName(Object choice, num value, String gender, Object name, num count) {',
             '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
             '      locale: Intl.getCurrentLocale(),',
+            '      decimalDigits: 2',
+            '    );',
+            '    final String valueString = valueNumberFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'The \${Intl.gender(gender, male: \'Mr\', female: \'Mrs\', other: \'user\')} \$name has \${Intl.plural(count, one: \'\$count apple\', other: \'\$count apples\')} in \${Intl.select(choice, {\'fridge\': \'fridge\', \'pocket\': \'pocket\', \'other\': \'bag\'})} - \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString, gender, name, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test compound message dart getter when placeholder has type num, format simpleCurrency, and optionalParameters contains name and decimalDigits',
+        () {
+      var label = Label('labelName',
+          'The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'num',
+              'format': 'simpleCurrency',
+              'optionalParameters': {'name': 'EUR', 'decimalDigits': 2}
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}`',
+            '  String labelName(Object choice, num value, String gender, Object name, num count) {',
+            '    final NumberFormat valueNumberFormat = NumberFormat.simpleCurrency(',
+            '      locale: Intl.getCurrentLocale(),',
+            '      name: \'EUR\',',
             '      decimalDigits: 2',
             '    );',
             '    final String valueString = valueNumberFormat.format(value);',
