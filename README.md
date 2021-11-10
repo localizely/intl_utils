@@ -1,10 +1,9 @@
 ## Intl Utils
 
 [![pub package](https://img.shields.io/pub/v/intl_utils.svg)](https://pub.dev/packages/intl_utils)
+[![Twitter Follow](https://img.shields.io/twitter/follow/localizely?label=Follow%20us&style=social)](https://twitter.com/intent/follow?screen_name=localizely)
 
 Dart package that creates a binding between your translations from .arb files and your Flutter app. It generates boilerplate code for official Dart Intl library and adds auto-complete for keys in Dart code.
-
-Follow us on [Twitter](https://twitter.com/localizely "Follow us on Twitter").
 
 ## Usage
 
@@ -45,7 +44,7 @@ Add them to `lib/l10n` folder inside your project, and name them in a following 
 For example: `intl_en.arb` or `intl_en_GB.arb`.
 You can also change the ARB folder from `lib/l10n` to a custom directory by adding the `arb_dir` line in your `pubspec.yaml` file.
 
-If you wonder how to format key-values content inside ARB files, [here](https://github.com/google/app-resource-bundle/wiki/ApplicationResourceBundleSpecification) is detailed explanation.
+If you wonder how to format key-values content inside ARB files, [here](https://localizely.com/flutter-arb/) is detailed explanation.
 
 ### Run command
 
