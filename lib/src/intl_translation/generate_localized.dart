@@ -254,7 +254,7 @@ class MessageLookup extends MessageLookupByLibrary {
     }
     output.write('\n');
     output.write('typedef Future<dynamic> LibraryLoader();\n');
-    output.write('Map<String, LibraryLoader> _deferredLibraries = {\n');
+    output.write('Map<String, LibraryLoader> get _deferredLibraries => {\n');
     for (var rawLocale in allLocales) {
       var locale = Intl.canonicalizedLocale(rawLocale);
       var loadOperation = (useDeferredLoading)
@@ -263,6 +263,22 @@ class MessageLookup extends MessageLookupByLibrary {
       output.write(loadOperation);
     }
     output.write('};\n');
+
+    output.write("""\n
+Future<void> reloadMessages() async {
+  for (final lib in _deferredLibraries.values) {
+    await lib();
+  }
+""");
+    for (var rawLocale in allLocales) {
+      var locale = Intl.canonicalizedLocale(rawLocale);
+      var _libName = libraryName(locale);
+      output.write('  $_libName.messages.messages.clear();\n');
+      output.write(
+          '  $_libName.messages.messages.addAll($_libName.MessageLookup().messages);\n');
+    }
+    output.write('}\n');
+
     output.write('\nMessageLookupByLibrary? _findExact(String localeName) {\n'
         '  switch (localeName) {\n');
     for (var rawLocale in allLocales) {

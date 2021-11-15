@@ -29,8 +29,23 @@ class $className {
     return _current!;
   }
 
-  static const AppLocalizationDelegate delegate =
-    AppLocalizationDelegate();
+  static Future<void> reload() async {
+    reloadMessages();
+  }
+
+  static String get _hash => '${DateTime.now().hashCode}';
+  static String? _lastHash;
+
+  static AppLocalizationDelegate get delegate {
+    assert(() {
+      if (_lastHash != null && _lastHash != _hash) {
+        reloadMessages();
+      }
+      _lastHash = _hash;
+      return true;
+    }());
+    return const AppLocalizationDelegate();
+  }
 
   static Future<$className> load(Locale locale) {
     final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
