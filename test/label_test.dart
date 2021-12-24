@@ -2562,6 +2562,173 @@ void main() {
     });
 
     test(
+        'Test argument dart getter when placeholder has type DateTime and isCustomDateFormat false',
+        () {
+      var label =
+          Label('labelName', 'Argument message {value}.', placeholders: [
+        Placeholder('labelName', 'value',
+            {'type': 'DateTime', 'isCustomDateFormat': 'false'})
+      ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Argument message {value}.`',
+            '  String labelName(DateTime value) {',
+            '    return Intl.message(',
+            '      \'Argument message \$value.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [value],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test argument dart getter when placeholder has type DateTime and isCustomDateFormat true',
+        () {
+      var label =
+          Label('labelName', 'Argument message {value}.', placeholders: [
+        Placeholder('labelName', 'value',
+            {'type': 'DateTime', 'isCustomDateFormat': 'true'})
+      ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Argument message {value}.`',
+            '  String labelName(DateTime value) {',
+            '    return Intl.message(',
+            '      \'Argument message \$value.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [value],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test argument dart getter when placeholder has type DateTime, format yMEd, and isCustomDateFormat false',
+        () {
+      var label =
+          Label('labelName', 'Argument message {value}.', placeholders: [
+        Placeholder('labelName', 'value', {
+          'type': 'DateTime',
+          'format': 'yMEd',
+          'isCustomDateFormat': 'false'
+        })
+      ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Argument message {value}.`',
+            '  String labelName(DateTime value) {',
+            '    final DateFormat valueDateFormat = DateFormat.yMEd(Intl.getCurrentLocale());',
+            '    final String valueString = valueDateFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'Argument message \$valueString.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test argument dart getter when placeholder has type DateTime, format yMEd, and isCustomDateFormat true',
+        () {
+      var label =
+          Label('labelName', 'Argument message {value}.', placeholders: [
+        Placeholder('labelName', 'value', {
+          'type': 'DateTime',
+          'format': 'yMEd',
+          'isCustomDateFormat': 'true'
+        })
+      ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Argument message {value}.`',
+            '  String labelName(DateTime value) {',
+            '    final DateFormat valueDateFormat = DateFormat.yMEd(Intl.getCurrentLocale());',
+            '    final String valueString = valueDateFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'Argument message \$valueString.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test argument dart getter when placeholder has type DateTime, format EEE, M/d/y, and isCustomDateFormat is missing',
+        () {
+      var label =
+          Label('labelName', 'Argument message {value}.', placeholders: [
+        Placeholder(
+            'labelName', 'value', {'type': 'DateTime', 'format': 'EEE, M/d/y'})
+      ]);
+
+      expect(label.generateDartGetter(),
+          equals('  // skipped getter for the \'labelName\' key'));
+    });
+
+    test(
+        'Test argument dart getter when placeholder has type DateTime, format EEE, M/d/y, and isCustomDateFormat false',
+        () {
+      var label =
+          Label('labelName', 'Argument message {value}.', placeholders: [
+        Placeholder('labelName', 'value', {
+          'type': 'DateTime',
+          'format': 'EEE, M/d/y',
+          'isCustomDateFormat': 'false'
+        })
+      ]);
+
+      expect(label.generateDartGetter(),
+          equals('  // skipped getter for the \'labelName\' key'));
+    });
+
+    test(
+        'Test argument dart getter when placeholder has type DateTime, format EEE, M/d/y, and isCustomDateFormat true',
+        () {
+      var label =
+          Label('labelName', 'Argument message {value}.', placeholders: [
+        Placeholder('labelName', 'value', {
+          'type': 'DateTime',
+          'format': 'EEE, M/d/y',
+          'isCustomDateFormat': 'true'
+        })
+      ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `Argument message {value}.`',
+            '  String labelName(DateTime value) {',
+            '    final DateFormat valueDateFormat = DateFormat(\'EEE, M/d/y\', Intl.getCurrentLocale());',
+            '    final String valueString = valueDateFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'Argument message \$valueString.\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
         'Test argument dart getter when placeholder has type int and format is not provided',
         () {
       var label =
@@ -6489,6 +6656,210 @@ void main() {
             '  /// `{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}`',
             '  String labelName(DateTime value, num count) {',
             '    final DateFormat valueDateFormat = DateFormat.s(Intl.getCurrentLocale());',
+            '    final String valueString = valueDateFormat.format(value);',
+            '',
+            '    return Intl.plural(',
+            '      count,',
+            '      zero: \'zero message \$valueString\',',
+            '      one: \'one message \$valueString\',',
+            '      two: \'two message \$valueString\',',
+            '      few: \'few message \$valueString\',',
+            '      many: \'many message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test plural dart getter when placeholder has type DateTime and isCustomDateFormat false',
+        () {
+      var label = Label('labelName',
+          '{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value',
+                {'type': 'DateTime', 'isCustomDateFormat': 'false'})
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}`',
+            '  String labelName(DateTime value, num count) {',
+            '    return Intl.plural(',
+            '      count,',
+            '      zero: \'zero message \$value\',',
+            '      one: \'one message \$value\',',
+            '      two: \'two message \$value\',',
+            '      few: \'few message \$value\',',
+            '      many: \'many message \$value\',',
+            '      other: \'other message \$value\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [value, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test plural dart getter when placeholder has type DateTime and isCustomDateFormat true',
+        () {
+      var label = Label('labelName',
+          '{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value',
+                {'type': 'DateTime', 'isCustomDateFormat': 'true'})
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}`',
+            '  String labelName(DateTime value, num count) {',
+            '    return Intl.plural(',
+            '      count,',
+            '      zero: \'zero message \$value\',',
+            '      one: \'one message \$value\',',
+            '      two: \'two message \$value\',',
+            '      few: \'few message \$value\',',
+            '      many: \'many message \$value\',',
+            '      other: \'other message \$value\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [value, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test plural dart getter when placeholder has type DateTime, format yMEd, and isCustomDateFormat false',
+        () {
+      var label = Label('labelName',
+          '{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'DateTime',
+              'format': 'yMEd',
+              'isCustomDateFormat': 'false'
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}`',
+            '  String labelName(DateTime value, num count) {',
+            '    final DateFormat valueDateFormat = DateFormat.yMEd(Intl.getCurrentLocale());',
+            '    final String valueString = valueDateFormat.format(value);',
+            '',
+            '    return Intl.plural(',
+            '      count,',
+            '      zero: \'zero message \$valueString\',',
+            '      one: \'one message \$valueString\',',
+            '      two: \'two message \$valueString\',',
+            '      few: \'few message \$valueString\',',
+            '      many: \'many message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test plural dart getter when placeholder has type DateTime, format yMEd, and isCustomDateFormat true',
+        () {
+      var label = Label('labelName',
+          '{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'DateTime',
+              'format': 'yMEd',
+              'isCustomDateFormat': 'true'
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}`',
+            '  String labelName(DateTime value, num count) {',
+            '    final DateFormat valueDateFormat = DateFormat.yMEd(Intl.getCurrentLocale());',
+            '    final String valueString = valueDateFormat.format(value);',
+            '',
+            '    return Intl.plural(',
+            '      count,',
+            '      zero: \'zero message \$valueString\',',
+            '      one: \'one message \$valueString\',',
+            '      two: \'two message \$valueString\',',
+            '      few: \'few message \$valueString\',',
+            '      many: \'many message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test plural dart getter when placeholder has type DateTime, format EEE, M/d/y, and isCustomDateFormat is missing',
+        () {
+      var label = Label('labelName',
+          '{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value',
+                {'type': 'DateTime', 'format': 'EEE, M/d/y'})
+          ]);
+
+      expect(label.generateDartGetter(),
+          equals('  // skipped getter for the \'labelName\' key'));
+    });
+
+    test(
+        'Test plural dart getter when placeholder has type DateTime, format EEE, M/d/y, and isCustomDateFormat false',
+        () {
+      var label = Label('labelName',
+          '{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'DateTime',
+              'format': 'EEE, M/d/y',
+              'isCustomDateFormat': 'false'
+            })
+          ]);
+
+      expect(label.generateDartGetter(),
+          equals('  // skipped getter for the \'labelName\' key'));
+    });
+
+    test(
+        'Test plural dart getter when placeholder has type DateTime, format EEE, M/d/y, and isCustomDateFormat true',
+        () {
+      var label = Label('labelName',
+          '{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'DateTime',
+              'format': 'EEE, M/d/y',
+              'isCustomDateFormat': 'true'
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{count, plural, zero {zero message {value}} one {one message {value}} two {two message {value}} few {few message {value}} many {many message {value}} other {other message {value}}}`',
+            '  String labelName(DateTime value, num count) {',
+            '    final DateFormat valueDateFormat = DateFormat(\'EEE, M/d/y\', Intl.getCurrentLocale());',
             '    final String valueString = valueDateFormat.format(value);',
             '',
             '    return Intl.plural(',
@@ -10952,6 +11323,195 @@ void main() {
     });
 
     test(
+        'Test gender dart getter when placeholder has type DateTime and isCustomDateFormat false',
+        () {
+      var label = Label('labelName',
+          '{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value',
+                {'type': 'DateTime', 'isCustomDateFormat': 'false'})
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}`',
+            '  String labelName(DateTime value, String gender) {',
+            '    return Intl.gender(',
+            '      gender,',
+            '      male: \'male message \$value\',',
+            '      female: \'female message \$value\',',
+            '      other: \'other message \$value\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [value, gender],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test gender dart getter when placeholder has type DateTime and isCustomDateFormat true',
+        () {
+      var label = Label('labelName',
+          '{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value',
+                {'type': 'DateTime', 'isCustomDateFormat': 'true'})
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}`',
+            '  String labelName(DateTime value, String gender) {',
+            '    return Intl.gender(',
+            '      gender,',
+            '      male: \'male message \$value\',',
+            '      female: \'female message \$value\',',
+            '      other: \'other message \$value\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [value, gender],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test gender dart getter when placeholder has type DateTime, format yMEd, and isCustomDateFormat false',
+        () {
+      var label = Label('labelName',
+          '{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'DateTime',
+              'format': 'yMEd',
+              'isCustomDateFormat': 'false'
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}`',
+            '  String labelName(DateTime value, String gender) {',
+            '    final DateFormat valueDateFormat = DateFormat.yMEd(Intl.getCurrentLocale());',
+            '    final String valueString = valueDateFormat.format(value);',
+            '',
+            '    return Intl.gender(',
+            '      gender,',
+            '      male: \'male message \$valueString\',',
+            '      female: \'female message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, gender],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test gender dart getter when placeholder has type DateTime, format yMEd, and isCustomDateFormat true',
+        () {
+      var label = Label('labelName',
+          '{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'DateTime',
+              'format': 'yMEd',
+              'isCustomDateFormat': 'true'
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}`',
+            '  String labelName(DateTime value, String gender) {',
+            '    final DateFormat valueDateFormat = DateFormat.yMEd(Intl.getCurrentLocale());',
+            '    final String valueString = valueDateFormat.format(value);',
+            '',
+            '    return Intl.gender(',
+            '      gender,',
+            '      male: \'male message \$valueString\',',
+            '      female: \'female message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, gender],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test gender dart getter when placeholder has type DateTime, format EEE, M/d/y, and isCustomDateFormat is missing',
+        () {
+      var label = Label('labelName',
+          '{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value',
+                {'type': 'DateTime', 'format': 'EEE, M/d/y'})
+          ]);
+
+      expect(label.generateDartGetter(),
+          equals('  // skipped getter for the \'labelName\' key'));
+    });
+
+    test(
+        'Test gender dart getter when placeholder has type DateTime, format EEE, M/d/y, and isCustomDateFormat false',
+        () {
+      var label = Label('labelName',
+          '{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'DateTime',
+              'format': 'EEE, M/d/y',
+              'isCustomDateFormat': 'false'
+            })
+          ]);
+
+      expect(label.generateDartGetter(),
+          equals('  // skipped getter for the \'labelName\' key'));
+    });
+
+    test(
+        'Test gender dart getter when placeholder has type DateTime, format EEE, M/d/y, and isCustomDateFormat true',
+        () {
+      var label = Label('labelName',
+          '{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'DateTime',
+              'format': 'EEE, M/d/y',
+              'isCustomDateFormat': 'true'
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{gender, select, male {male message {value}} female {female message {value}} other {other message {value}}}`',
+            '  String labelName(DateTime value, String gender) {',
+            '    final DateFormat valueDateFormat = DateFormat(\'EEE, M/d/y\', Intl.getCurrentLocale());',
+            '    final String valueString = valueDateFormat.format(value);',
+            '',
+            '    return Intl.gender(',
+            '      gender,',
+            '      male: \'male message \$valueString\',',
+            '      female: \'female message \$valueString\',',
+            '      other: \'other message \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [valueString, gender],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
         'Test gender dart getter when placeholder has type int and format is not provided',
         () {
       var label = Label('labelName',
@@ -15208,6 +15768,205 @@ void main() {
             '  /// `{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}`',
             '  String labelName(Object choice, DateTime value) {',
             '    final DateFormat valueDateFormat = DateFormat.s(Intl.getCurrentLocale());',
+            '    final String valueString = valueDateFormat.format(value);',
+            '',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message \$valueString\',',
+            '        \'bar\': \'bar message \$valueString\',',
+            '        \'other\': \'other message \$valueString\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test select dart getter when placeholder has type DateTime and isCustomDateFormat false',
+        () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value',
+                {'type': 'DateTime', 'isCustomDateFormat': 'false'})
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}`',
+            '  String labelName(Object choice, DateTime value) {',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message \$value\',',
+            '        \'bar\': \'bar message \$value\',',
+            '        \'other\': \'other message \$value\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, value],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test select dart getter when placeholder has type DateTime and isCustomDateFormat true',
+        () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value',
+                {'type': 'DateTime', 'isCustomDateFormat': 'true'})
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}`',
+            '  String labelName(Object choice, DateTime value) {',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message \$value\',',
+            '        \'bar\': \'bar message \$value\',',
+            '        \'other\': \'other message \$value\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, value],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test select dart getter when placeholder has type DateTime, format yMEd, and isCustomDateFormat false',
+        () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'DateTime',
+              'format': 'yMEd',
+              'isCustomDateFormat': 'false'
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}`',
+            '  String labelName(Object choice, DateTime value) {',
+            '    final DateFormat valueDateFormat = DateFormat.yMEd(Intl.getCurrentLocale());',
+            '    final String valueString = valueDateFormat.format(value);',
+            '',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message \$valueString\',',
+            '        \'bar\': \'bar message \$valueString\',',
+            '        \'other\': \'other message \$valueString\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test select dart getter when placeholder has type DateTime, format yMEd, and isCustomDateFormat true',
+        () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'DateTime',
+              'format': 'yMEd',
+              'isCustomDateFormat': 'true'
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}`',
+            '  String labelName(Object choice, DateTime value) {',
+            '    final DateFormat valueDateFormat = DateFormat.yMEd(Intl.getCurrentLocale());',
+            '    final String valueString = valueDateFormat.format(value);',
+            '',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message \$valueString\',',
+            '        \'bar\': \'bar message \$valueString\',',
+            '        \'other\': \'other message \$valueString\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test select dart getter when placeholder has type DateTime, format EEE, M/d/y, and isCustomDateFormat is missing',
+        () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value',
+                {'type': 'DateTime', 'format': 'EEE, M/d/y'})
+          ]);
+
+      expect(label.generateDartGetter(),
+          equals('  // skipped getter for the \'labelName\' key'));
+    });
+
+    test(
+        'Test select dart getter when placeholder has type DateTime, format EEE, M/d/y, and isCustomDateFormat false',
+        () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'DateTime',
+              'format': 'EEE, M/d/y',
+              'isCustomDateFormat': 'false'
+            })
+          ]);
+
+      expect(label.generateDartGetter(),
+          equals('  // skipped getter for the \'labelName\' key'));
+    });
+
+    test(
+        'Test select dart getter when placeholder has type DateTime, format EEE, M/d/y, and isCustomDateFormat true',
+        () {
+      var label = Label('labelName',
+          '{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'DateTime',
+              'format': 'EEE, M/d/y',
+              'isCustomDateFormat': 'true'
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `{choice, select, foo {foo message {value}} bar {bar message {value}} other {other message {value}}}`',
+            '  String labelName(Object choice, DateTime value) {',
+            '    final DateFormat valueDateFormat = DateFormat(\'EEE, M/d/y\', Intl.getCurrentLocale());',
             '    final String valueString = valueDateFormat.format(value);',
             '',
             '    return Intl.select(',
@@ -19982,6 +20741,180 @@ void main() {
             '  /// `The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}`',
             '  String labelName(Object choice, DateTime value, String gender, Object name, num count) {',
             '    final DateFormat valueDateFormat = DateFormat.s(Intl.getCurrentLocale());',
+            '    final String valueString = valueDateFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'The \${Intl.gender(gender, male: \'Mr\', female: \'Mrs\', other: \'user\')} \$name has \${Intl.plural(count, one: \'\$count apple\', other: \'\$count apples\')} in \${Intl.select(choice, {\'fridge\': \'fridge\', \'pocket\': \'pocket\', \'other\': \'bag\'})} - \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString, gender, name, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test compound dart getter when placeholder has type DateTime and isCustomDateFormat false',
+        () {
+      var label = Label('labelName',
+          'The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}',
+          placeholders: [
+            Placeholder('labelName', 'value',
+                {'type': 'DateTime', 'isCustomDateFormat': 'false'})
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}`',
+            '  String labelName(Object choice, DateTime value, String gender, Object name, num count) {',
+            '    return Intl.message(',
+            '      \'The \${Intl.gender(gender, male: \'Mr\', female: \'Mrs\', other: \'user\')} \$name has \${Intl.plural(count, one: \'\$count apple\', other: \'\$count apples\')} in \${Intl.select(choice, {\'fridge\': \'fridge\', \'pocket\': \'pocket\', \'other\': \'bag\'})} - \$value\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, value, gender, name, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test compound dart getter when placeholder has type DateTime and isCustomDateFormat true',
+        () {
+      var label = Label('labelName',
+          'The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}',
+          placeholders: [
+            Placeholder('labelName', 'value',
+                {'type': 'DateTime', 'isCustomDateFormat': 'true'})
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}`',
+            '  String labelName(Object choice, DateTime value, String gender, Object name, num count) {',
+            '    return Intl.message(',
+            '      \'The \${Intl.gender(gender, male: \'Mr\', female: \'Mrs\', other: \'user\')} \$name has \${Intl.plural(count, one: \'\$count apple\', other: \'\$count apples\')} in \${Intl.select(choice, {\'fridge\': \'fridge\', \'pocket\': \'pocket\', \'other\': \'bag\'})} - \$value\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, value, gender, name, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test compound dart getter when placeholder has type DateTime, format yMEd, and isCustomDateFormat false',
+        () {
+      var label = Label('labelName',
+          'The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'DateTime',
+              'format': 'yMEd',
+              'isCustomDateFormat': 'false'
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}`',
+            '  String labelName(Object choice, DateTime value, String gender, Object name, num count) {',
+            '    final DateFormat valueDateFormat = DateFormat.yMEd(Intl.getCurrentLocale());',
+            '    final String valueString = valueDateFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'The \${Intl.gender(gender, male: \'Mr\', female: \'Mrs\', other: \'user\')} \$name has \${Intl.plural(count, one: \'\$count apple\', other: \'\$count apples\')} in \${Intl.select(choice, {\'fridge\': \'fridge\', \'pocket\': \'pocket\', \'other\': \'bag\'})} - \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString, gender, name, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test compound dart getter when placeholder has type DateTime, format yMEd, and isCustomDateFormat true',
+        () {
+      var label = Label('labelName',
+          'The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'DateTime',
+              'format': 'yMEd',
+              'isCustomDateFormat': 'true'
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}`',
+            '  String labelName(Object choice, DateTime value, String gender, Object name, num count) {',
+            '    final DateFormat valueDateFormat = DateFormat.yMEd(Intl.getCurrentLocale());',
+            '    final String valueString = valueDateFormat.format(value);',
+            '',
+            '    return Intl.message(',
+            '      \'The \${Intl.gender(gender, male: \'Mr\', female: \'Mrs\', other: \'user\')} \$name has \${Intl.plural(count, one: \'\$count apple\', other: \'\$count apples\')} in \${Intl.select(choice, {\'fridge\': \'fridge\', \'pocket\': \'pocket\', \'other\': \'bag\'})} - \$valueString\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice, valueString, gender, name, count],',
+            '    );',
+            '  }'
+          ].join('\n')));
+    });
+
+    test(
+        'Test compound dart getter when placeholder has type DateTime, format EEE, M/d/y, and isCustomDateFormat is missing',
+        () {
+      var label = Label('labelName',
+          'The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}',
+          placeholders: [
+            Placeholder('labelName', 'value',
+                {'type': 'DateTime', 'format': 'EEE, M/d/y'})
+          ]);
+
+      expect(label.generateDartGetter(),
+          equals('  // skipped getter for the \'labelName\' key'));
+    });
+
+    test(
+        'Test compound dart getter when placeholder has type DateTime, format EEE, M/d/y, and isCustomDateFormat false',
+        () {
+      var label = Label('labelName',
+          'The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'DateTime',
+              'format': 'EEE, M/d/y',
+              'isCustomDateFormat': 'false'
+            })
+          ]);
+
+      expect(label.generateDartGetter(),
+          equals('  // skipped getter for the \'labelName\' key'));
+    });
+
+    test(
+        'Test compound dart getter when placeholder has type DateTime, format EEE, M/d/y, and isCustomDateFormat true',
+        () {
+      var label = Label('labelName',
+          'The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}',
+          placeholders: [
+            Placeholder('labelName', 'value', {
+              'type': 'DateTime',
+              'format': 'EEE, M/d/y',
+              'isCustomDateFormat': 'true'
+            })
+          ]);
+
+      expect(
+          label.generateDartGetter(),
+          equals([
+            '  /// `The {gender, select, male {Mr} female {Mrs} other {user}} {name} has {count, plural, one {{count} apple} other {{count} apples}} in {choice, select, fridge {fridge} pocket {pocket} other {bag}} - {value}`',
+            '  String labelName(Object choice, DateTime value, String gender, Object name, num count) {',
+            '    final DateFormat valueDateFormat = DateFormat(\'EEE, M/d/y\', Intl.getCurrentLocale());',
             '    final String valueString = valueDateFormat.format(value);',
             '',
             '    return Intl.message(',

@@ -196,7 +196,9 @@ class Placeholder {
       : example = _stringAttribute(resourceId, name, attributes, 'example'),
         type = _stringAttribute(resourceId, name, attributes, 'type'),
         format = _stringAttribute(resourceId, name, attributes, 'format'),
-        optionalParameters = _optionalParameters(resourceId, name, attributes);
+        optionalParameters = _optionalParameters(resourceId, name, attributes),
+        isCustomDateFormat =
+            _boolAttribute(resourceId, name, attributes, 'isCustomDateFormat');
 
   final String resourceId;
   final String name;
@@ -204,6 +206,7 @@ class Placeholder {
   final String? type;
   final String? format;
   final List<OptionalParameter> optionalParameters;
+  final bool? isCustomDateFormat;
 
   bool get requiresFormatting =>
       <String>['DateTime', 'double', 'num', 'int'].contains(type) &&
@@ -230,6 +233,24 @@ class Placeholder {
           "The '$attributeName' value of the '$name' placeholder in message '$resourceId' must be a non-empty string.");
     }
     return value;
+  }
+
+  static bool? _boolAttribute(
+    String resourceId,
+    String name,
+    Map<String, Object?> attributes,
+    String attributeName,
+  ) {
+    final Object? value = attributes[attributeName];
+    if (value == null) {
+      return null;
+    }
+    if (value != 'true' && value != 'false') {
+      throw PlaceholderException(
+        "The '$attributeName' value of the '$name' placeholder in message '$resourceId' must be a string representation of a boolean value ('true', 'false').",
+      );
+    }
+    return value == 'true';
   }
 
   static List<OptionalParameter> _optionalParameters(
@@ -422,15 +443,26 @@ class Label {
           var placeholder = arg.placeholderRef!;
 
           if (placeholder.isDate) {
-            if (!placeholder.hasValidDateFormat) {
+            final bool? isCustomDateFormat = placeholder.isCustomDateFormat;
+
+            if (!placeholder.hasValidDateFormat &&
+                (isCustomDateFormat == null || !isCustomDateFormat)) {
               throw PlaceholderException(
                   "The '${placeholder.resourceId}' key requires '${placeholder.format}' date format "
                   "for the '${placeholder.name}' placeholder that does not have a corresponding DateFormat constructor.\n"
-                  "Check the intl library's DateFormat class constructors for allowed date formats.");
+                  "Check the intl library's DateFormat class constructors for allowed date formats, or set 'isCustomDateFormat' attribute to 'true'.");
+            }
+
+            if (placeholder.hasValidDateFormat) {
+              return [
+                '    final DateFormat ${placeholder.name}DateFormat = DateFormat.${placeholder.format}(Intl.getCurrentLocale());',
+                '    final String ${placeholder.name}String = ${placeholder.name}DateFormat.format(${placeholder.name});',
+                ''
+              ].join('\n');
             }
 
             return [
-              '    final DateFormat ${placeholder.name}DateFormat = DateFormat.${placeholder.format}(Intl.getCurrentLocale());',
+              '    final DateFormat ${placeholder.name}DateFormat = DateFormat(\'${_escape(placeholder.format!)}\', Intl.getCurrentLocale());',
               '    final String ${placeholder.name}String = ${placeholder.name}DateFormat.format(${placeholder.name});',
               ''
             ].join('\n');
