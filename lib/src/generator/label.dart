@@ -693,7 +693,13 @@ class Label {
               ElementType.select
             ].contains(item.type))
         .forEach((item) {
-      args.add(Argument('Object', item.value, null));
+      args.add(
+        Argument(
+          (item.type == ElementType.plural) ? 'num' : 'Object',
+          item.value,
+          null,
+        ),
+      );
     });
 
     return args;
@@ -1020,7 +1026,7 @@ class Label {
       }
     });
 
-    return 'Intl.plural(${element.value}, ${options.join(', ')})';
+    return 'Intl.plural(${element.value} as num, ${options.join(', ')})';
   }
 
   String _generateGenderMessage(GenderElement element, List<Argument> args) {
