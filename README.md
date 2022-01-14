@@ -71,5 +71,5 @@ This will download all available ARB files from the Localizely platform and put 
 
 Notes:  
 Argument `project-id` can be omitted if `pubspec.yaml` file contains `project_id` configuration under `flutter_intl/localizely` section.  
-Argument `api-token` can be omitted if `~/.localizely/credentials.yaml` file contains `api_token` configuration (e.g. `api_token: xxxxxx`).
+Argument `api-token` can be omitted if `~/.localizely/credentials.yaml` file contains `api_token` configuration (e.g. `api_token: xxxxxx`).  
 Optional argument `arb-dir` has the value `lib/l10n` as default and needs only to be set, if you want to place your ARB files in a custom directory.
