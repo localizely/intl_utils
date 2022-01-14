@@ -21,6 +21,11 @@ class PubspecConfig {
     var pubspecFileContent = pubspecFile.readAsStringSync();
     var pubspecYaml = yaml.loadYaml(pubspecFileContent);
 
+    if (pubspecYaml is! yaml.YamlMap) {
+      throw ConfigException(
+          "Failed to extract config from the 'pubspec.yaml' file.\nExpected YAML map but got ${pubspecYaml.runtimeType}.");
+    }
+
     var flutterIntlConfig = pubspecYaml['flutter_intl'];
     if (flutterIntlConfig == null) {
       return;

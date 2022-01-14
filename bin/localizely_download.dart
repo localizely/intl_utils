@@ -22,63 +22,65 @@ Future<void> main(List<String> arguments) async {
   late List<String>? downloadExcludeTags;
   late String? branch;
 
-  final pubspecConfig = PubspecConfig();
-  final credentialsConfig = CredentialsConfig();
-
-  final argParser = args.ArgParser()
-    ..addFlag(
-      'help',
-      abbr: 'h',
-      help: 'Print this usage information.',
-      negatable: false,
-      defaultsTo: false,
-    )
-    ..addOption(
-      'project-id',
-      help: 'Localizely project ID.',
-      callback: ((x) => projectId = x),
-      defaultsTo: pubspecConfig.localizelyConfig?.projectId,
-    )
-    ..addOption(
-      'api-token',
-      help: 'Localizely API token.',
-      callback: ((x) => apiToken = x),
-    )
-    ..addOption(
-      'arb-dir',
-      help: 'Directory of the arb files.',
-      callback: ((x) => arbDir = x!),
-      defaultsTo: pubspecConfig.arbDir ?? defaultArbDir,
-    )
-    ..addOption(
-      'branch',
-      help:
-          'Get it from the “Branches” page on the Localizely platform, in case branching is enabled and you want to use a non-main branch.',
-      callback: ((x) => branch = x),
-      defaultsTo: pubspecConfig.localizelyConfig?.branch,
-    )
-    ..addOption(
-      'download-empty-as',
-      help:
-          "Config parameter 'download_empty_as' expects one of the following values: 'empty', 'main' or 'skip'.",
-      callback: ((x) => downloadEmptyAs = x!),
-      defaultsTo: pubspecConfig.localizelyConfig?.downloadEmptyAs ??
-          defaultDownloadEmptyAs,
-    )
-    ..addMultiOption(
-      'download-include-tags',
-      help: 'Optional list of tags to be downloaded.',
-      callback: ((x) => downloadIncludeTags = x),
-      defaultsTo: pubspecConfig.localizelyConfig?.downloadIncludeTags,
-    )
-    ..addMultiOption(
-      'download-exclude-tags',
-      help: 'Optional list of tags to be excluded from download.',
-      callback: ((x) => downloadExcludeTags = x),
-      defaultsTo: pubspecConfig.localizelyConfig?.downloadExcludeTags,
-    );
+  final argParser = args.ArgParser();
 
   try {
+    final pubspecConfig = PubspecConfig();
+    final credentialsConfig = CredentialsConfig();
+
+    argParser
+      ..addFlag(
+        'help',
+        abbr: 'h',
+        help: 'Print this usage information.',
+        negatable: false,
+        defaultsTo: false,
+      )
+      ..addOption(
+        'project-id',
+        help: 'Localizely project ID.',
+        callback: ((x) => projectId = x),
+        defaultsTo: pubspecConfig.localizelyConfig?.projectId,
+      )
+      ..addOption(
+        'api-token',
+        help: 'Localizely API token.',
+        callback: ((x) => apiToken = x),
+      )
+      ..addOption(
+        'arb-dir',
+        help: 'Directory of the arb files.',
+        callback: ((x) => arbDir = x!),
+        defaultsTo: pubspecConfig.arbDir ?? defaultArbDir,
+      )
+      ..addOption(
+        'branch',
+        help:
+            'Get it from the “Branches” page on the Localizely platform, in case branching is enabled and you want to use a non-main branch.',
+        callback: ((x) => branch = x),
+        defaultsTo: pubspecConfig.localizelyConfig?.branch,
+      )
+      ..addOption(
+        'download-empty-as',
+        help:
+            "Config parameter 'download_empty_as' expects one of the following values: 'empty', 'main' or 'skip'.",
+        callback: ((x) => downloadEmptyAs = x!),
+        defaultsTo: pubspecConfig.localizelyConfig?.downloadEmptyAs ??
+            defaultDownloadEmptyAs,
+      )
+      ..addMultiOption(
+        'download-include-tags',
+        help: 'Optional list of tags to be downloaded.',
+        callback: ((x) => downloadIncludeTags = x),
+        defaultsTo: pubspecConfig.localizelyConfig?.downloadIncludeTags,
+      )
+      ..addMultiOption(
+        'download-exclude-tags',
+        help: 'Optional list of tags to be excluded from download.',
+        callback: ((x) => downloadExcludeTags = x),
+        defaultsTo: pubspecConfig.localizelyConfig?.downloadExcludeTags,
+      );
+
     final argResults = argParser.parse(arguments);
     if (argResults['help'] == true) {
       stdout.writeln(argParser.usage);
