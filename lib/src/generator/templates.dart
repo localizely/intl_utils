@@ -20,14 +20,7 @@ import 'intl/messages_all.dart';
 // ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
 
 class $className {
-  $className();
-
-  static $className? _current;
-
-  static $className get current {
-    assert(_current != null, 'No instance of $className was loaded. Try to initialize the $className delegate before accessing $className.current.');
-    return _current!;
-  }
+  $className(this.localeName);
 
   static const AppLocalizationDelegate delegate =
     AppLocalizationDelegate();
@@ -36,11 +29,7 @@ class $className {
     final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
     final localeName = Intl.canonicalizedLocale(name);${otaEnabled ? '\n${_generateMetadataSetter()}' : ''} 
     return initializeMessages(localeName).then((_) {
-      Intl.defaultLocale = localeName;
-      final instance = $className();
-      $className._current = instance;
- 
-      return instance;
+      return $className(localeName);
     });
   } 
 
@@ -53,6 +42,8 @@ class $className {
   static $className? maybeOf(BuildContext context) {
     return Localizations.of<$className>(context, $className);
   }
+
+  final String localeName;
 ${otaEnabled ? '\n${_generateMetadata(labels)}\n' : ''}
 ${labels.map((label) => label.generateDartGetter()).join("\n\n")}
 }
