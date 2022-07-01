@@ -1183,7 +1183,8 @@ class Label {
         .replaceAll('\b', '\\b')
         .replaceAll('\f', '\\f')
         .replaceAll('\'', '\\\'')
-        .replaceAll('\$', '\\\$');
+        .replaceAll('\$', '\\\$')
+        .replaceAll('.', '');
   }
 
   String _escapeDartDoc(String value) {
