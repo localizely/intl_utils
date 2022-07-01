@@ -92,12 +92,12 @@ abstract class Message {
   /// We find the arguments from the top-level [MainMessage] and use those to
   /// do variable substitutions. [MainMessage] overrides this to return
   /// the actual arguments.
-  dynamic get arguments => parent == null ? const [] : parent!.arguments;
+  get arguments => parent == null ? const [] : parent!.arguments;
 
   /// We find the examples from the top-level [MainMessage] and use those
   /// when writing out variables. [MainMessage] overrides this to return
   /// the actual examples.
-  dynamic get examples => parent == null ? const [] : parent!.examples;
+  get examples => parent == null ? const [] : parent!.examples;
 
   /// The name of the top-level [MainMessage].
   String get name => parent == null ? '<unnamed>' : parent!.name;
@@ -171,7 +171,7 @@ abstract class Message {
   /// parameter indicates if we will fail if parameter examples are not provided
   /// for messages with parameters.
   String? checkValidity(MethodInvocation node, List arguments,
-      String? outerName, FormalParameterList outerArgs,
+      String? outerName, List<FormalParameter> outerArgs,
       {bool nameAndArgsGenerated = false, bool examplesRequired = false}) {
     // If we have parameters, we must specify args and name.
     var namedExpArgs = arguments
@@ -180,10 +180,9 @@ abstract class Message {
         .toList();
     NamedExpression? args = namedExpArgs.isNotEmpty ? namedExpArgs.first : null;
 
-    var parameterNames =
-        outerArgs.parameters.map((x) => x.identifier?.name).toList();
+    var parameterNames = outerArgs.map((x) => x.identifier?.name).toList();
     var hasArgs = args != null;
-    var hasParameters = outerArgs.parameters.isNotEmpty;
+    var hasParameters = outerArgs.isNotEmpty;
     if (!nameAndArgsGenerated && !hasArgs && hasParameters) {
       return "The 'args' argument for Intl.message must be specified for "
           'messages with parameters. Consider using rewrite_intl_messages.dart';
@@ -508,10 +507,13 @@ class MainMessage extends ComplexMessage {
   /// The position in the source at which this message ends.
   int? endPosition;
 
+  /// Optional documentation of the member that wraps the message definition.
+  List<String> documentation = [];
+
   /// Verify that this looks like a correct Intl.message invocation.
   @override
   String? checkValidity(MethodInvocation node, List arguments,
-      String? outerName, FormalParameterList outerArgs,
+      String? outerName, List<FormalParameter> outerArgs,
       {bool nameAndArgsGenerated = false, bool examplesRequired = false}) {
     if (arguments.first is! StringLiteral) {
       return 'Intl.message messages must be string literals';
