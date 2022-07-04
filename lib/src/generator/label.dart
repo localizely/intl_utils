@@ -287,6 +287,7 @@ class Label {
   /// Generates label getter.
   String generateDartGetter() {
     try {
+      var name = _escape(this.name);
       var content = _escape(this.content);
       var description = _escape(this.description ?? '');
 
