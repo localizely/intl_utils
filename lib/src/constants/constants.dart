@@ -1,5 +1,6 @@
 import 'package:path/path.dart';
 
+const defaultFlutter = false;
 const defaultClassName = 'S';
 const defaultMainLocale = 'en';
 final defaultArbDir = join('lib', 'l10n');

@@ -4,6 +4,7 @@ import '../utils/file_utils.dart';
 import 'config_exception.dart';
 
 class PubspecConfig {
+  bool? _flutter = false;
   bool? _enabled;
   String? _className;
   String? _mainLocale;
@@ -26,32 +27,39 @@ class PubspecConfig {
           "Failed to extract config from the 'pubspec.yaml' file.\nExpected YAML map but got ${pubspecYaml.runtimeType}.");
     }
 
-    var flutterIntlConfig = pubspecYaml['flutter_intl'];
-    if (flutterIntlConfig == null) {
-      return;
-    }
+    var intlConfig = pubspecYaml['flutter_intl'];
+    if (intlConfig == null) {
+      intlConfig = pubspecYaml['intl'];
 
-    _enabled = flutterIntlConfig['enabled'] is bool
-        ? flutterIntlConfig['enabled']
+      if( intlConfig==null)
+        return;
+      _flutter = false;
+    } else
+      _flutter = true;
+
+    _enabled = intlConfig['enabled'] is bool
+        ? intlConfig['enabled']
         : null;
-    _className = flutterIntlConfig['class_name'] is String
-        ? flutterIntlConfig['class_name']
+    _className = intlConfig['class_name'] is String
+        ? intlConfig['class_name']
         : null;
-    _mainLocale = flutterIntlConfig['main_locale'] is String
-        ? flutterIntlConfig['main_locale']
+    _mainLocale = intlConfig['main_locale'] is String
+        ? intlConfig['main_locale']
         : null;
-    _arbDir = flutterIntlConfig['arb_dir'] is String
-        ? flutterIntlConfig['arb_dir']
+    _arbDir = intlConfig['arb_dir'] is String
+        ? intlConfig['arb_dir']
         : null;
-    _outputDir = flutterIntlConfig['output_dir'] is String
-        ? flutterIntlConfig['output_dir']
+    _outputDir = intlConfig['output_dir'] is String
+        ? intlConfig['output_dir']
         : null;
-    _useDeferredLoading = flutterIntlConfig['use_deferred_loading'] is bool
-        ? flutterIntlConfig['use_deferred_loading']
+    _useDeferredLoading = intlConfig['use_deferred_loading'] is bool
+        ? intlConfig['use_deferred_loading']
         : null;
     _localizelyConfig =
-        LocalizelyConfig.fromConfig(flutterIntlConfig['localizely']);
+        LocalizelyConfig.fromConfig(intlConfig['localizely']);
   }
+
+  bool? get flutter => _flutter;
 
   bool? get enabled => _enabled;
 

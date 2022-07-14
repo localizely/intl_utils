@@ -17,10 +17,18 @@ class Generator {
   late String _outputDir;
   late bool _useDeferredLoading;
   late bool _otaEnabled;
+  late bool _flutter;
 
   /// Creates a new generator with configuration from the 'pubspec.yaml' file.
   Generator() {
     var pubspecConfig = PubspecConfig();
+
+    _flutter = defaultFlutter;
+    if( pubspecConfig.flutter!=null )
+      _flutter = pubspecConfig.flutter!;
+    else {
+      warning("Config parameter 'flutter_int' or 'intl' required.");
+    }
 
     _className = defaultClassName;
     if (pubspecConfig.className != null) {
@@ -87,7 +95,7 @@ class Generator {
     var labels = _getLabelsFromMainArbFile();
     var locales = _orderLocales(getLocales(_arbDir));
     var content =
-        generateL10nDartFileContent(_className, labels, locales, _otaEnabled);
+        generateL10nDartFileContent(_flutter, _className, labels, locales, _otaEnabled);
     var formattedContent = formatDartContent(content, 'l10n.dart');
 
     await updateL10nDartFile(formattedContent, _outputDir);
