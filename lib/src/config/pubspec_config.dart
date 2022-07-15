@@ -32,7 +32,9 @@ class PubspecConfig {
       intlConfig = pubspecYaml['intl'];
 
       if( intlConfig==null)
-        return;
+        throw ConfigException(
+            "Failed to detect flutter or dart context: no 'flutter_intl' or 'intl' keys found into 'pubspec.yaml' file.");
+
       _flutter = false;
     } else
       _flutter = true;
