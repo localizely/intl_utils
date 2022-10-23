@@ -19,7 +19,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 2.8.0 - 2022-11-15
 
-- Update `analyzer` and `lints` dependencies
+- Update `analyzer` and `lints` dependencies ([#91](https://github.com/localizely/intl_utils/issues/91))
+
+- Fix language overrides ([#19](https://github.com/localizely/intl_utils/issues/19))
+
+- Fix black frames on rebuild ([#90](https://github.com/localizely/intl_utils/issues/90))
 
 ## 2.7.0 - 2022-07-07
 
