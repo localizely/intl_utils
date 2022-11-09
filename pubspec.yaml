@@ -8,14 +8,14 @@ environment:
 
 dependencies:
   analyzer: ">=3.0.0 <5.0.0"
-  archive: ^3.0.0
-  args: ^2.0.0
-  dart_style: ^2.0.0
-  http: ^0.13.0
+  archive: ^3.3.2
+  args: ^2.3.1
+  dart_style: ^2.2.4
+  http: ^0.13.5
   intl: ^0.17.0
-  path: ^1.8.0
+  path: ^1.8.2
   petitparser: ">=4.0.0 <6.0.0"
-  yaml: ^3.0.0
+  yaml: ^3.1.1
 
 dev_dependencies:
   build_runner: ^2.0.6
