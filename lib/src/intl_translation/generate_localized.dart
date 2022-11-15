@@ -191,8 +191,7 @@ class MessageGeneration {
 
   /// [generateIndividualMessageFile] for the beginning of the file,
   /// parameterized by [locale].
-  String prologue(String locale) =>
-      """
+  String prologue(String locale) => """
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
 // This is a library that provides messages for a $locale locale. All the
 // messages from the main program should be duplicated here with the same
@@ -215,8 +214,7 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => '$locale';
 
-""" +
-      (releaseMode ? overrideLookup : '');
+${releaseMode ? overrideLookup : ''}""";
 
   String overrideLookup = """
   String lookupMessage(
@@ -346,9 +344,7 @@ import '${generatedFilePrefix}messages_all.dart' show evaluateJsonTemplate;
 
   @override
   String prologue(locale) =>
-      super.prologue(locale) +
-      '''
-  String evaluateMessage(translation, List<dynamic> args) {
+      '''${super.prologue(locale)}  String evaluateMessage(translation, List<dynamic> args) {
     return evaluateJsonTemplate(translation, args);
   }
 ''';
@@ -393,9 +389,7 @@ import '${generatedFilePrefix}messages_all.dart' show evaluateJsonTemplate;
   }
 
   @override
-  String get closing =>
-      super.closing +
-      '''
+  String get closing => '''${super.closing}
 /// Turn the JSON template into a string.
 ///
 /// We expect one of the following forms for the template.
@@ -507,7 +501,7 @@ abstract class TranslatedMessage {
 /// We can't use a hyphen in a Dart library name, so convert the locale
 /// separator to an underscore.
 String libraryName(String x) =>
-    'messages_' + x.replaceAll('-', '_').toLowerCase();
+    'messages_${x.replaceAll('-', '_').toLowerCase()}';
 
 bool _hasArguments(MainMessage message) =>
     message.arguments != null && message.arguments!.isNotEmpty;

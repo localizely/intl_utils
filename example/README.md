@@ -1,1 +1,1 @@
-Please see [Usage](https://pub.dev/packages/intl_utils).
+Please see [Usage](https://pub.dev/packages/intl_utils#usage).

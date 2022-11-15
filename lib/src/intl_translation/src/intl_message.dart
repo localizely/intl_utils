@@ -180,7 +180,7 @@ abstract class Message {
         .toList();
     NamedExpression? args = namedExpArgs.isNotEmpty ? namedExpArgs.first : null;
 
-    var parameterNames = outerArgs.map((x) => x.identifier?.name).toList();
+    var parameterNames = outerArgs.map((x) => x.name?.lexeme).toList();
     var hasArgs = args != null;
     var hasParameters = outerArgs.isNotEmpty;
     if (!nameAndArgsGenerated && !hasArgs && hasParameters) {
@@ -291,16 +291,16 @@ abstract class Message {
   /// For a method foo in class Bar we allow either "foo" or "Bar_Foo" as the
   /// name.
   static String? classPlusMethodName(MethodInvocation node, String? outerName) {
-    ClassOrMixinDeclaration? classNode(n) {
+    ClassDeclaration? classNode(n) {
       if (n == null) return null;
-      if (n is ClassOrMixinDeclaration) return n;
+      if (n is ClassDeclaration) return n;
       return classNode(n.parent);
     }
 
     var classDeclaration = classNode(node);
     return classDeclaration == null
         ? null
-        : '${classDeclaration.name.token}_$outerName';
+        : '${classDeclaration.name}_$outerName';
   }
 
   /// Turn a value, typically read from a translation file or created out of an
@@ -347,9 +347,9 @@ abstract class Message {
       r'$': r'\$'
     };
 
-    String _escape(String s) => escapes[s] ?? s;
+    String escape(String s) => escapes[s] ?? s;
 
-    var escaped = value.splitMapJoin('', onNonMatch: _escape);
+    var escaped = value.splitMapJoin('', onNonMatch: escape);
     return escaped;
   }
 
@@ -406,7 +406,7 @@ class CompositeMessage extends Message {
   List<Object?> toJson() => pieces.map((each) => each.toJson()).toList();
 
   @override
-  String toString() => 'CompositeMessage(' + pieces.toString() + ')';
+  String toString() => 'CompositeMessage($pieces)';
 
   @override
   String expanded([Function f = _nullTransform]) =>
@@ -630,7 +630,7 @@ class MainMessage extends ComplexMessage {
 
   String turnInterpolationBackIntoStringForm(Message message, chunk) {
     if (chunk is String) return escapeAndValidateString(chunk);
-    if (chunk is int) return r'${' + message.arguments[chunk] + '}';
+    if (chunk is int) return '${r'${' + message.arguments[chunk]}}';
     if (chunk is Message) return chunk.toCode();
     throw ArgumentError.value(chunk, 'Unexpected value in Intl.message');
   }
@@ -772,8 +772,7 @@ abstract class SubMessage extends ComplexMessage {
 
   @override
   String expanded([Function f = _nullTransform]) {
-    String fullMessageForClause(String key) =>
-        key + '{' + f(parent, this[key]).toString() + '}';
+    String fullMessageForClause(String key) => '$key{${f(parent, this[key])}}';
     var clauses = attributeNames
         .where((key) => this[key] != null)
         .map(fullMessageForClause)
