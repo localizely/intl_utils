@@ -94,7 +94,7 @@ import 'intl/messages_all.dart';
 
 // **************************************************************************
 // Generator: Intl IDE plugin
-// Made by Localizely
+// Made by acorn371
 // **************************************************************************
 
 // ignore_for_file: non_constant_identifier_names, lines_longer_than_80_chars
