@@ -112,10 +112,11 @@ class Generator {
     var formattedContent = formatDartContent(content, 'l10n.dart');
     await updateL10nDartFile(formattedContent, _outputDir);
 
-    content = generateL10nProxyDartFileContent(_flutter, _proxyClassName, labels, locales, _otaEnabled);
-    formattedContent = formatDartContent(content, 'l10n_proxy.dart');
-    await updateL10nProxyDartFile(formattedContent, _outputDir);
-
+    if( _proxyClassName!=null && _proxyClassName.isNotEmpty ) {
+      content = generateL10nProxyDartFileContent(_flutter, _proxyClassName, labels, locales);
+      formattedContent = formatDartContent(content, 'l10n_proxy.dart');
+      await updateL10nProxyDartFile(formattedContent, _outputDir);
+    }
 
     var intlDir = getIntlDirectory(_outputDir);
     if (intlDir == null) {
