@@ -7,6 +7,7 @@ class PubspecConfig {
   bool? _flutter = false;
   bool? _enabled;
   String? _className;
+  String? _proxyName;
   String? _mainLocale;
   String? _arbDir;
   String? _outputDir;
@@ -45,6 +46,9 @@ class PubspecConfig {
     _className = intlConfig['class_name'] is String
         ? intlConfig['class_name']
         : null;
+    _proxyName = intlConfig['proxy_class_name'] is String
+        ? intlConfig['proxy_class_name']
+        : null;
     _mainLocale = intlConfig['main_locale'] is String
         ? intlConfig['main_locale']
         : null;
@@ -66,6 +70,8 @@ class PubspecConfig {
   bool? get enabled => _enabled;
 
   String? get className => _className;
+
+  String? get proxyClassName => _proxyName;
 
   String? get mainLocale => _mainLocale;
 

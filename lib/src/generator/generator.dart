@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:intl_utils/src/generator/templates_proxy.dart';
+
 import '../config/pubspec_config.dart';
 import '../constants/constants.dart';
 import '../utils/file_utils.dart';
@@ -12,6 +14,7 @@ import 'templates.dart';
 /// The generator of localization files.
 class Generator {
   late String _className;
+  late String _proxyClassName;
   late String _mainLocale;
   late String _arbDir;
   late String _outputDir;
@@ -37,6 +40,16 @@ class Generator {
       } else {
         warning(
             "Config parameter 'class_name' requires valid 'UpperCamelCase' value.");
+      }
+    }
+
+    _proxyClassName = defaultClassName;
+    if (pubspecConfig.proxyClassName != null) {
+      if (isValidClassName(pubspecConfig.proxyClassName!)) {
+        _proxyClassName = pubspecConfig.proxyClassName!;
+      } else {
+        warning(
+            "Config parameter 'proxy_class_name' requires valid 'UpperCamelCase' value.");
       }
     }
 
@@ -94,11 +107,15 @@ class Generator {
   Future<void> _updateGeneratedDir() async {
     var labels = _getLabelsFromMainArbFile();
     var locales = _orderLocales(getLocales(_arbDir));
-    var content =
-        generateL10nDartFileContent(_flutter, _className, labels, locales, _otaEnabled);
-    var formattedContent = formatDartContent(content, 'l10n.dart');
 
+    var content = generateL10nDartFileContent(_flutter, _className, labels, locales, _otaEnabled);
+    var formattedContent = formatDartContent(content, 'l10n.dart');
     await updateL10nDartFile(formattedContent, _outputDir);
+
+    content = generateL10nProxyDartFileContent(_flutter, _proxyClassName, labels, locales, _otaEnabled);
+    formattedContent = formatDartContent(content, 'l10n_proxy.dart');
+    await updateL10nProxyDartFile(formattedContent, _outputDir);
+
 
     var intlDir = getIntlDirectory(_outputDir);
     if (intlDir == null) {
