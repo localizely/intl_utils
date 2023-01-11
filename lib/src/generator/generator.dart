@@ -116,6 +116,7 @@ class Generator {
       content = generateL10nProxyDartFileContent(_flutter, _proxyClassName, labels, locales);
       formattedContent = formatDartContent(content, 'l10n_proxy.dart');
       await updateL10nProxyDartFile(formattedContent, _outputDir);
+      info("$_proxyClassName generated");
     }
 
     var intlDir = getIntlDirectory(_outputDir);
