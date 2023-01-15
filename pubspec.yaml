@@ -12,7 +12,7 @@ dependencies:
   args: ^2.0.0
   dart_style: ^2.0.0
   http: ^0.13.0
-  intl: ^0.17.0
+  intl: ^0.18.0
   path: ^1.8.0
   petitparser: ">=4.0.0 <6.0.0"
   yaml: ^3.0.0
