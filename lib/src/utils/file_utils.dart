@@ -86,9 +86,25 @@ Future<void> updateArbFile(
 String getL10nDartFilePath(String outputDir) =>
     path.join(getRootDirectoryPath(), outputDir, 'l10n.dart');
 
+/// Gets l10nProxy Dart file path.
+String getL10nProxyDartFilePath(String outputDir) =>
+    path.join(getRootDirectoryPath(), outputDir, 'l10n_proxy.dart');
+
+
 /// Updates l10n Dart file.
 Future<void> updateL10nDartFile(String content, String outputDir) async {
   var l10nDartFilePath = getL10nDartFilePath(outputDir);
+  var l10nDartFile = File(l10nDartFilePath);
+
+  if (!l10nDartFile.existsSync()) {
+    await l10nDartFile.create(recursive: true);
+  }
+
+  await l10nDartFile.writeAsString(content);
+}
+
+Future<void> updateL10nProxyDartFile(String content, String outputDir) async {
+  var l10nDartFilePath = getL10nProxyDartFilePath(outputDir);
   var l10nDartFile = File(l10nDartFilePath);
 
   if (!l10nDartFile.existsSync()) {

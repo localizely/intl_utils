@@ -2,8 +2,9 @@ import '../utils/utils.dart';
 import 'label.dart';
 
 String generateL10nDartFileContent(
-    String className, List<Label> labels, List<String> locales,
+    bool flutter, String className, List<Label> labels, List<String> locales,
     [bool otaEnabled = false]) {
+  if( flutter )
   return """
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
@@ -84,7 +85,59 @@ ${locales.map((locale) => _generateLocale(locale)).join("\n")}
 }
 """
       .trim();
+  else
+    return """
+// GENERATED CODE - DO NOT MODIFY BY HAND
+import 'package:intl/intl.dart';${otaEnabled ? '\n${_generateLocalizelySdkImport()}' : ''}
+import 'package:intl/locale.dart';
+import 'intl/messages_all.dart';
+
+// **************************************************************************
+// Generator: Intl IDE plugin
+// Made by acorn371
+// **************************************************************************
+
+// ignore_for_file: non_constant_identifier_names, lines_longer_than_80_chars
+// ignore_for_file: join_return_with_assignment, prefer_final_in_for_each
+// ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
+
+class $className {
+  $className();
+
+  static $className? _current;
+
+  static $className get current {
+    assert(_current != null, 'No instance of $className was loaded. Try to initialize the $className delegate before accessing $className.current.');
+    return _current!;
+  }
+
+  static Future<$className> init([Locale? locale]) {
+    if( locale==null)
+      locale = Locale.parse(Intl.getCurrentLocale());
+
+    return load(locale);
+  }
+
+  static Future<$className> load(Locale locale) {
+    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
+    final localeName = Intl.canonicalizedLocale(name);${otaEnabled ? '\n${_generateMetadataSetter()}' : ''} 
+    return initializeMessages(localeName).then((_) {
+      Intl.defaultLocale = localeName;
+      final instance = $className();
+      $className._current = instance;
+ 
+      return instance;
+    });
+  } 
+
+
+${otaEnabled ? '\n${_generateMetadata(labels)}\n' : ''}
+${labels.map((label) => label.generateDartGetter()).join("\n\n")}
 }
+"""
+        .trim();
+}
+
 
 String _generateLocale(String locale) {
   var parts = locale.split('_');
