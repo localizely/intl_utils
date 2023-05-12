@@ -21,6 +21,8 @@ import 'intl/messages_all.dart';
 // ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
 
 class $className {
+  $className(this.localeName);
+
   static $className? _current;
 
   /// It is strongly disencouraged to use this instance since it can easily
@@ -29,8 +31,6 @@ class $className {
     assert(_current != null, 'No instance of $className was loaded. Try to initialize the $className delegate before accessing $className.current.');
     return _current!;
   }
-
-  $className(this.localeName);
 
   static const AppLocalizationDelegate delegate =
     AppLocalizationDelegate();
