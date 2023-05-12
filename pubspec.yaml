@@ -13,7 +13,7 @@ dependencies:
   args: ^2.4.1
   dart_style: ^2.3.1
   http: ^0.13.6
-  intl: ^0.18.1
+  intl: ^0.18.0
   path: ^1.8.3
   petitparser: ^5.4.0
   yaml: ^3.1.2
