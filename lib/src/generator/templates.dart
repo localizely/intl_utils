@@ -21,6 +21,15 @@ import 'intl/messages_all.dart';
 // ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
 
 class $className {
+  static $className? _current;
+
+  /// It is strongly disencouraged to use this instance since it can easily
+  /// lead to non-determinism. Use [of] or [maybeOf] instead.
+  static $className get current {
+    assert(_current != null, 'No instance of $className was loaded. Try to initialize the $className delegate before accessing $className.current.');
+    return _current!;
+  }
+
   $className(this.localeName);
 
   static const AppLocalizationDelegate delegate =
@@ -30,7 +39,9 @@ class $className {
     final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
     final localeName = Intl.canonicalizedLocale(name);${otaEnabled ? '\n${_generateMetadataSetter()}' : ''} 
     return initializeMessages(localeName).then((_) {
-      return SynchronousFuture<$className>($className(localeName));
+      final instance = $className(localeName);
+      $className._current = instance;
+      return SynchronousFuture<$className>(instance);
     });
   } 
 
