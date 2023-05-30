@@ -19,6 +19,8 @@ import 'intl/messages_all.dart';
 // ignore_for_file: join_return_with_assignment, prefer_final_in_for_each
 // ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
 
+enum SupportedLanguageCodes { ${locales.map((locale) => _generateLanguageCode(locale)).join(",\n")} }
+
 class $className {
   $className();
 
@@ -84,6 +86,12 @@ ${locales.map((locale) => _generateLocale(locale)).join("\n")}
 }
 """
       .trim();
+}
+
+String _generateLanguageCode(String locale) {
+  var parts = locale.split('_');
+
+  return parts[0];
 }
 
 String _generateLocale(String locale) {
