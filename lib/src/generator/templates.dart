@@ -19,7 +19,7 @@ import 'intl/messages_all.dart';
 // ignore_for_file: join_return_with_assignment, prefer_final_in_for_each
 // ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
 
-enum SupportedLanguageCodes { ${locales.map((locale) => _generateLanguageCode(locale)).join(",\n")} }
+enum SupportedLanguageCode { ${locales.map((locale) => _generateLanguageCode(locale)).join(",\n")} }
 
 class $className {
   $className();
