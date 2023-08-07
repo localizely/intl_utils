@@ -5,9 +5,13 @@ All notable changes to the "flutter-intl" extension will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 2.8.4 - Unreleased
+## 2.8.5 - Unreleased
 
 - Fix language overrides ([#19](https://github.com/localizely/intl_utils/issues/19))
+
+## 2.8.4 - 2023-08-04
+
+- Add support for locale formats based on ISO 639-2/3 languages and UN-M49 regions
 
 ## 2.8.3 - 2023-06-01
 

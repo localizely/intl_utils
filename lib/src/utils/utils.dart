@@ -7,7 +7,7 @@ bool isValidClassName(String value) =>
     RegExp(r'^[A-Z][a-zA-Z0-9]*$').hasMatch(value);
 
 bool isValidLocale(String value) =>
-    RegExp(r'^[a-z]{2}(_[A-Z][a-z]{3})?(_[A-Z]{2})?$').hasMatch(value);
+    RegExp(r'^[a-z]{2,3}(_[A-Z][a-z]{3})?(_([A-Z]{2}|[0-9]{3}))?$').hasMatch(value);
 
 bool isValidPath(String value) =>
     RegExp(r'^(?:[A-Za-z]:)?([\/\\]{0,2}\w*)+$').hasMatch(value);
@@ -16,13 +16,13 @@ bool isValidDownloadEmptyAsParam(String value) =>
     RegExp(r'^(empty|main|skip)$').hasMatch(value);
 
 bool isLangScriptCountryLocale(String locale) =>
-    RegExp(r'^[a-z]{2}_[A-Z][a-z]{3}_[A-Z]{2}$').hasMatch(locale);
+    RegExp(r'^[a-z]{2,3}_[A-Z][a-z]{3}_([A-Z]{2}|[0-9]{3})$').hasMatch(locale);
 
 bool isLangScriptLocale(String locale) =>
-    RegExp(r'^[a-z]{2}_[A-Z][a-z]{3}$').hasMatch(locale);
+    RegExp(r'^[a-z]{2,3}_[A-Z][a-z]{3}$').hasMatch(locale);
 
 bool isLangCountryLocale(String locale) =>
-    RegExp(r'^[a-z]{2}_[A-Z]{2}$').hasMatch(locale);
+    RegExp(r'^[a-z]{2,3}_([A-Z]{2}|[0-9]{3})$').hasMatch(locale);
 
 void info(String message) => stdout.writeln('INFO: $message');
 
