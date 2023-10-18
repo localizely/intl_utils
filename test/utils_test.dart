@@ -115,7 +115,7 @@ void main() {
 
     test(
         'Test locale validation with valid locale consisted of language and country codes where language code is consisted of three letters',
-            () => expect(isValidLocale('fil_PH'), isTrue));
+        () => expect(isValidLocale('fil_PH'), isTrue));
 
     test(
         'Test locale validation with invalid locale where country code is consisted of three letters',
@@ -123,7 +123,7 @@ void main() {
 
     test(
         'Test locale validation with valid locale where country code is consisted of three digits (UN-M49)',
-            () => expect(isValidLocale('es_419'), isTrue));
+        () => expect(isValidLocale('es_419'), isTrue));
 
     test(
         'Test locale validation with invalid locale where country code is consisted of four letters',
