@@ -4,7 +4,7 @@ version: 2.8.5
 homepage: https://github.com/localizely/intl_utils
 
 environment:
-  sdk: ">=2.17.0 <4.0.0"
+  sdk: ">=3.1.0 <4.0.0"
 
 dependencies:
   analyzer: ^6.0.0
@@ -20,5 +20,5 @@ dependencies:
 dev_dependencies:
   build_runner: ^2.0.6
   lints: ^2.0.0
-  mockito: ^5.0.12
+  mockito: ^5.4.3
   test: ^1.16.0
