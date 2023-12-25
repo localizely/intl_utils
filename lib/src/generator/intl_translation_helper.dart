@@ -136,8 +136,7 @@ class IntlTranslationHelper {
 class BasicTranslatedMessage extends TranslatedMessage {
   Map<String, List<MainMessage>> messages;
 
-  BasicTranslatedMessage(String name, translated, this.messages)
-      : super(name, translated);
+  BasicTranslatedMessage(super.name, super.translated, this.messages);
 
   @override
   List<MainMessage>? get originalMessages => (super.originalMessages == null)
