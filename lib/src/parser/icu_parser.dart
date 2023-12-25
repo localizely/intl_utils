@@ -150,7 +150,7 @@ class IcuParser {
         .map((result) =>
             List<BaseElement>.from(result is List ? result : [result]))
         .parse(message);
-    return parsed.isSuccess ? parsed.value : null;
+    return parsed is Success ? parsed.value : null;
   }
 
   IcuParser() {
