@@ -362,7 +362,7 @@ abstract class Message {
 /// Abstract class for messages with internal structure, representing the
 /// main Intl.message call, plurals, and genders.
 abstract class ComplexMessage extends Message {
-  ComplexMessage(parent) : super(parent);
+  ComplexMessage(super.parent);
 
   /// When we create these from strings or from AST nodes, we want to look up
   /// and set their attributes by string names, so we override the indexing
@@ -392,7 +392,7 @@ abstract class ComplexMessage extends Message {
 class CompositeMessage extends Message {
   late List<Message> pieces;
 
-  CompositeMessage.withParent(parent) : super(parent);
+  CompositeMessage.withParent(super.parent);
   CompositeMessage(this.pieces, Message? parent) : super(parent) {
     for (var x in pieces) {
       x.parent = this;
@@ -823,8 +823,7 @@ class Gender extends SubMessage {
   /// clauses. Each clause is expected to be a list whose first element is a
   /// variable name and whose second element is either a [String] or
   /// a list of strings and [Message] or [VariableSubstitution].
-  Gender.from(String mainArgument, List clauses, Message? parent)
-      : super.from(mainArgument, clauses, parent);
+  Gender.from(super.mainArgument, super.clauses, super.parent) : super.from();
 
   Message? female;
 
@@ -881,8 +880,7 @@ class Gender extends SubMessage {
 
 class Plural extends SubMessage {
   Plural();
-  Plural.from(String mainArgument, List clauses, Message? parent)
-      : super.from(mainArgument, clauses, parent);
+  Plural.from(super.mainArgument, super.clauses, super.parent) : super.from();
 
   Message? zero;
 
@@ -990,8 +988,7 @@ class Select extends SubMessage {
   /// clauses. Each clause is expected to be a list whose first element is a
   /// variable name and whose second element is either a String or
   /// a list of strings and [Message]s or [VariableSubstitution]s.
-  Select.from(String mainArgument, List clauses, Message? parent)
-      : super.from(mainArgument, clauses, parent);
+  Select.from(super.mainArgument, super.clauses, super.parent) : super.from();
 
   Map<String, Message> cases = <String, Message>{};
 
