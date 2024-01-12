@@ -314,6 +314,7 @@ class Label {
               '      name: \'$name\',',
               '      desc: \'$description\',',
               '      args: [],',
+              '      locale: localeName,',
               '    );',
               '  }'
             ].join('\n');
@@ -330,6 +331,7 @@ class Label {
               '      name: \'$name\',',
               '      desc: \'$description\',',
               '      args: [${_generateDartMethodArgs(args)}],',
+              '      locale: localeName,',
               '    );',
               '  }'
             ].join('\n');
@@ -348,6 +350,7 @@ class Label {
               '      name: \'$name\',',
               '      desc: \'$description\',',
               '      args: [${_generateDartMethodArgs(args)}],',
+              '      locale: localeName,',
               '    );',
               '  }'
             ].join('\n');
@@ -366,6 +369,7 @@ class Label {
               '      name: \'$name\',',
               '      desc: \'$description\',',
               '      args: [${_generateDartMethodArgs(args)}],',
+              '      locale: localeName,',
               '    );',
               '  }'
             ].join('\n');
@@ -386,6 +390,7 @@ class Label {
               '      name: \'$name\',',
               '      desc: \'$description\',',
               '      args: [${_generateDartMethodArgs(args)}],',
+              '      locale: localeName,',
               '    );',
               '  }'
             ].join('\n');
