@@ -87,7 +87,14 @@ class Unused {
     processedFiles = 0;
     final unusedKeys = <String>[];
     for (final key in keys) {
-      if (!allCode.contains('.$key')) {
+      final regex = RegExp(
+          r'\b' +
+              _className +
+              r'\s*\.\s*(current|of\(.*?\))\s*\.\s*' +
+              key +
+              r'\b',
+          multiLine: true);
+      if (!regex.hasMatch(allCode)) {
         unusedKeys.add(key);
       }
       processedFiles++;
