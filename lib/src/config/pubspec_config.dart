@@ -11,6 +11,7 @@ class PubspecConfig {
   String? _outputDir;
   bool? _useDeferredLoading;
   LocalizelyConfig? _localizelyConfig;
+  bool? _useCRLF;
 
   PubspecConfig() {
     var pubspecFile = getPubspecFile();
@@ -19,6 +20,7 @@ class PubspecConfig {
     }
 
     var pubspecFileContent = pubspecFile.readAsStringSync();
+    _useCRLF = pubspecFileContent.contains('\r\n');
     var pubspecYaml = yaml.loadYaml(pubspecFileContent);
 
     if (pubspecYaml is! yaml.YamlMap) {
@@ -51,6 +53,10 @@ class PubspecConfig {
         : null;
     _localizelyConfig =
         LocalizelyConfig.fromConfig(flutterIntlConfig['localizely']);
+
+    _useCRLF = flutterIntlConfig['use_crlf'] is bool
+        ? flutterIntlConfig['use_crlf']
+        : null;
   }
 
   bool? get enabled => _enabled;
@@ -66,6 +72,8 @@ class PubspecConfig {
   bool? get useDeferredLoading => _useDeferredLoading;
 
   LocalizelyConfig? get localizelyConfig => _localizelyConfig;
+
+  bool? get useCRLF => _useCRLF;
 }
 
 class LocalizelyConfig {
@@ -80,6 +88,7 @@ class LocalizelyConfig {
   List<String>? _downloadIncludeTags;
   List<String>? _downloadExcludeTags;
   bool? _otaEnabled;
+  bool? _useCRLF;
 
   LocalizelyConfig.fromConfig(yaml.YamlMap? localizelyConfig) {
     if (localizelyConfig == null) {

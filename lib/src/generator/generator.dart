@@ -17,6 +17,7 @@ class Generator {
   late String _outputDir;
   late bool _useDeferredLoading;
   late bool _otaEnabled;
+  String? _lineEnding;
 
   /// Creates a new generator with configuration from the 'pubspec.yaml' file.
   Generator() {
@@ -67,6 +68,13 @@ class Generator {
 
     _otaEnabled =
         pubspecConfig.localizelyConfig?.otaEnabled ?? defaultOtaEnabled;
+
+    var useCRLF = pubspecConfig.useCRLF;
+    _lineEnding = useCRLF == null
+        ? null
+        : useCRLF
+            ? '\r\n'
+            : '\n';
   }
 
   /// Generates localization files.
@@ -88,7 +96,7 @@ class Generator {
     var locales = _orderLocales(getLocales(_arbDir));
     var content =
         generateL10nDartFileContent(_className, labels, locales, _otaEnabled);
-    var formattedContent = formatDartContent(content, 'l10n.dart');
+    var formattedContent = formatDartContent(content, 'l10n.dart', _lineEnding);
 
     await updateL10nDartFile(formattedContent, _outputDir);
 
@@ -150,6 +158,6 @@ class Generator {
     var arbFiles = getArbFiles(_arbDir).map((file) => file.path).toList();
 
     var helper = IntlTranslationHelper(_useDeferredLoading);
-    helper.generateFromArb(outputDir, dartFiles, arbFiles);
+    helper.generateFromArb(outputDir, dartFiles, arbFiles, _lineEnding);
   }
 }
