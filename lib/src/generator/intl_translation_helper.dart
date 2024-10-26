@@ -58,8 +58,8 @@ class IntlTranslationHelper {
     generation.generatedFilePrefix = '';
   }
 
-  void generateFromArb(
-      String outputDir, List<String> dartFiles, List<String> arbFiles) {
+  void generateFromArb(String outputDir, List<String> dartFiles,
+      List<String> arbFiles, String? lineSeparator) {
     var allMessages = dartFiles.map((file) => extraction.parseFile(File(file)));
     for (var messageMap in allMessages) {
       messageMap.forEach(
@@ -72,14 +72,14 @@ class IntlTranslationHelper {
       _loadData(arbFile, messagesByLocale);
     }
     messagesByLocale.forEach((locale, data) {
-      _generateLocaleFile(locale, data, outputDir);
+      _generateLocaleFile(locale, data, outputDir, lineSeparator);
     });
 
     var fileName = '${generation.generatedFilePrefix}messages_all.dart';
     var mainImportFile = File(path.join(outputDir, fileName));
 
     var content = generation.generateMainImportFile();
-    var formattedContent = formatDartContent(content, fileName);
+    var formattedContent = formatDartContent(content, fileName, lineSeparator);
 
     mainImportFile.writeAsStringSync(formattedContent);
   }
@@ -103,8 +103,8 @@ class IntlTranslationHelper {
     generation.allLocales.add(locale);
   }
 
-  void _generateLocaleFile(
-      String locale, List<Map> localeData, String targetDir) {
+  void _generateLocaleFile(String locale, List<Map> localeData,
+      String targetDir, String? lineSeparator) {
     var translations = <TranslatedMessage>[];
     for (var jsonTranslations in localeData) {
       jsonTranslations.forEach((id, messageData) {
@@ -114,7 +114,8 @@ class IntlTranslationHelper {
         }
       });
     }
-    generation.generateIndividualMessageFile(locale, translations, targetDir);
+    generation.generateIndividualMessageFile(
+        locale, translations, targetDir, lineSeparator);
   }
 
   /// Regenerate the original IntlMessage objects from the given [data]. For

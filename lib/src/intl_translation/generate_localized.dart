@@ -106,11 +106,15 @@ class MessageGeneration {
 
   /// Generate a file <[generated_file_prefix]>_messages_<[locale]>.dart
   /// for the [translations] in [locale] and put it in [targetDir].
-  void generateIndividualMessageFile(String basicLocale,
-      Iterable<TranslatedMessage> translations, String targetDir) {
+  void generateIndividualMessageFile(
+      String basicLocale,
+      Iterable<TranslatedMessage> translations,
+      String targetDir,
+      String? lineSeparator) {
     final fileName = '${generatedFilePrefix}messages_$basicLocale.dart';
     final content = contentForLocale(basicLocale, translations);
-    final formattedContent = formatDartContent(content, fileName);
+    final formattedContent =
+        formatDartContent(content, fileName, lineSeparator);
 
     // To preserve compatibility, we don't use the canonical version of the
     // locale in the file name.
@@ -477,6 +481,7 @@ abstract class TranslatedMessage {
 
   /// For backward compatibility, we still have the originalMessage API.
   MainMessage? get originalMessage => originalMessages?.first;
+
   set originalMessage(MainMessage? m) {
     if (m != null) {
       originalMessages = [m];
