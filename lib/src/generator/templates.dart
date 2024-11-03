@@ -25,7 +25,7 @@ class $className {
 
   static $className? _current;
 
-  /// It is strongly disencouraged to use this instance since it can easily
+  /// It is strongly discouraged to use this instance since it can easily
   /// lead to non-determinism. Use [of] or [maybeOf] instead.
   static $className get current {
     assert(_current != null, 'No instance of $className was loaded. Try to initialize the $className delegate before accessing $className.current.');
