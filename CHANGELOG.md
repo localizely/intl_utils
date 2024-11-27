@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 2.8.8 - Unreleased
 
+- Update `intl` dependency
+
+- Update linter and fix issues
+
 - Fix language overrides ([#19](https://github.com/localizely/intl_utils/issues/19))
 
 ## 2.8.7 - 2023-12-25

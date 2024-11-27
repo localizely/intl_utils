@@ -1,4 +1,4 @@
-library intl_utils;
+library;
 
 import 'package:intl_utils/intl_utils.dart';
 import 'package:intl_utils/src/generator/generator_exception.dart';
