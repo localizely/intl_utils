@@ -45,7 +45,7 @@ import 'package:petitparser/petitparser.dart';
 import './intl_message.dart';
 
 /// This defines a grammar for ICU MessageFormat syntax. Usage is
-///       new IcuParser.message.parse(<string>).value;
+///       new IcuParser.message.parse(&lt;string&gt;).value;
 /// The "parse" method will return a Success or Failure object which responds
 /// to "value".
 class IcuParser {

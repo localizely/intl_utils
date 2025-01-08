@@ -5,10 +5,13 @@ All notable changes to the "flutter-intl" extension will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 2.8.8 - Unreleased
+## 2.8.8 - 2025-01-08
 
-- Update `intl` dependency to support `v0.20.x`
-- Update `archive` dependency to support `v4.x.x`
+- Update `intl` dependency
+
+- Update `archive` dependency
+
+- Fix lint warnings
 
 ## 2.8.7 - 2023-12-25
 

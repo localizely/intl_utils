@@ -530,7 +530,7 @@ int _methodNameCounter = 0;
 /// for their translated versions.
 Map<String, String> _internalMethodNames = {};
 
-/// Generate a Dart method name of the form "m<number>".
+/// Generate a Dart method name of the form "m&lt;number&gt;".
 String _methodNameFor(String name) {
   return _internalMethodNames.putIfAbsent(
       name, () => 'm${_methodNameCounter++}');
