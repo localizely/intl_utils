@@ -10,6 +10,7 @@ class PubspecConfig {
   String? _arbDir;
   String? _outputDir;
   bool? _useDeferredLoading;
+  String? _lineSeparator;
   LocalizelyConfig? _localizelyConfig;
 
   PubspecConfig() {
@@ -49,6 +50,16 @@ class PubspecConfig {
     _useDeferredLoading = flutterIntlConfig['use_deferred_loading'] is bool
         ? flutterIntlConfig['use_deferred_loading']
         : null;
+
+    String lineSeparator = flutterIntlConfig['eol'] is String
+        ? flutterIntlConfig['eol']
+        : '';
+    _lineSeparator = {
+      'CR': '\r',
+      'LF': '\n',
+      'CRLF': '\r\n',
+    }[lineSeparator.toUpperCase()];
+
     _localizelyConfig =
         LocalizelyConfig.fromConfig(flutterIntlConfig['localizely']);
   }
@@ -64,6 +75,8 @@ class PubspecConfig {
   String? get outputDir => _outputDir;
 
   bool? get useDeferredLoading => _useDeferredLoading;
+
+  String? get lineSeparator => _lineSeparator;
 
   LocalizelyConfig? get localizelyConfig => _localizelyConfig;
 }
