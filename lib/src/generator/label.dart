@@ -776,10 +776,6 @@ class Label {
                 return MapEntry(index,
                     '\${${_generateSelectMessage(item as SelectElement, args)}}');
               }
-            default:
-              {
-                return MapEntry(index, '');
-              }
           }
         })
         .values
