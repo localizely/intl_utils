@@ -43,7 +43,7 @@
 ///
 /// An example of usage can be found
 /// in test/message_extract/generate_from_json.dart
-library generate_localized;
+library;
 
 import 'package:intl/intl.dart';
 import 'dart:convert';
