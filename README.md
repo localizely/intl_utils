@@ -50,7 +50,7 @@ If you wonder how to format key-values content inside ARB files, [here](https://
 
 To generate boilerplate code for localization, run the `generate` program inside directory where your `pubspec.yaml` file is located:
 
-      flutter pub run intl_utils:generate
+      dart run intl_utils:generate
 
 This will produce files inside `lib/generated` directory.
 You can also change the output folder from `lib/generated` to a custom directory by adding the `output_dir` line in your `pubspec.yaml` file.
@@ -59,13 +59,13 @@ You can also change the output folder from `lib/generated` to a custom directory
 
 #### Upload main ARB file
 
-      flutter pub run intl_utils:localizely_upload_main [--project-id <PROJECT_ID> --api-token <API_TOKEN> --arb-dir <ARB_DIR> --main-locale <MAIN_LOCALE> --branch <BRANCH> --[no-]upload-overwrite --[no-]upload-as-reviewed] --upload-tag-added <UPLOAD_TAG_ADDED> --upload-tag-updated <UPLOAD_TAG_UPDATED> --upload-tag-removed <UPLOAD_TAG_REMOVED>
+      dart run intl_utils:localizely_upload_main [--project-id <PROJECT_ID> --api-token <API_TOKEN> --arb-dir <ARB_DIR> --main-locale <MAIN_LOCALE> --branch <BRANCH> --[no-]upload-overwrite --[no-]upload-as-reviewed] --upload-tag-added <UPLOAD_TAG_ADDED> --upload-tag-updated <UPLOAD_TAG_UPDATED> --upload-tag-removed <UPLOAD_TAG_REMOVED>
 
 This will upload your main ARB file to Localizely.<br />All args are optional. If not provided, the `intl_utils` will use configuration from the `pubspec.yaml` file or default values (check the [Configure package](#configure-package) section for more details).
 
 #### Download ARB files
 
-      flutter pub run intl_utils:localizely_download [--project-id <PROJECT_ID> --api-token <API_TOKEN> --arb-dir <ARB_DIR> --download-empty-as <DOWNLOAD_EMPTY_AS> --download-include-tags <DOWNLOAD_INCLUDE_TAGS> --download-exclude-tags <DOWNLOAD_EXCLUDE_TAGS> --branch <BRANCH>]
+      dart run intl_utils:localizely_download [--project-id <PROJECT_ID> --api-token <API_TOKEN> --arb-dir <ARB_DIR> --download-empty-as <DOWNLOAD_EMPTY_AS> --download-include-tags <DOWNLOAD_INCLUDE_TAGS> --download-exclude-tags <DOWNLOAD_EXCLUDE_TAGS> --branch <BRANCH>]
 
 This will download all available ARB files from the Localizely platform and put them under `arb-dir` folder.<br />All args are optional. If not provided, the `intl_utils` will use configuration from the `pubspec.yaml` file or default values (check the [Configure package](#configure-package) section for more details).
 
