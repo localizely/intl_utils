@@ -45,7 +45,7 @@ String formatJsonMessage(String jsonMessage) {
 /// Formats Dart file content.
 String formatDartContent(String content, String fileName) {
   try {
-    var formatter = DartFormatter();
+    var formatter = DartFormatter(languageVersion: DartFormatter.latestLanguageVersion);
     return formatter.format(content);
   } catch (e) {
     info('Failed to format \'$fileName\' file.');
