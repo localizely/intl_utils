@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Update docs
 
-- Update `dart_style` dependency
+- Update `dart_style` dependency  
   Note: This update introduces 'tall style' formatting for the generated code. This new formatting style is also set to become the [default in Dart 3.7 and later versions](https://pub.dev/packages/dart_style/changelog#300).
 
 ## 2.8.8 - 2025-01-08
