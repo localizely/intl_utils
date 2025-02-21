@@ -5,9 +5,20 @@ All notable changes to the "flutter-intl" extension will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 2.8.9 - Unreleased
+## 2.8.11 - Unreleased
 
 - Fix language overrides ([#19](https://github.com/localizely/intl_utils/issues/19))
+
+## 2.8.10 - 2025-02-11
+
+- Update `analyzer` dependency
+
+## 2.8.9 - 2025-01-23
+
+- Update docs
+
+- Update `dart_style` dependency  
+  Note: This update introduces 'tall style' formatting for the generated code. This new formatting style is also set to become the [default in Dart 3.7 and later versions](https://pub.dev/packages/dart_style/changelog#300).
 
 ## 2.8.8 - 2025-01-08
 
