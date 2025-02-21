@@ -11,7 +11,7 @@ bool isValidLocale(String value) =>
         .hasMatch(value);
 
 bool isValidPath(String value) =>
-    RegExp(r'^(?:[A-Za-z]:)?([\/\\]{0,2}\w*)+$').hasMatch(value);
+    RegExp(r'^(?:[A-Za-z]:)?([/\\]{0,2}\w*)+$').hasMatch(value);
 
 bool isValidDownloadEmptyAsParam(String value) =>
     RegExp(r'^(empty|main|skip)$').hasMatch(value);

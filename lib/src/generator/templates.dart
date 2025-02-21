@@ -6,6 +6,7 @@ String generateL10nDartFileContent(
     [bool otaEnabled = false]) {
   return """
 // GENERATED CODE - DO NOT MODIFY BY HAND
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';${otaEnabled ? '\n${_generateLocalizelySdkImport()}' : ''}
 import 'intl/messages_all.dart';
@@ -20,10 +21,12 @@ import 'intl/messages_all.dart';
 // ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
 
 class $className {
-  $className();
+  $className(this.localeName);
 
   static $className? _current;
 
+  /// It is strongly discouraged to use this instance since it can easily
+  /// lead to non-determinism. Use [of] or [maybeOf] instead.
   static $className get current {
     assert(_current != null, 'No instance of $className was loaded. Try to initialize the $className delegate before accessing $className.current.');
     return _current!;
@@ -36,11 +39,9 @@ class $className {
     final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
     final localeName = Intl.canonicalizedLocale(name);${otaEnabled ? '\n${_generateMetadataSetter()}' : ''} 
     return initializeMessages(localeName).then((_) {
-      Intl.defaultLocale = localeName;
-      final instance = $className();
+      final instance = $className(localeName);
       $className._current = instance;
- 
-      return instance;
+      return SynchronousFuture<$className>(instance);
     });
   } 
 
@@ -53,6 +54,8 @@ class $className {
   static $className? maybeOf(BuildContext context) {
     return Localizations.of<$className>(context, $className);
   }
+
+  final String localeName;
 ${otaEnabled ? '\n${_generateMetadata(labels)}\n' : ''}
 ${labels.map((label) => label.generateDartGetter()).join("\n\n")}
 }
