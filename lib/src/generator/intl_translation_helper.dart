@@ -52,9 +52,10 @@ class IntlTranslationHelper {
   final Map<String, List<MainMessage>> messages =
       {}; // Track of all processed messages, keyed by message name
 
-  IntlTranslationHelper([bool useDeferredLoading = false]) {
+  IntlTranslationHelper([bool useDeferredLoading = false, bool flutter = true]) {
     extraction.suppressWarnings = true;
     generation.useDeferredLoading = useDeferredLoading;
+    generation.flutter = flutter;
     generation.generatedFilePrefix = '';
   }
 

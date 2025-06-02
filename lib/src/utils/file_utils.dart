@@ -84,18 +84,31 @@ Future<void> updateArbFile(
 
 /// Gets l10n Dart file path.
 String getL10nDartFilePath(String outputDir) =>
-    path.join(getRootDirectoryPath(), outputDir, 'l10n.dart');
+    _getDartFilePath('l10n.dart', outputDir);
+
+/// Gets l10n Flutter LocalizationsDelegate extension Dart file path.
+String getL10nFlutterExtDartFilePath(String outputDir) =>
+    _getDartFilePath('l10n_ext_flutter.dart', outputDir);
+
+String _getDartFilePath(String filename, String outputDir) =>
+    path.join(getRootDirectoryPath(), outputDir, filename);
 
 /// Updates l10n Dart file.
-Future<void> updateL10nDartFile(String content, String outputDir) async {
-  var l10nDartFilePath = getL10nDartFilePath(outputDir);
-  var l10nDartFile = File(l10nDartFilePath);
+Future<void> updateL10nDartFile(String content, String outputDir) async =>
+  await _updateDartFile(content, 'l10n.dart', outputDir);
 
-  if (!l10nDartFile.existsSync()) {
-    await l10nDartFile.create(recursive: true);
+Future<void> updateL10nFlutterExtDartFile(String content, String outputDir) async =>
+  await _updateDartFile(content, 'l10n_ext_flutter.dart', outputDir);
+
+Future<void> _updateDartFile(String content, String filename, String outputDir) async {
+  var dartFilePath = _getDartFilePath(filename, outputDir);
+  var dartFile = File(dartFilePath);
+
+  if (!dartFile.existsSync()) {
+    await dartFile.create(recursive: true);
   }
 
-  await l10nDartFile.writeAsString(content);
+  await dartFile.writeAsString(content);
 }
 
 /// Gets intl directory path.
