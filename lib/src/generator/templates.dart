@@ -2,16 +2,15 @@ import '../utils/utils.dart';
 import 'label.dart';
 
 String generateL10nDartFileContent(
-    String className, List<Label> labels, List<String> locales,
+    bool flutter, String className, List<Label> labels, List<String> locales,
     [bool otaEnabled = false]) {
-  return """
+  var l10nContent = """
 // GENERATED CODE - DO NOT MODIFY BY HAND
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';${otaEnabled ? '\n${_generateLocalizelySdkImport()}' : ''}
-import 'intl/messages_all.dart';
+import 'package:intl/intl.dart';
+import 'intl/messages_all.dart';${flutter ? "\nimport 'package:flutter/widgets.dart';" : "\nimport 'package:intl/locale.dart';"}${otaEnabled ? '\n${_generateLocalizelySdkImport()}' : ''}
 
 // **************************************************************************
-// Generator: Flutter Intl IDE plugin
+// Generator: Dart/Flutter Intl IDE plugin
 // Made by Localizely
 // **************************************************************************
 
@@ -23,27 +22,35 @@ class $className {
   $className();
 
   static $className? _current;
-
+  
   static $className get current {
     assert(_current != null, 'No instance of $className was loaded. Try to initialize the $className delegate before accessing $className.current.');
     return _current!;
   }
-
-  static const AppLocalizationDelegate delegate =
-    AppLocalizationDelegate();
-
+  
   static Future<$className> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
-    final localeName = Intl.canonicalizedLocale(name);${otaEnabled ? '\n${_generateMetadataSetter()}' : ''} 
+    return loadByLocaleBasis(locale.countryCode, locale.languageCode);
+  }
+  
+  static Future<$className> loadByLocaleBasis(String? countryCode, String languageCode) {
+    final name = countryCode == null || countryCode.isEmpty
+        ? languageCode
+        : languageCode + '_' + countryCode;
+    final localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       final instance = $className();
       $className._current = instance;
- 
+
       return instance;
     });
-  } 
+  }
+""";
 
+  if (flutter) {
+    l10nContent += """
+  static const ${className}LocalizationDelegate delegate = ${className}LocalizationDelegate();
+  
   static $className of(BuildContext context) {
     final instance = $className.maybeOf(context);
     assert(instance != null, 'No instance of $className present in the widget tree. Did you add $className.delegate in localizationsDelegates?');
@@ -53,25 +60,74 @@ class $className {
   static $className? maybeOf(BuildContext context) {
     return Localizations.of<$className>(context, $className);
   }
-${otaEnabled ? '\n${_generateMetadata(labels)}\n' : ''}
-${labels.map((label) => label.generateDartGetter()).join("\n\n")}
+""";
+  }
+
+  if (otaEnabled) {
+    l10nContent += "\n${_generateMetadata(labels)}\n";
+  }
+
+  for (final label in labels) {
+    l10nContent += "${label.generateDartGetter()}\n\n";
+  }
+
+  l10nContent += '}';
+  //Localization messages class end
+
+  if (flutter) {
+    l10nContent += "\n\n${_generateLocalizationsDelegateClass(className, locales)}";
+  }
+
+  return l10nContent;
 }
 
-class AppLocalizationDelegate extends LocalizationsDelegate<$className> {
-  const AppLocalizationDelegate();
+String generateL10FlutterLocalizationsDelegateExtension(String className, List<String> locales) {
+  return """
+//TODO enter your dart package with localized messages
+import 'package:your_dart_package_with_localizations/filename.dart';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+import 'package:flutter/widgets.dart';
+
+// **************************************************************************
+// Generator: Flutter LocalizationsDelegate adaptor for Dart Intl IDE plugin
+// Made by mIwr
+// **************************************************************************
+
+// ignore_for_file: non_constant_identifier_names, lines_longer_than_80_chars
+// ignore_for_file: join_return_with_assignment, prefer_final_in_for_each
+// ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
+
+extension ${className}ExtFlutter on $className {
+
+  static const ${className}LocalizationDelegate delegate = ${className}LocalizationDelegate();
+
+  static Future<$className> load(Locale locale) {
+    return $className.loadByLocaleBasis(locale.countryCode, locale.languageCode);
+  }
+
+}
+
+${_generateLocalizationsDelegateClass(className, locales)}
+""";
+}
+
+String _generateLocalizationsDelegateClass(String intlClassName, List<String> locales) {
+  return """
+class ${intlClassName}LocalizationDelegate extends LocalizationsDelegate<$intlClassName> {
+  const ${intlClassName}LocalizationDelegate();
 
   List<Locale> get supportedLocales {
     return const <Locale>[
-${locales.map((locale) => _generateLocale(locale)).join("\n")}
+    ${locales.map((locale) => _generateLocale(locale)).join('\n')}
     ];
   }
 
   @override
   bool isSupported(Locale locale) => _isSupported(locale);
   @override
-  Future<$className> load(Locale locale) => $className.load(locale);
+  Future<$intlClassName> load(Locale locale) => $intlClassName.loadByLocaleBasis(locale.countryCode, locale.languageCode);
   @override
-  bool shouldReload(AppLocalizationDelegate old) => false;
+  bool shouldReload(${intlClassName}LocalizationDelegate old) => false;
 
   bool _isSupported(Locale locale) {
     for (var supportedLocale in supportedLocales) {
@@ -82,8 +138,7 @@ ${locales.map((locale) => _generateLocale(locale)).join("\n")}
     return false;
   }
 }
-"""
-      .trim();
+""";
 }
 
 String _generateLocale(String locale) {

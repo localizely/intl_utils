@@ -11,16 +11,20 @@ import 'templates.dart';
 
 /// The generator of localization files.
 class Generator {
+  late bool _flutter;
   late String _className;
   late String _mainLocale;
   late String _arbDir;
   late String _outputDir;
   late bool _useDeferredLoading;
+  late bool _useSeparateDelegate;
   late bool _otaEnabled;
 
   /// Creates a new generator with configuration from the 'pubspec.yaml' file.
   Generator() {
     var pubspecConfig = PubspecConfig();
+
+    _flutter = pubspecConfig.flutter;
 
     _className = defaultClassName;
     if (pubspecConfig.className != null) {
@@ -65,6 +69,10 @@ class Generator {
     _useDeferredLoading =
         pubspecConfig.useDeferredLoading ?? defaultUseDeferredLoading;
 
+    _useSeparateDelegate = _flutter == true
+        ? false //Flutter project -> can generate LocalizationsDelegate at l10n.dart by useSeparateDelegate=false
+        : pubspecConfig.useSeparateDelegate ?? defaultUseSeparateDelegate;
+
     _otaEnabled =
         pubspecConfig.localizelyConfig?.otaEnabled ?? defaultOtaEnabled;
   }
@@ -87,10 +95,18 @@ class Generator {
     var labels = _getLabelsFromMainArbFile();
     var locales = _orderLocales(getLocales(_arbDir));
     var content =
-        generateL10nDartFileContent(_className, labels, locales, _otaEnabled);
+        generateL10nDartFileContent(_flutter, _className, labels, locales, _otaEnabled);
     var formattedContent = formatDartContent(content, 'l10n.dart');
 
     await updateL10nDartFile(formattedContent, _outputDir);
+
+    if (_useSeparateDelegate) {
+      content =
+          generateL10FlutterLocalizationsDelegateExtension(_className, locales);
+      formattedContent = formatDartContent(content, 'l10n_ext_flutter.dart');
+
+      await updateL10nFlutterExtDartFile(formattedContent, _outputDir);
+    }
 
     var intlDir = getIntlDirectory(_outputDir);
     if (intlDir == null) {
@@ -149,7 +165,7 @@ class Generator {
     var dartFiles = [getL10nDartFilePath(_outputDir)];
     var arbFiles = getArbFiles(_arbDir).map((file) => file.path).toList();
 
-    var helper = IntlTranslationHelper(_useDeferredLoading);
+    var helper = IntlTranslationHelper(_useDeferredLoading, _flutter);
     helper.generateFromArb(outputDir, dartFiles, arbFiles);
   }
 }

@@ -18,11 +18,13 @@ Add package configuration to your `pubspec.yaml` file. Here is a full configurat
 <pre>
 flutter_intl:
   <b>enabled: true</b> # Required. Must be set to true to activate the package. Default: false
-  class_name: S # Optional. Sets the name for the generated localization class. Default: S
+  pure_dart: null # Optional. Defines generator mode (flutter/dart project). If set null or the parameter not stated, automatically defines Dart or Flutter project context (Checks for existence the <b>environment.flutter</b> or <b>dependencies.flutter</b> keys in pubspec). You may set force true/false value. Default: null
+  class_name: S # Optional. Sets the name for the generated localization class and prefix for the LocalizationsDelegate class name. Default: S
   main_locale: en # Optional. Sets the main locale used for generating localization files. Provided value should consist of language code and optional script and country codes separated with underscore (e.g. 'en', 'en_GB', 'zh_Hans', 'zh_Hans_CN'). Default: en
   arb_dir: lib/l10n # Optional. Sets the directory of your ARB resource files. Provided value should be a valid path on your system. Default: lib/l10n
   output_dir: lib/generated # Optional. Sets the directory of generated localization files. Provided value should be a valid path on your system. Default: lib/generated
   use_deferred_loading: false # Optional. Must be set to true to generate localization code that is loaded with deferred loading. Default: false
+  use_separate_delegate: false # Optional. Must be set to true (through one-time setup) to generate localization delegate class and localization extension at dart project for further importing to Flutter app. Also automatically sets to false, if the flutter project is detected or pure_dart parameter set to false. Default: false
   localizely: # Optional settings if you use Localizely platform. Read more: https://localizely.com/blog/flutter-localization-step-by-step/?tab=automated-using-flutter-intl
     project_id: # Get it from the https://app.localizely.com/projects page.
     branch: # Get it from the “Branches” page on the Localizely platform, in case branching is enabled and you want to use a non-main branch.
@@ -54,6 +56,27 @@ To generate boilerplate code for localization, run the `generate` program inside
 
 This will produce files inside `lib/generated` directory.
 You can also change the output folder from `lib/generated` to a custom directory by adding the `output_dir` line in your `pubspec.yaml` file.
+
+**To apply your localizations from dart project to Flutter app through LocalizationsDelegate, need to do one-time setup for pure dart project:**
+
+1) Remove **pure_dart** parameter or set it to true in your dart project `pubspec.yaml`
+```yaml
+flutter_intl:
+  #...parameters...
+  pure_dart: true
+```
+2) Add, if it doesn't exist, the **use_separate_delegate: true** to **flutter_intl** section
+```yaml
+flutter_intl:
+  #...parameters...
+  pure_dart: true
+  use_separate_delegate: true
+```
+3) Run command **dart run intl_utils:generate**
+4) Remove the **use_separate_delegate: true** line
+5) Move **l10n_ext_flutter.dart** file from generated output directory to your Flutter project
+6) Apply the import line at moved file **import 'package:todo_your_dart_package_with_localizations/todo_filename.dart';** to your pure dart project to make available the class at **l10n.dart**
+7) Add localization delegate from moved extension to your app **localizationsDelegates** parameter
 
 ### Integration with Localizely
 

@@ -5,6 +5,12 @@ All notable changes to the "flutter-intl" extension will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2.9.0 - 2025-06-02
+
+- Dart project localization generate support
+- Dart project localization bridge support for Flutter app  
+- LocalizationsDelegate class now has **class_name** prefix - [Issue #136](https://github.com/localizely/intl_utils/issues/136)
+
 ## 2.8.10 - 2025-02-11
 
 - Update `analyzer` dependency
