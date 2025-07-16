@@ -81,6 +81,9 @@ class MessageGeneration {
   /// Should we use deferred loading for the generated libraries.
   bool useDeferredLoading = true;
 
+  /// Should we avoid to use Flutter-related imports.
+  bool flutter = true;
+
   /// The mode to generate in - either 'release' or 'debug'.
   ///
   /// In release mode, a missing translation is an error. In debug mode, it
@@ -257,7 +260,9 @@ ${releaseMode ? overrideLookup : ''}""";
       var locale = Intl.canonicalizedLocale(rawLocale);
       var loadOperation = (useDeferredLoading)
           ? "  '$locale': ${libraryName(locale)}.loadLibrary,\n"
-          : "  '$locale': () => new SynchronousFuture(null),\n";
+          : (flutter)
+            ? "  '$locale': () => new SynchronousFuture(null),\n"
+            : "  '$locale': () => new Future.value(null),\n";
       output.write(loadOperation);
     }
     output.write('};\n');
@@ -287,7 +292,7 @@ ${releaseMode ? overrideLookup : ''}""";
 // ignore_for_file:comment_references
 
 import 'dart:async';
-${useDeferredLoading ? '' : "\nimport 'package:flutter/foundation.dart';"}
+${useDeferredLoading || !flutter ? '' : "\nimport 'package:flutter/foundation.dart';"}
 import 'package:$intlImportPath/intl.dart';
 import 'package:$intlImportPath/message_lookup_by_library.dart';
 import 'package:$intlImportPath/src/intl_helpers.dart';
@@ -301,19 +306,19 @@ import 'package:$intlImportPath/src/intl_helpers.dart';
 }
 
 /// User programs should call this before using [localeName] for messages.
-Future<bool> initializeMessages(String localeName) ${useDeferredLoading ? 'async ' : ''}{
+Future<bool> initializeMessages(String localeName) ${useDeferredLoading || !flutter ? 'async ' : ''}{
   var availableLocale = Intl.verifiedLocale(
     localeName,
     (locale) => _deferredLibraries[locale] != null,
     onFailure: (_) => null);
   if (availableLocale == null) {
-    return ${useDeferredLoading ? 'new Future.value(false)' : 'new SynchronousFuture(false)'};
+    return ${useDeferredLoading || !flutter? 'new Future.value(false)' : 'new SynchronousFuture(false)'};
   }
   var lib = _deferredLibraries[availableLocale];
-  ${useDeferredLoading ? 'await (lib == null ? new Future.value(false) : lib());' : 'lib == null ? new SynchronousFuture(false) : lib();'}
+  ${useDeferredLoading || !flutter ? 'await (lib == null ? new Future.value(false) : lib());' : 'lib == null ? new SynchronousFuture(false) : lib();'}
   initializeInternalMessageLookup(() => new CompositeMessageLookup());
   messageLookup.addLocale(availableLocale, _findGeneratedMessagesFor);
-  return ${useDeferredLoading ? 'new Future.value(true)' : 'new SynchronousFuture(true)'};
+  return ${useDeferredLoading || !flutter ? 'new Future.value(true)' : 'new SynchronousFuture(true)'};
 }
 
 bool _messagesExistFor(String locale) {
