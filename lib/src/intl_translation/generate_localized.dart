@@ -106,8 +106,11 @@ class MessageGeneration {
 
   /// Generate a file <[generated_file_prefix]>_messages_<[locale]>.dart
   /// for the [translations] in [locale] and put it in [targetDir].
-  void generateIndividualMessageFile(String basicLocale,
-      Iterable<TranslatedMessage> translations, String targetDir) {
+  void generateIndividualMessageFile(
+    String basicLocale,
+    Iterable<TranslatedMessage> translations,
+    String targetDir,
+  ) {
     final fileName = '${generatedFilePrefix}messages_$basicLocale.dart';
     final content = contentForLocale(basicLocale, translations);
     final formattedContent = formatDartContent(content, fileName);
@@ -121,10 +124,13 @@ class MessageGeneration {
   /// Generate a string that contains the dart code
   /// with the [translations] in [locale].
   String contentForLocale(
-      String basicLocale, Iterable<TranslatedMessage> translations) {
+    String basicLocale,
+    Iterable<TranslatedMessage> translations,
+  ) {
     clearOutput();
-    var locale = MainMessage()
-        .escapeAndValidateString(Intl.canonicalizedLocale(basicLocale));
+    var locale = MainMessage().escapeAndValidateString(
+      Intl.canonicalizedLocale(basicLocale),
+    );
     output.write(prologue(locale));
     // Exclude messages with no translation and translations with no matching
     // original message (e.g. if we're using some messages from a larger
@@ -136,8 +142,11 @@ class MessageGeneration {
         original.addTranslation(locale, each.message);
       }
     }
-    usableTranslations.sort((a, b) => a.originalMessages!.first.name
-        .compareTo(b.originalMessages!.first.name));
+    usableTranslations.sort(
+      (a, b) => a.originalMessages!.first.name.compareTo(
+        b.originalMessages!.first.name,
+      ),
+    );
 
     writeTranslations(usableTranslations, locale);
 
@@ -146,7 +155,9 @@ class MessageGeneration {
 
   /// Write out the translated forms.
   void writeTranslations(
-      Iterable<TranslatedMessage> usableTranslations, String locale) {
+    Iterable<TranslatedMessage> usableTranslations,
+    String locale,
+  ) {
     for (var translation in usableTranslations) {
       // Some messages we generate as methods in this class. Simpler ones
       // we inline in the map from names to messages.
@@ -156,7 +167,8 @@ class MessageGeneration {
         output
           ..write('  ')
           ..write(
-              original.toCodeForLocale(locale, _methodNameFor(original.name)))
+            original.toCodeForLocale(locale, _methodNameFor(original.name)),
+          )
           ..write('\n\n');
       }
     }
@@ -169,9 +181,11 @@ class MessageGeneration {
             .toSet()
             .toList()
           ..sort((a, b) => a.name.compareTo(b.name)))
-        .map((original) =>
-            '    "${original.escapeAndValidateString(original.name)}" '
-            ': ${_mapReference(original, locale)}');
+        .map(
+          (original) =>
+              '    "${original.escapeAndValidateString(original.name)}" '
+              ': ${_mapReference(original, locale)}',
+        );
     output
       ..write(entries.join(',\n'))
       ..write('\n  };\n}\n');
@@ -181,10 +195,10 @@ class MessageGeneration {
   String get extraImports => '';
 
   String get messagesDeclaration =>
-      // Includes some gyrations to prevent parts of the deferred libraries from
-      // being inlined into the main one, defeating the space savings. Issue
-      // 24356
-      '''
+  // Includes some gyrations to prevent parts of the deferred libraries from
+  // being inlined into the main one, defeating the space savings. Issue
+  // 24356
+  '''
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function> {
 ''';
@@ -255,18 +269,22 @@ ${releaseMode ? overrideLookup : ''}""";
     output.write('Map<String, LibraryLoader> _deferredLibraries = {\n');
     for (var rawLocale in allLocales) {
       var locale = Intl.canonicalizedLocale(rawLocale);
-      var loadOperation = (useDeferredLoading)
-          ? "  '$locale': ${libraryName(locale)}.loadLibrary,\n"
-          : "  '$locale': () => new SynchronousFuture(null),\n";
+      var loadOperation =
+          (useDeferredLoading)
+              ? "  '$locale': ${libraryName(locale)}.loadLibrary,\n"
+              : "  '$locale': () => new SynchronousFuture(null),\n";
       output.write(loadOperation);
     }
     output.write('};\n');
-    output.write('\nMessageLookupByLibrary? _findExact(String localeName) {\n'
-        '  switch (localeName) {\n');
+    output.write(
+      '\nMessageLookupByLibrary? _findExact(String localeName) {\n'
+      '  switch (localeName) {\n',
+    );
     for (var rawLocale in allLocales) {
       var locale = Intl.canonicalizedLocale(rawLocale);
       output.write(
-          "    case '$locale':\n      return ${libraryName(locale)}.messages;\n");
+        "    case '$locale':\n      return ${libraryName(locale)}.messages;\n",
+      );
     }
     output.write(closing);
     return output.toString();
@@ -370,7 +388,9 @@ import '${generatedFilePrefix}messages_all.dart' show evaluateJsonTemplate;
 
   @override
   void writeTranslations(
-      Iterable<TranslatedMessage> usableTranslations, String locale) {
+    Iterable<TranslatedMessage> usableTranslations,
+    String locale,
+  ) {
     output.write(r'''
   Map<String, dynamic> _messages;
   Map<String, dynamic> get messages => _messages ??=
@@ -378,8 +398,9 @@ import '${generatedFilePrefix}messages_all.dart' show evaluateJsonTemplate;
 ''');
 
     output.write('  static final messageText = ');
-    var entries = usableTranslations
-        .expand((translation) => translation.originalMessages!);
+    var entries = usableTranslations.expand(
+      (translation) => translation.originalMessages!,
+    );
     var map = {};
     for (var original in entries) {
       map[original.name] = original.toJsonForLocale(locale);
@@ -533,5 +554,7 @@ Map<String, String> _internalMethodNames = {};
 /// Generate a Dart method name of the form "m&lt;number&gt;".
 String _methodNameFor(String name) {
   return _internalMethodNames.putIfAbsent(
-      name, () => 'm${_methodNameCounter++}');
+    name,
+    () => 'm${_methodNameCounter++}',
+  );
 }

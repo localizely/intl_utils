@@ -65,7 +65,8 @@ Future<void> main(List<String> arguments) async {
         help:
             "Config parameter 'download_empty_as' expects one of the following values: 'empty', 'main' or 'skip'.",
         callback: ((x) => downloadEmptyAs = x!),
-        defaultsTo: pubspecConfig.localizelyConfig?.downloadEmptyAs ??
+        defaultsTo:
+            pubspecConfig.localizelyConfig?.downloadEmptyAs ??
             defaultDownloadEmptyAs,
       )
       ..addMultiOption(
@@ -89,13 +90,15 @@ Future<void> main(List<String> arguments) async {
 
     if (projectId == null) {
       throw ConfigException(
-          "Argument 'project-id' was not provided, nor 'project_id' config was set within the 'flutter_intl/localizely' section of the 'pubspec.yaml' file.");
+        "Argument 'project-id' was not provided, nor 'project_id' config was set within the 'flutter_intl/localizely' section of the 'pubspec.yaml' file.",
+      );
     }
 
     apiToken ??= credentialsConfig.apiToken;
     if (apiToken == null) {
       throw ConfigException(
-          "Argument 'api-token' was not provided, nor 'api_token' config was set within the '${getLocalizelyCredentialsFilePath()}' file.");
+        "Argument 'api-token' was not provided, nor 'api_token' config was set within the '${getLocalizelyCredentialsFilePath()}' file.",
+      );
     }
 
     if (!isValidDownloadEmptyAsParam(downloadEmptyAs)) {
@@ -104,8 +107,15 @@ Future<void> main(List<String> arguments) async {
       );
     }
 
-    await LocalizelyService.download(projectId!, apiToken!, arbDir,
-        downloadEmptyAs, branch, downloadIncludeTags, downloadExcludeTags);
+    await LocalizelyService.download(
+      projectId!,
+      apiToken!,
+      arbDir,
+      downloadEmptyAs,
+      branch,
+      downloadIncludeTags,
+      downloadExcludeTags,
+    );
   } on args.ArgParserException catch (e) {
     exitWithError('${e.message}\n\n${argParser.usage}');
   } on ConfigException catch (e) {

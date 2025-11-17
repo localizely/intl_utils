@@ -28,7 +28,8 @@ class Generator {
         _className = pubspecConfig.className!;
       } else {
         warning(
-            "Config parameter 'class_name' requires valid 'UpperCamelCase' value.");
+          "Config parameter 'class_name' requires valid 'UpperCamelCase' value.",
+        );
       }
     }
 
@@ -38,7 +39,8 @@ class Generator {
         _mainLocale = pubspecConfig.mainLocale!;
       } else {
         warning(
-            "Config parameter 'main_locale' requires value consisted of language code and optional script and country codes separated with underscore (e.g. 'en', 'en_GB', 'zh_Hans', 'zh_Hans_CN').");
+          "Config parameter 'main_locale' requires value consisted of language code and optional script and country codes separated with underscore (e.g. 'en', 'en_GB', 'zh_Hans', 'zh_Hans_CN').",
+        );
       }
     }
 
@@ -48,7 +50,8 @@ class Generator {
         _arbDir = pubspecConfig.arbDir!;
       } else {
         warning(
-            "Config parameter 'arb_dir' requires valid path value (e.g. 'lib', 'res/', 'lib\\l10n').");
+          "Config parameter 'arb_dir' requires valid path value (e.g. 'lib', 'res/', 'lib\\l10n').",
+        );
       }
     }
 
@@ -58,7 +61,8 @@ class Generator {
         _outputDir = pubspecConfig.outputDir!;
       } else {
         warning(
-            "Config parameter 'output_dir' requires valid path value (e.g. 'lib', 'lib\\generated').");
+          "Config parameter 'output_dir' requires valid path value (e.g. 'lib', 'lib\\generated').",
+        );
       }
     }
 
@@ -86,8 +90,12 @@ class Generator {
   Future<void> _updateGeneratedDir() async {
     var labels = _getLabelsFromMainArbFile();
     var locales = _orderLocales(getLocales(_arbDir));
-    var content =
-        generateL10nDartFileContent(_className, labels, locales, _otaEnabled);
+    var content = generateL10nDartFileContent(
+      _className,
+      labels,
+      locales,
+      _otaEnabled,
+    );
     var formattedContent = formatDartContent(content, 'l10n.dart');
 
     await updateL10nDartFile(formattedContent, _outputDir);
@@ -104,7 +112,8 @@ class Generator {
     var mainArbFile = getArbFileForLocale(_mainLocale, _arbDir);
     if (mainArbFile == null) {
       throw GeneratorException(
-          "Can't find ARB file for the '$_mainLocale' locale.");
+        "Can't find ARB file for the '$_mainLocale' locale.",
+      );
     }
 
     var content = mainArbFile.readAsStringSync();
@@ -112,23 +121,33 @@ class Generator {
 
     var labels =
         decodedContent.keys.where((key) => !key.startsWith('@')).map((key) {
-      var name = key;
-      var content = decodedContent[key];
+          var name = key;
+          var content = decodedContent[key];
 
-      var meta = decodedContent['@$key'] ?? {};
-      var type = meta['type'];
-      var description = meta['description'];
-      var placeholders = meta['placeholders'] != null
-          ? (meta['placeholders'] as Map<String, dynamic>)
-              .keys
-              .map((placeholder) => Placeholder(
-                  key, placeholder, meta['placeholders'][placeholder]))
-              .toList()
-          : null;
+          var meta = decodedContent['@$key'] ?? {};
+          var type = meta['type'];
+          var description = meta['description'];
+          var placeholders =
+              meta['placeholders'] != null
+                  ? (meta['placeholders'] as Map<String, dynamic>).keys
+                      .map(
+                        (placeholder) => Placeholder(
+                          key,
+                          placeholder,
+                          meta['placeholders'][placeholder],
+                        ),
+                      )
+                      .toList()
+                  : null;
 
-      return Label(name, content,
-          type: type, description: description, placeholders: placeholders);
-    }).toList();
+          return Label(
+            name,
+            content,
+            type: type,
+            description: description,
+            placeholders: placeholders,
+          );
+        }).toList();
 
     return labels;
   }
@@ -137,10 +156,10 @@ class Generator {
     var index = locales.indexOf(_mainLocale);
     return index != -1
         ? [
-            locales.elementAt(index),
-            ...locales.sublist(0, index),
-            ...locales.sublist(index + 1)
-          ]
+          locales.elementAt(index),
+          ...locales.sublist(0, index),
+          ...locales.sublist(index + 1),
+        ]
         : locales;
   }
 

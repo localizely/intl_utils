@@ -51,10 +51,9 @@ class IcuParser {
 
   Parser get normalText => notAllowedInNormalText.neg();
 
-  Parser get messageText => (icuEscapedText | icuText)
-      .plus()
-      .flatten()
-      .map((result) => LiteralElement(result));
+  Parser get messageText => (icuEscapedText | icuText).plus().flatten().map(
+    (result) => LiteralElement(result),
+  );
 
   Parser get nonIcuMessageText =>
       normalText.plus().flatten().map((result) => LiteralElement(result));
@@ -72,8 +71,17 @@ class IcuParser {
   Parser asKeywords(List<String> list) =>
       list.map(string).cast<Parser>().reduce((a, b) => a | b).flatten().trim();
 
-  Parser get pluralKeyword => asKeywords(
-      ['=0', '=1', '=2', 'zero', 'one', 'two', 'few', 'many', 'other']);
+  Parser get pluralKeyword => asKeywords([
+    '=0',
+    '=1',
+    '=2',
+    'zero',
+    'one',
+    'two',
+    'few',
+    'many',
+    'other',
+  ]);
 
   Parser get genderKeyword => asKeywords(['female', 'male', 'other']);
 
@@ -83,46 +91,52 @@ class IcuParser {
 
   Parser get pluralLiteral => string('plural');
 
-  Parser get pluralClause => (pluralKeyword &
-          openCurly &
-          interiorText &
-          closeCurly)
-      .trim()
-      .map((result) => Option(result[0],
-          List<BaseElement>.from(result[2] is List ? result[2] : [result[2]])));
+  Parser get pluralClause =>
+      (pluralKeyword & openCurly & interiorText & closeCurly).trim().map(
+        (result) => Option(
+          result[0],
+          List<BaseElement>.from(result[2] is List ? result[2] : [result[2]]),
+        ),
+      );
 
   Parser get plural =>
       preface & pluralLiteral & comma & pluralClause.plus() & closeCurly;
 
-  Parser get intlPlural => plural
-      .map((result) => PluralElement(result[0], List<Option>.from(result[3])));
+  Parser get intlPlural => plural.map(
+    (result) => PluralElement(result[0], List<Option>.from(result[3])),
+  );
 
   Parser get selectLiteral => string('select');
 
-  Parser get genderClause => (genderKeyword &
-          openCurly &
-          interiorText &
-          closeCurly)
-      .trim()
-      .map((result) => Option(result[0],
-          List<BaseElement>.from(result[2] is List ? result[2] : [result[2]])));
+  Parser get genderClause =>
+      (genderKeyword & openCurly & interiorText & closeCurly).trim().map(
+        (result) => Option(
+          result[0],
+          List<BaseElement>.from(result[2] is List ? result[2] : [result[2]]),
+        ),
+      );
 
   Parser get gender =>
       preface & selectLiteral & comma & genderClause.plus() & closeCurly;
 
-  Parser get intlGender => gender
-      .map((result) => GenderElement(result[0], List<Option>.from(result[3])));
+  Parser get intlGender => gender.map(
+    (result) => GenderElement(result[0], List<Option>.from(result[3])),
+  );
 
-  Parser get selectClause => (id & openCurly & interiorText & closeCurly)
-      .trim()
-      .map((result) => Option(result[0],
-          List<BaseElement>.from(result[2] is List ? result[2] : [result[2]])));
+  Parser get selectClause =>
+      (id & openCurly & interiorText & closeCurly).trim().map(
+        (result) => Option(
+          result[0],
+          List<BaseElement>.from(result[2] is List ? result[2] : [result[2]]),
+        ),
+      );
 
   Parser get generalSelect =>
       preface & selectLiteral & comma & selectClause.plus() & closeCurly;
 
-  Parser get intlSelect => generalSelect
-      .map((result) => SelectElement(result[0], List<Option>.from(result[3])));
+  Parser get intlSelect => generalSelect.map(
+    (result) => SelectElement(result[0], List<Option>.from(result[3])),
+  );
 
   Parser get compound => (((parameter | nonIcuMessageText).plus() &
               pluralOrGenderOrSelect &
@@ -136,9 +150,12 @@ class IcuParser {
   Parser get contents => pluralOrGenderOrSelect | parameter | messageText;
 
   Parser get simpleText =>
-      (nonIcuMessageText | parameter | openCurly).plus().map((result) => result
-          .map((item) => item is String ? LiteralElement(item) : item)
-          .toList());
+      (nonIcuMessageText | parameter | openCurly).plus().map(
+        (result) =>
+            result
+                .map((item) => item is String ? LiteralElement(item) : item)
+                .toList(),
+      );
 
   Parser get empty => epsilon().map((_) => LiteralElement(''));
 
@@ -147,8 +164,10 @@ class IcuParser {
 
   List<BaseElement>? parse(String message) {
     var parsed = (compound | pluralOrGenderOrSelect | simpleText | empty)
-        .map((result) =>
-            List<BaseElement>.from(result is List ? result : [result]))
+        .map(
+          (result) =>
+              List<BaseElement>.from(result is List ? result : [result]),
+        )
         .parse(message);
     return parsed is Success ? parsed.value : null;
   }

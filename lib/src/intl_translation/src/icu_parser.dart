@@ -73,8 +73,17 @@ class IcuParser {
   Parser asKeywords(List<String> list) =>
       list.map(string).cast<Parser>().reduce((a, b) => a | b).flatten().trim();
 
-  Parser get pluralKeyword => asKeywords(
-      ['=0', '=1', '=2', 'zero', 'one', 'two', 'few', 'many', 'other']);
+  Parser get pluralKeyword => asKeywords([
+    '=0',
+    '=1',
+    '=2',
+    'zero',
+    'one',
+    'two',
+    'few',
+    'many',
+    'other',
+  ]);
   Parser get genderKeyword => asKeywords(['female', 'male', 'other']);
 
   var interiorText = undefined();
@@ -83,9 +92,9 @@ class IcuParser {
 
   Parser get pluralLiteral => string('plural');
   Parser get pluralClause =>
-      (pluralKeyword & openCurly & interiorText & closeCurly)
-          .trim()
-          .map((result) => [result[0], result[2]]);
+      (pluralKeyword & openCurly & interiorText & closeCurly).trim().map(
+        (result) => [result[0], result[2]],
+      );
   Parser get plural =>
       preface & pluralLiteral & comma & pluralClause.plus() & closeCurly;
   Parser get intlPlural =>
@@ -93,9 +102,9 @@ class IcuParser {
 
   Parser get selectLiteral => string('select');
   Parser get genderClause =>
-      (genderKeyword & openCurly & interiorText & closeCurly)
-          .trim()
-          .map((result) => [result[0], result[2]]);
+      (genderKeyword & openCurly & interiorText & closeCurly).trim().map(
+        (result) => [result[0], result[2]],
+      );
   Parser get gender =>
       preface & selectLiteral & comma & genderClause.plus() & closeCurly;
   Parser get intlGender =>
@@ -120,21 +129,24 @@ class IcuParser {
   Parser get simpleText => (nonIcuMessageText | parameter | openCurly).plus();
   Parser get empty => epsilon().map((_) => '');
 
-  Parser get parameter => (openCurly & id & closeCurly)
-      .map((param) => VariableSubstitution.named(param[1], null));
+  Parser get parameter => (openCurly & id & closeCurly).map(
+    (param) => VariableSubstitution.named(param[1], null),
+  );
 
   /// The primary entry point for parsing. Accepts a string and produces
   /// a parsed representation of it as a Message.
-  Parser get message => (compound | pluralOrGenderOrSelect | empty)
-      .map((chunk) => Message.from(chunk, null));
+  Parser get message => (compound | pluralOrGenderOrSelect | empty).map(
+    (chunk) => Message.from(chunk, null),
+  );
 
   /// Represents an ordinary message, i.e. not a plural/gender/select, although
   /// it may have parameters.
   Parser get nonIcuMessage =>
       (simpleText | empty).map((chunk) => Message.from(chunk, null));
 
-  Parser get stuff => (pluralOrGenderOrSelect | empty)
-      .map((chunk) => Message.from(chunk, null));
+  Parser get stuff => (pluralOrGenderOrSelect | empty).map(
+    (chunk) => Message.from(chunk, null),
+  );
 
   IcuParser() {
     // There is a cycle here, so we need the explicit set to avoid

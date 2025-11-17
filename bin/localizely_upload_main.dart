@@ -74,7 +74,8 @@ Future<void> main(List<String> arguments) async {
         'upload-overwrite',
         help: 'Set to true if you want to overwrite translations with upload.',
         callback: ((x) => uploadOverwrite = x),
-        defaultsTo: pubspecConfig.localizelyConfig?.uploadOverwrite ??
+        defaultsTo:
+            pubspecConfig.localizelyConfig?.uploadOverwrite ??
             defaultUploadOverwrite,
       )
       ..addFlag(
@@ -82,7 +83,8 @@ Future<void> main(List<String> arguments) async {
         help:
             'Set to true if you want to mark uploaded translations as reviewed.',
         callback: ((x) => uploadAsReviewed = x),
-        defaultsTo: pubspecConfig.localizelyConfig?.uploadAsReviewed ??
+        defaultsTo:
+            pubspecConfig.localizelyConfig?.uploadAsReviewed ??
             defaultUploadAsReviewed,
       )
       ..addMultiOption(
@@ -114,13 +116,15 @@ Future<void> main(List<String> arguments) async {
 
     if (projectId == null) {
       throw ConfigException(
-          "Argument 'project-id' was not provided, nor 'project_id' config was set within the 'flutter_intl/localizely' section of the 'pubspec.yaml' file.");
+        "Argument 'project-id' was not provided, nor 'project_id' config was set within the 'flutter_intl/localizely' section of the 'pubspec.yaml' file.",
+      );
     }
 
     apiToken ??= credentialsConfig.apiToken;
     if (apiToken == null) {
       throw ConfigException(
-          "Argument 'api-token' was not provided, nor 'api_token' config was set within the '${getLocalizelyCredentialsFilePath()}' file.");
+        "Argument 'api-token' was not provided, nor 'api_token' config was set within the '${getLocalizelyCredentialsFilePath()}' file.",
+      );
     }
 
     if (!isValidLocale(mainLocale)) {
@@ -130,16 +134,17 @@ Future<void> main(List<String> arguments) async {
     }
 
     await LocalizelyService.uploadMainArbFile(
-        projectId!,
-        apiToken!,
-        arbDir,
-        mainLocale,
-        branch,
-        uploadOverwrite,
-        uploadAsReviewed,
-        uploadTagAdded,
-        uploadTagUpdated,
-        uploadTagRemoved);
+      projectId!,
+      apiToken!,
+      arbDir,
+      mainLocale,
+      branch,
+      uploadOverwrite,
+      uploadAsReviewed,
+      uploadTagAdded,
+      uploadTagUpdated,
+      uploadTagRemoved,
+    );
   } on args.ArgParserException catch (e) {
     exitWithError('${e.message}\n\n${argParser.usage}');
   } on ConfigException catch (e) {

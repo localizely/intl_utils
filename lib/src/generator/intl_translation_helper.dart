@@ -59,11 +59,15 @@ class IntlTranslationHelper {
   }
 
   void generateFromArb(
-      String outputDir, List<String> dartFiles, List<String> arbFiles) {
+    String outputDir,
+    List<String> dartFiles,
+    List<String> arbFiles,
+  ) {
     var allMessages = dartFiles.map((file) => extraction.parseFile(File(file)));
     for (var messageMap in allMessages) {
       messageMap.forEach(
-          (key, value) => messages.putIfAbsent(key, () => []).add(value));
+        (key, value) => messages.putIfAbsent(key, () => []).add(value),
+      );
     }
 
     var messagesByLocale = <String, List<Map>>{};
@@ -97,14 +101,18 @@ class IntlTranslationHelper {
       var name = path.basenameWithoutExtension(file.path);
       locale = name.split('_').skip(1).join('_');
       info(
-          "No @@locale or _locale field found in $name, assuming '$locale' based on the file name.");
+        "No @@locale or _locale field found in $name, assuming '$locale' based on the file name.",
+      );
     }
     messagesByLocale.putIfAbsent(locale, () => []).add(data);
     generation.allLocales.add(locale);
   }
 
   void _generateLocaleFile(
-      String locale, List<Map> localeData, String targetDir) {
+    String locale,
+    List<Map> localeData,
+    String targetDir,
+  ) {
     var translations = <TranslatedMessage>[];
     for (var jsonTranslations in localeData) {
       jsonTranslations.forEach((id, messageData) {
@@ -139,9 +147,10 @@ class BasicTranslatedMessage extends TranslatedMessage {
   BasicTranslatedMessage(super.name, super.translated, this.messages);
 
   @override
-  List<MainMessage>? get originalMessages => (super.originalMessages == null)
-      ? _findOriginals()
-      : super.originalMessages;
+  List<MainMessage>? get originalMessages =>
+      (super.originalMessages == null)
+          ? _findOriginals()
+          : super.originalMessages;
 
   // We know that our [id] is the name of the message, which is used as the key in [messages].
   List<MainMessage>? _findOriginals() => originalMessages = messages[id];

@@ -6,9 +6,9 @@ import 'package:dart_style/dart_style.dart' show DartFormatter;
 bool isValidClassName(String value) =>
     RegExp(r'^[A-Z][a-zA-Z0-9]*$').hasMatch(value);
 
-bool isValidLocale(String value) =>
-    RegExp(r'^[a-z]{2,3}(_[A-Z][a-z]{3})?(_([A-Z]{2}|[0-9]{3}))?$')
-        .hasMatch(value);
+bool isValidLocale(String value) => RegExp(
+  r'^[a-z]{2,3}(_[A-Z][a-z]{3})?(_([A-Z]{2}|[0-9]{3}))?$',
+).hasMatch(value);
 
 bool isValidPath(String value) =>
     RegExp(r'^(?:[A-Za-z]:)?([\/\\]{0,2}\w*)+$').hasMatch(value);
@@ -45,8 +45,9 @@ String formatJsonMessage(String jsonMessage) {
 /// Formats Dart file content.
 String formatDartContent(String content, String fileName) {
   try {
-    var formatter =
-        DartFormatter(languageVersion: DartFormatter.latestLanguageVersion);
+    var formatter = DartFormatter(
+      languageVersion: DartFormatter.latestLanguageVersion,
+    );
     return formatter.format(content);
   } catch (e) {
     info('Failed to format \'$fileName\' file.');

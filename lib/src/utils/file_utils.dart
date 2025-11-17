@@ -44,12 +44,15 @@ Future<File> createArbFileForLocale(String locale, String arbDir) async {
 /// Gets all arb files in the project.
 List<FileSystemEntity> getArbFiles(String arbDir) {
   var l10nDirPath = path.join(getRootDirectoryPath(), arbDir);
-  var arbFiles = Directory(l10nDirPath)
-      .listSync()
-      .where((file) =>
-          path.basename(file.path).startsWith('intl_') &&
-          path.basename(file.path).endsWith('.arb'))
-      .toList();
+  var arbFiles =
+      Directory(l10nDirPath)
+          .listSync()
+          .where(
+            (file) =>
+                path.basename(file.path).startsWith('intl_') &&
+                path.basename(file.path).endsWith('.arb'),
+          )
+          .toList();
 
   // arb files order is not the same on all operating systems (e.g. win, mac)
   arbFiles.sort((a, b) => a.path.compareTo(b.path));
@@ -59,18 +62,26 @@ List<FileSystemEntity> getArbFiles(String arbDir) {
 
 /// Gets all locales in the project.
 List<String> getLocales(String arbDir) {
-  var locales = getArbFiles(arbDir)
-      .map((file) => path.basename(file.path))
-      .map((fileName) =>
-          fileName.substring('intl_'.length, fileName.length - '.arb'.length))
-      .toList();
+  var locales =
+      getArbFiles(arbDir)
+          .map((file) => path.basename(file.path))
+          .map(
+            (fileName) => fileName.substring(
+              'intl_'.length,
+              fileName.length - '.arb'.length,
+            ),
+          )
+          .toList();
 
   return locales;
 }
 
 /// Updates arb file content.
 Future<void> updateArbFile(
-    String fileName, Uint8List bytes, String arbDir) async {
+  String fileName,
+  Uint8List bytes,
+  String arbDir,
+) async {
   var rootDirPath = getRootDirectoryPath();
   var arbFilePath = path.join(rootDirPath, arbDir, fileName);
   var arbFile = File(arbFilePath);
@@ -124,7 +135,9 @@ Future<Directory> createIntlDirectory(String outputDir) async {
 
 /// Removes unused generated Dart files.
 Future<void> removeUnusedGeneratedDartFiles(
-    List<String> locales, String outputDir) async {
+  List<String> locales,
+  String outputDir,
+) async {
   var intlDir = getIntlDirectory(outputDir);
   if (intlDir == null) {
     return;
@@ -134,7 +147,9 @@ Future<void> removeUnusedGeneratedDartFiles(
   for (var file in files) {
     var basename = path.basename(file.path);
     var substring = basename.substring(
-        'messages_'.length, basename.length - '.dart'.length);
+      'messages_'.length,
+      basename.length - '.dart'.length,
+    );
 
     if (basename.startsWith('messages_') &&
         basename.endsWith('.dart') &&

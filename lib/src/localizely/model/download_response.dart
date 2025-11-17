@@ -19,7 +19,8 @@ class DownloadResponse {
     var fileName = _getFileName(contentDisposition);
     if (fileName == null) {
       throw Exception(
-          "Can't extract file name from 'Content-Disposition' header.");
+        "Can't extract file name from 'Content-Disposition' header.",
+      );
     }
 
     var bytes = response.bodyBytes;
@@ -40,7 +41,7 @@ class DownloadResponse {
       RegExp('filename\\*=[^\']+\'\\w*\'"([^"]+)";?', caseSensitive: false),
       RegExp('filename\\*=[^\']+\'\\w*\'([^;]+);?', caseSensitive: false),
       RegExp('filename="([^;]*);?"', caseSensitive: false),
-      RegExp('filename=([^;]*);?', caseSensitive: false)
+      RegExp('filename=([^;]*);?', caseSensitive: false),
     ];
 
     String? fileName;
