@@ -55,6 +55,42 @@ To generate boilerplate code for localization, run the `generate` program inside
 This will produce files inside `lib/generated` directory.
 You can also change the output folder from `lib/generated` to a custom directory by adding the `output_dir` line in your `pubspec.yaml` file.
 
+### Find and clean unused translation keys
+
+You can now find and clean unused translation keys in your project. This helps keep your localization files tidy and removes any keys that are no longer used in your code.
+
+#### Find unused keys
+
+To find unused keys and print the count:
+
+      flutter pub run intl_utils:unused
+
+This will simply print the number of unused keys found.
+
+#### Save unused keys to .txt file
+
+To find unused keys and save them to a file:
+
+      flutter pub run intl_utils:unused --save
+
+This will create a file `unused_keys.txt` containing the unused keys.
+
+#### Clean unused keys
+
+To clean unused keys from your .arb files and regenerate intl boilerplate code for localization:
+
+      flutter pub run intl_utils:unused --clean
+
+By default, this will prompt for confirmation before cleaning. You can force the cleaning without confirmation using:
+
+      flutter pub run intl_utils:unused --force-clean
+
+#### Skip regeneration
+
+If you do not want to regenerate the localization files after cleaning, use:
+
+      flutter pub run intl_utils:unused --clean --no-regenerate
+
 ### Integration with Localizely
 
 #### Upload main ARB file
