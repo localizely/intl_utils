@@ -124,7 +124,7 @@ abstract class Message {
 
   /// Verify that the args argument matches the method parameters and
   /// isn't, e.g. passing string names instead of the argument values.
-  bool checkArgs(NamedExpression? args, List<String?> parameterNames) {
+  bool checkArgs(NamedArgument? args, List<String?> parameterNames) {
     if (args == null) return true;
     // Detect cases where args passes invalid names, either literal strings
     // instead of identifiers, or in the wrong order, missing values, etc.
@@ -132,10 +132,9 @@ abstract class Message {
     if (!identifiers.elements.every((each) => each is SimpleIdentifier)) {
       return false;
     }
-    var names =
-        identifiers.elements
-            .map((each) => (each as SimpleIdentifier).name)
-            .toList();
+    var names = identifiers.elements
+        .map((each) => (each as SimpleIdentifier).name)
+        .toList();
     Map<String, String?> both;
     try {
       both = Map.fromIterables(names, parameterNames);
@@ -180,14 +179,11 @@ abstract class Message {
     bool examplesRequired = false,
   }) {
     // If we have parameters, we must specify args and name.
-    var namedExpArgs =
-        arguments
-            .where(
-              (each) =>
-                  each is NamedExpression && each.name.label.name == 'args',
-            )
-            .toList();
-    NamedExpression? args = namedExpArgs.isNotEmpty ? namedExpArgs.first : null;
+    var namedExpArgs = arguments
+        .whereType<NamedArgument>()
+        .where((each) => each.name.lexeme == 'args')
+        .toList();
+    NamedArgument? args = namedExpArgs.isNotEmpty ? namedExpArgs.first : null;
 
     var parameterNames = outerArgs.map((x) => x.name?.lexeme).toList();
     var hasArgs = args != null;
@@ -200,18 +196,15 @@ abstract class Message {
       return "The 'args' argument must match the message arguments,"
           ' e.g. args: $parameterNames';
     }
-    var namedExpNames =
-        arguments
-            .where(
-              (eachArg) =>
-                  eachArg is NamedExpression &&
-                  eachArg.name.label.name == 'name',
-            )
-            .toList();
-    var messageNameArgument =
-        namedExpNames.isNotEmpty ? namedExpNames.first : null;
+    var namedExpNames = arguments
+        .whereType<NamedArgument>()
+        .where((eachArg) => eachArg.name.lexeme == 'name')
+        .toList();
+    var messageNameArgument = namedExpNames.isNotEmpty
+        ? namedExpNames.first
+        : null;
 
-    var nameExpression = messageNameArgument?.expression;
+    var nameExpression = messageNameArgument?.argumentExpression;
     String? messageName;
     String? givenName;
 
@@ -255,12 +248,12 @@ abstract class Message {
           "was '$givenName' but must be '$outerName'  or '$classPlusMethod')";
     }
 
-    var simpleArguments = arguments.where(
-      (each) =>
-          each is NamedExpression &&
-          ['desc', 'name'].contains(each.name.label.name),
+    var simpleArguments = arguments.whereType<NamedArgument>().where(
+      (each) => ['desc', 'name'].contains(each.name.lexeme),
     );
-    var values = simpleArguments.map((each) => each.expression).toList();
+    var values = simpleArguments
+        .map((each) => each.argumentExpression)
+        .toList();
     for (var arg in values) {
       if (_evaluateAsString(arg) == null) {
         return ('Intl.message arguments must be string literals: $arg');
@@ -268,10 +261,12 @@ abstract class Message {
     }
 
     if (hasParameters) {
-      var exampleArg = arguments.where(
-        (each) => each is NamedExpression && each.name.label.name == 'examples',
+      final exampleArg = arguments.whereType<NamedArgument>().where(
+        (each) => each.name.lexeme == 'examples',
       );
-      var examples = exampleArg.map((each) => each.expression).toList();
+      final examples = exampleArg
+          .map((each) => each.argumentExpression as TypedLiteral)
+          .toList();
       if (examples.isEmpty && examplesRequired) {
         return 'Examples must be provided for messages with parameters';
       }
@@ -316,7 +311,7 @@ abstract class Message {
     var classDeclaration = classNode(node);
     return classDeclaration == null
         ? null
-        : '${classDeclaration.name}_$outerName';
+        : '${classDeclaration.namePart.typeName.lexeme}_$outerName';
   }
 
   /// Turn a value, typically read from a translation file or created out of an
@@ -642,13 +637,12 @@ class MainMessage extends ComplexMessage {
   /// Generate code for this message, expecting it to be part of a map
   /// keyed by name with values the function that calls Intl.message.
   String toCodeForLocale(String locale, String name) {
-    var out =
-        StringBuffer()
-          ..write('static String $name(')
-          ..write((arguments ?? []).join(', '))
-          ..write(') => "')
-          ..write(translations[locale])
-          ..write('";');
+    var out = StringBuffer()
+      ..write('static String $name(')
+      ..write((arguments ?? []).join(', '))
+      ..write(') => "')
+      ..write(translations[locale])
+      ..write('";');
     return out.toString();
   }
 
@@ -798,9 +792,9 @@ abstract class SubMessage extends ComplexMessage {
   /// argument names and values.
   Map argumentsOfInterestFor(MethodInvocation node) {
     var basicArguments = node.argumentList.arguments;
-    var others = basicArguments.whereType<NamedExpression>();
+    var others = basicArguments.whereType<NamedArgument>();
     return {
-      for (var node in others) node.name.label.token.value(): node.expression,
+      for (var node in others) node.name.value(): node.argumentExpression,
     };
   }
 
@@ -812,11 +806,10 @@ abstract class SubMessage extends ComplexMessage {
   @override
   String expanded([Function f = _nullTransform]) {
     String fullMessageForClause(String key) => '$key{${f(parent, this[key])}}';
-    var clauses =
-        attributeNames
-            .where((key) => this[key] != null)
-            .map(fullMessageForClause)
-            .toList();
+    var clauses = attributeNames
+        .where((key) => this[key] != null)
+        .map(fullMessageForClause)
+        .toList();
     return "{$mainArgument,$icuMessageName, ${clauses.join("")}}";
   }
 

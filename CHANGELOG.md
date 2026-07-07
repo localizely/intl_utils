@@ -21,6 +21,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Dart project localization bridge support for Flutter app
 - LocalizationsDelegate class now has **class_name** prefix - [Issue #136](https://github.com/localizely/intl_utils/issues/136)
 
+## 2.8.16 - 2026-06-11
+
+- Update `analyzer` dependency
+
+## 2.8.15 - 2026-06-11
+
+- Update `analyzer` dependency
+
 ## 2.8.14 - 2026-02-11
 
 - Update `analyzer` dependency
@@ -216,7 +224,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 1.3.0 - 2020-04-21
 
-- Support select messages 
+- Support select messages
 
 - Make order of supported locales consistent
 

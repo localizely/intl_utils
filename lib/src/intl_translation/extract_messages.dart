@@ -468,9 +468,9 @@ class MessageFindingVisitor extends GeneralizingAstVisitor {
     var extractionResult = extract(message, arguments);
     if (extractionResult == null) return null;
 
-    for (var namedArgument in arguments.whereType<NamedExpression>()) {
-      var name = namedArgument.name.label.name;
-      var exp = namedArgument.expression;
+    for (var namedArgument in arguments.whereType<NamedArgument>()) {
+      var name = namedArgument.name.lexeme;
+      var exp = namedArgument.argumentExpression;
       var evaluator = ConstantEvaluator();
       var basicValue = exp.accept(evaluator);
       var value =
@@ -771,7 +771,7 @@ class PluralAndGenderVisitor extends SimpleAstVisitor {
       }
     });
     var mainArg = node.argumentList.arguments.firstWhere(
-      (each) => each is! NamedExpression,
+      (each) => each is! NamedArgument,
     );
     if (mainArg is SimpleStringLiteral) {
       message.mainArgument = mainArg.toString();
