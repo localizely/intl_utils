@@ -5,11 +5,13 @@ import 'config_exception.dart';
 
 class PubspecConfig {
   bool? _enabled;
+  bool _flutter = false;
   String? _className;
   String? _mainLocale;
   String? _arbDir;
   String? _outputDir;
   bool? _useDeferredLoading;
+  bool? _useSeparateDelegate;
   LocalizelyConfig? _localizelyConfig;
 
   PubspecConfig() {
@@ -32,34 +34,39 @@ class PubspecConfig {
       return;
     }
 
-    _enabled =
-        flutterIntlConfig['enabled'] is bool
-            ? flutterIntlConfig['enabled']
-            : null;
-    _className =
-        flutterIntlConfig['class_name'] is String
-            ? flutterIntlConfig['class_name']
-            : null;
-    _mainLocale =
-        flutterIntlConfig['main_locale'] is String
-            ? flutterIntlConfig['main_locale']
-            : null;
-    _arbDir =
-        flutterIntlConfig['arb_dir'] is String
-            ? flutterIntlConfig['arb_dir']
-            : null;
-    _outputDir =
-        flutterIntlConfig['output_dir'] is String
-            ? flutterIntlConfig['output_dir']
-            : null;
-    _useDeferredLoading =
-        flutterIntlConfig['use_deferred_loading'] is bool
-            ? flutterIntlConfig['use_deferred_loading']
-            : null;
-    _localizelyConfig = LocalizelyConfig.fromConfig(
-      flutterIntlConfig['localizely'],
-    );
+    // Automatic define dart/flutter project context
+    _flutter = (pubspecYaml.containsKey("environment") && pubspecYaml["environment"] is yaml.YamlMap && pubspecYaml["environment"].containsKey("flutter"))
+        || (pubspecYaml.containsKey("dependencies") && pubspecYaml["dependencies"] is yaml.YamlMap && pubspecYaml["dependencies"].containsKey("flutter"));
+    if (flutterIntlConfig["pure_dart"] is bool) {
+      // Force set dart/flutter project context
+      _flutter = !flutterIntlConfig["pure_dart"];
+    }
+    _enabled = flutterIntlConfig['enabled'] is bool
+        ? flutterIntlConfig['enabled']
+        : null;
+    _className = flutterIntlConfig['class_name'] is String
+        ? flutterIntlConfig['class_name']
+        : null;
+    _mainLocale = flutterIntlConfig['main_locale'] is String
+        ? flutterIntlConfig['main_locale']
+        : null;
+    _arbDir = flutterIntlConfig['arb_dir'] is String
+        ? flutterIntlConfig['arb_dir']
+        : null;
+    _outputDir = flutterIntlConfig['output_dir'] is String
+        ? flutterIntlConfig['output_dir']
+        : null;
+    _useDeferredLoading = flutterIntlConfig['use_deferred_loading'] is bool
+        ? flutterIntlConfig['use_deferred_loading']
+        : null;
+    _useSeparateDelegate = flutterIntlConfig['use_separate_delegate'] is bool
+        ? flutterIntlConfig['use_separate_delegate']
+        : null;
+    _localizelyConfig =
+        LocalizelyConfig.fromConfig(flutterIntlConfig['localizely']);
   }
+
+  bool get flutter => _flutter;
 
   bool? get enabled => _enabled;
 
@@ -72,6 +79,8 @@ class PubspecConfig {
   String? get outputDir => _outputDir;
 
   bool? get useDeferredLoading => _useDeferredLoading;
+
+  bool? get useSeparateDelegate => _useSeparateDelegate;
 
   LocalizelyConfig? get localizelyConfig => _localizelyConfig;
 }

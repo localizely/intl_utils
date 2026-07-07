@@ -5,6 +5,7 @@ const defaultMainLocale = 'en';
 final defaultArbDir = join('lib', 'l10n');
 final defaultOutputDir = join('lib', 'generated');
 const defaultUseDeferredLoading = false;
+const defaultUseSeparateDelegate = false;
 const defaultUploadOverwrite = false;
 const defaultUploadAsReviewed = false;
 const defaultDownloadEmptyAs = 'empty';
