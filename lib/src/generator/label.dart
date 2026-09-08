@@ -336,6 +336,7 @@ class Label {
               '      name: \'$name\',',
               '      desc: \'$description\',',
               '      args: [],',
+              '      locale: localeName,',
               '    );',
               '  }',
             ].join('\n');
@@ -352,6 +353,7 @@ class Label {
               '      name: \'$name\',',
               '      desc: \'$description\',',
               '      args: [${_generateDartMethodArgs(args)}],',
+              '      locale: localeName,',
               '    );',
               '  }',
             ].join('\n');
@@ -370,6 +372,7 @@ class Label {
               '      name: \'$name\',',
               '      desc: \'$description\',',
               '      args: [${_generateDartMethodArgs(args)}],',
+              '      locale: localeName,',
               '    );',
               '  }',
             ].join('\n');
@@ -388,16 +391,16 @@ class Label {
               '      name: \'$name\',',
               '      desc: \'$description\',',
               '      args: [${_generateDartMethodArgs(args)}],',
+              '      locale: localeName,',
               '    );',
               '  }',
             ].join('\n');
           }
         case ContentType.select:
           {
-            var choiceArg =
-                args
-                    .firstWhere((arg) => arg.isSelectArg())
-                    .name; // Note: The first argument in [args] must correspond to the [choice] Object.
+            var choiceArg = args
+                .firstWhere((arg) => arg.isSelectArg())
+                .name; // Note: The first argument in [args] must correspond to the [choice] Object.
 
             return [
               _generateDartDoc(),
@@ -409,6 +412,7 @@ class Label {
               '      name: \'$name\',',
               '      desc: \'$description\',',
               '      args: [${_generateDartMethodArgs(args)}],',
+              '      locale: localeName,',
               '    );',
               '  }',
             ].join('\n');
@@ -595,12 +599,11 @@ class Label {
     List<Placeholder>? placeholders,
     List<BaseElement> data,
   ) {
-    var args =
-        placeholders != null
-            ? placeholders
-                .map((placeholder) => Argument.fromPlaceholder(placeholder))
-                .toList()
-            : <Argument>[];
+    var args = placeholders != null
+        ? placeholders
+              .map((placeholder) => Argument.fromPlaceholder(placeholder))
+              .toList()
+        : <Argument>[];
 
     data
         .where(
@@ -782,20 +785,18 @@ class Label {
 
   bool _isLiteral(List<BaseElement> data) =>
       (data.isNotEmpty &&
-          data
-              .map((BaseElement item) => item.type == ElementType.literal)
-              .reduce((bool acc, bool curr) => acc && curr));
+      data
+          .map((BaseElement item) => item.type == ElementType.literal)
+          .reduce((bool acc, bool curr) => acc && curr));
 
   bool _isArgument(List<BaseElement> data) =>
       (data.isNotEmpty &&
-          data
-              .map(
-                (item) => [
-                  ElementType.argument,
-                  ElementType.literal,
-                ].contains(item.type),
-              )
-              .reduce((bool acc, bool curr) => acc && curr));
+      data
+          .map(
+            (item) =>
+                [ElementType.argument, ElementType.literal].contains(item.type),
+          )
+          .reduce((bool acc, bool curr) => acc && curr));
 
   bool _isPlural(List<BaseElement> data) =>
       (data.length == 1 && data[0].type == ElementType.plural);
@@ -807,56 +808,52 @@ class Label {
       (data.length == 1 && data[0].type == ElementType.select);
 
   String _generateCompoundContent(List<BaseElement> data, List<Argument> args) {
-    var content =
-        data
-            .asMap()
-            .map((index, item) {
-              switch (item.type) {
-                case ElementType.literal:
-                  {
-                    return MapEntry(index, item.value);
-                  }
-                case ElementType.argument:
-                  {
-                    var formattedArg =
-                        args
-                            .singleWhere(
-                              (element) => element.name == item.value,
-                            )
-                            .formattedName;
-
-                    return MapEntry(
-                      index,
-                      _isArgumentBracingRequired(data, index)
-                          ? '\${$formattedArg}'
-                          : '\$$formattedArg',
-                    );
-                  }
-                case ElementType.plural:
-                  {
-                    return MapEntry(
-                      index,
-                      '\${${_generatePluralMessage(item as PluralElement, args)}}',
-                    );
-                  }
-                case ElementType.gender:
-                  {
-                    return MapEntry(
-                      index,
-                      '\${${_generateGenderMessage(item as GenderElement, args)}}',
-                    );
-                  }
-                case ElementType.select:
-                  {
-                    return MapEntry(
-                      index,
-                      '\${${_generateSelectMessage(item as SelectElement, args)}}',
-                    );
-                  }
+    var content = data
+        .asMap()
+        .map((index, item) {
+          switch (item.type) {
+            case ElementType.literal:
+              {
+                return MapEntry(index, item.value);
               }
-            })
-            .values
-            .join();
+            case ElementType.argument:
+              {
+                var formattedArg = args
+                    .singleWhere((element) => element.name == item.value)
+                    .formattedName;
+
+                return MapEntry(
+                  index,
+                  _isArgumentBracingRequired(data, index)
+                      ? '\${$formattedArg}'
+                      : '\$$formattedArg',
+                );
+              }
+            case ElementType.plural:
+              {
+                return MapEntry(
+                  index,
+                  '\${${_generatePluralMessage(item as PluralElement, args)}}',
+                );
+              }
+            case ElementType.gender:
+              {
+                return MapEntry(
+                  index,
+                  '\${${_generateGenderMessage(item as GenderElement, args)}}',
+                );
+              }
+            case ElementType.select:
+              {
+                return MapEntry(
+                  index,
+                  '\${${_generateSelectMessage(item as SelectElement, args)}}',
+                );
+              }
+          }
+        })
+        .values
+        .join();
 
     return content;
   }
@@ -935,13 +932,12 @@ class Label {
       uniqueKeys.remove('=2');
     }
 
-    var sanitized =
-        uniqueKeys
-            .map(
-              (uniqueKey) =>
-                  options.firstWhere((option) => option.name == uniqueKey),
-            )
-            .toList();
+    var sanitized = uniqueKeys
+        .map(
+          (uniqueKey) =>
+              options.firstWhere((option) => option.name == uniqueKey),
+        )
+        .toList();
     if (sanitized.length != options.length) {
       warning("Detected plural irregularity for the '$name' key.");
     } else if (!uniqueKeys.contains('other')) {
@@ -997,13 +993,12 @@ class Label {
     var keys = options.map((option) => option.name);
     var uniqueKeys = LinkedHashSet<String>.from(keys);
 
-    var sanitized =
-        uniqueKeys
-            .map(
-              (uniqueKey) =>
-                  options.firstWhere((option) => option.name == uniqueKey),
-            )
-            .toList();
+    var sanitized = uniqueKeys
+        .map(
+          (uniqueKey) =>
+              options.firstWhere((option) => option.name == uniqueKey),
+        )
+        .toList();
     if (sanitized.length != options.length) {
       warning("Detected gender irregularity for the '$name' key.");
     } else if (!uniqueKeys.contains('other')) {
@@ -1042,13 +1037,12 @@ class Label {
     var keys = options.map((option) => option.name);
     var uniqueKeys = LinkedHashSet<String>.from(keys);
 
-    var sanitized =
-        uniqueKeys
-            .map(
-              (uniqueKey) =>
-                  options.firstWhere((option) => option.name == uniqueKey),
-            )
-            .toList();
+    var sanitized = uniqueKeys
+        .map(
+          (uniqueKey) =>
+              options.firstWhere((option) => option.name == uniqueKey),
+        )
+        .toList();
     if (sanitized.length != options.length) {
       warning("Detected select irregularity for the '$name' key.");
     } else if (!uniqueKeys.contains('other')) {
@@ -1164,37 +1158,34 @@ class Label {
 
     return isValid
         ? data
-            .asMap()
-            .map((index, item) {
-              switch (item.type) {
-                case ElementType.literal:
-                  {
-                    return MapEntry(index, item.value);
-                  }
-                case ElementType.argument:
-                  {
-                    var formattedArg =
-                        args
-                            .singleWhere(
-                              (element) => element.name == item.value,
-                            )
-                            .formattedName;
+              .asMap()
+              .map((index, item) {
+                switch (item.type) {
+                  case ElementType.literal:
+                    {
+                      return MapEntry(index, item.value);
+                    }
+                  case ElementType.argument:
+                    {
+                      var formattedArg = args
+                          .singleWhere((element) => element.name == item.value)
+                          .formattedName;
 
-                    return MapEntry(
-                      index,
-                      _isArgumentBracingRequired(data, index)
-                          ? '\${$formattedArg}'
-                          : '\$$formattedArg',
-                    );
-                  }
-                default:
-                  {
-                    return MapEntry(index, '');
-                  }
-              }
-            })
-            .values
-            .join()
+                      return MapEntry(
+                        index,
+                        _isArgumentBracingRequired(data, index)
+                            ? '\${$formattedArg}'
+                            : '\$$formattedArg',
+                      );
+                    }
+                  default:
+                    {
+                      return MapEntry(index, '');
+                    }
+                }
+              })
+              .values
+              .join()
         : _getRawPluralOrSelectOption(option);
   }
 

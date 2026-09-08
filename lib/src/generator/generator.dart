@@ -119,35 +119,35 @@ class Generator {
     var content = mainArbFile.readAsStringSync();
     var decodedContent = json.decode(content) as Map<String, dynamic>;
 
-    var labels =
-        decodedContent.keys.where((key) => !key.startsWith('@')).map((key) {
-          var name = key;
-          var content = decodedContent[key];
+    var labels = decodedContent.keys.where((key) => !key.startsWith('@')).map((
+      key,
+    ) {
+      var name = key;
+      var content = decodedContent[key];
 
-          var meta = decodedContent['@$key'] ?? {};
-          var type = meta['type'];
-          var description = meta['description'];
-          var placeholders =
-              meta['placeholders'] != null
-                  ? (meta['placeholders'] as Map<String, dynamic>).keys
-                      .map(
-                        (placeholder) => Placeholder(
-                          key,
-                          placeholder,
-                          meta['placeholders'][placeholder],
-                        ),
-                      )
-                      .toList()
-                  : null;
+      var meta = decodedContent['@$key'] ?? {};
+      var type = meta['type'];
+      var description = meta['description'];
+      var placeholders = meta['placeholders'] != null
+          ? (meta['placeholders'] as Map<String, dynamic>).keys
+                .map(
+                  (placeholder) => Placeholder(
+                    key,
+                    placeholder,
+                    meta['placeholders'][placeholder],
+                  ),
+                )
+                .toList()
+          : null;
 
-          return Label(
-            name,
-            content,
-            type: type,
-            description: description,
-            placeholders: placeholders,
-          );
-        }).toList();
+      return Label(
+        name,
+        content,
+        type: type,
+        description: description,
+        placeholders: placeholders,
+      );
+    }).toList();
 
     return labels;
   }
@@ -156,10 +156,10 @@ class Generator {
     var index = locales.indexOf(_mainLocale);
     return index != -1
         ? [
-          locales.elementAt(index),
-          ...locales.sublist(0, index),
-          ...locales.sublist(index + 1),
-        ]
+            locales.elementAt(index),
+            ...locales.sublist(0, index),
+            ...locales.sublist(index + 1),
+          ]
         : locales;
   }
 

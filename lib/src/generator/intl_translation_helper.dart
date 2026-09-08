@@ -147,10 +147,9 @@ class BasicTranslatedMessage extends TranslatedMessage {
   BasicTranslatedMessage(super.name, super.translated, this.messages);
 
   @override
-  List<MainMessage>? get originalMessages =>
-      (super.originalMessages == null)
-          ? _findOriginals()
-          : super.originalMessages;
+  List<MainMessage>? get originalMessages => (super.originalMessages == null)
+      ? _findOriginals()
+      : super.originalMessages;
 
   // We know that our [id] is the name of the message, which is used as the key in [messages].
   List<MainMessage>? _findOriginals() => originalMessages = messages[id];
