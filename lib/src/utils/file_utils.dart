@@ -44,15 +44,14 @@ Future<File> createArbFileForLocale(String locale, String arbDir) async {
 /// Gets all arb files in the project.
 List<FileSystemEntity> getArbFiles(String arbDir) {
   var l10nDirPath = path.join(getRootDirectoryPath(), arbDir);
-  var arbFiles =
-      Directory(l10nDirPath)
-          .listSync()
-          .where(
-            (file) =>
-                path.basename(file.path).startsWith('intl_') &&
-                path.basename(file.path).endsWith('.arb'),
-          )
-          .toList();
+  var arbFiles = Directory(l10nDirPath)
+      .listSync()
+      .where(
+        (file) =>
+            path.basename(file.path).startsWith('intl_') &&
+            path.basename(file.path).endsWith('.arb'),
+      )
+      .toList();
 
   // arb files order is not the same on all operating systems (e.g. win, mac)
   arbFiles.sort((a, b) => a.path.compareTo(b.path));
@@ -62,16 +61,13 @@ List<FileSystemEntity> getArbFiles(String arbDir) {
 
 /// Gets all locales in the project.
 List<String> getLocales(String arbDir) {
-  var locales =
-      getArbFiles(arbDir)
-          .map((file) => path.basename(file.path))
-          .map(
-            (fileName) => fileName.substring(
-              'intl_'.length,
-              fileName.length - '.arb'.length,
-            ),
-          )
-          .toList();
+  var locales = getArbFiles(arbDir)
+      .map((file) => path.basename(file.path))
+      .map(
+        (fileName) =>
+            fileName.substring('intl_'.length, fileName.length - '.arb'.length),
+      )
+      .toList();
 
   return locales;
 }

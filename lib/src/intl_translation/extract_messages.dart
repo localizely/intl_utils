@@ -366,13 +366,12 @@ class MessageFindingVisitor extends GeneralizingAstVisitor {
 
     if (reason != null) {
       if (!extraction.suppressWarnings) {
-        var err =
-            StringBuffer()
-              ..write('Skipping invalid Intl.message invocation\n    <$node>\n')
-              ..writeAll([
-                '    reason: $reason\n',
-                extraction._reportErrorLocation(node),
-              ]);
+        var err = StringBuffer()
+          ..write('Skipping invalid Intl.message invocation\n    <$node>\n')
+          ..writeAll([
+            '    reason: $reason\n',
+            extraction._reportErrorLocation(node),
+          ]);
         var errString = err.toString();
         extraction.warnings.add(errString);
         extraction.onMessage(errString);
@@ -453,12 +452,11 @@ class MessageFindingVisitor extends GeneralizingAstVisitor {
     var message = MainMessage();
     message.sourcePosition = node.offset;
     message.endPosition = node.end;
-    message.arguments =
-        parameters
-            ?.map((x) => x.name?.lexeme)
-            .where((x) => x != null)
-            .cast<String>()
-            .toList();
+    message.arguments = parameters
+        ?.map((x) => x.name?.lexeme)
+        .where((x) => x != null)
+        .cast<String>()
+        .toList();
     if (documentation != null) {
       message.documentation.addAll(
         documentation!.tokens.map((token) => token.toString()),
@@ -473,10 +471,9 @@ class MessageFindingVisitor extends GeneralizingAstVisitor {
       var exp = namedArgument.argumentExpression;
       var evaluator = ConstantEvaluator();
       var basicValue = exp.accept(evaluator);
-      var value =
-          basicValue == ConstantEvaluator.NOT_A_CONSTANT
-              ? exp.toString()
-              : basicValue;
+      var value = basicValue == ConstantEvaluator.NOT_A_CONSTANT
+          ? exp.toString()
+          : basicValue;
       setAttribute(message, name, value);
     }
     // We only rewrite messages with parameters, otherwise we use the literal
@@ -493,8 +490,11 @@ class MessageFindingVisitor extends GeneralizingAstVisitor {
         // If there's no name, and the message text is a simple string, compute
         // a name based on that plus meaning, if present.
         var simpleName = (arguments.first as StringLiteral).stringValue;
-        message.name =
-            computeMessageName(message.name, simpleName, message.meaning)!;
+        message.name = computeMessageName(
+          message.name,
+          simpleName,
+          message.meaning,
+        )!;
       }
     }
     return message;
@@ -535,10 +535,9 @@ class MessageFindingVisitor extends GeneralizingAstVisitor {
         message.addPieces(List<Object>.from(extracted));
       } on IntlMessageExtractionException catch (e) {
         message = null;
-        var err =
-            StringBuffer()
-              ..writeAll(['Error ', e, '\nProcessing <', node, '>\n'])
-              ..write(extraction._reportErrorLocation(node));
+        var err = StringBuffer()
+          ..writeAll(['Error ', e, '\nProcessing <', node, '>\n'])
+          ..write(extraction._reportErrorLocation(node));
         var errString = err.toString();
         extraction.onMessage(errString);
         extraction.warnings.add(errString);
@@ -761,10 +760,9 @@ class PluralAndGenderVisitor extends SimpleAstVisitor {
         }
       } on IntlMessageExtractionException catch (e) {
         message = null;
-        var err =
-            StringBuffer()
-              ..writeAll(['Error ', e, '\nProcessing <', node, '>'])
-              ..write(extraction._reportErrorLocation(node));
+        var err = StringBuffer()
+          ..writeAll(['Error ', e, '\nProcessing <', node, '>'])
+          ..write(extraction._reportErrorLocation(node));
         var errString = err.toString();
         extraction.onMessage(errString);
         extraction.warnings.add(errString);
@@ -778,14 +776,13 @@ class PluralAndGenderVisitor extends SimpleAstVisitor {
     } else if (mainArg is SimpleIdentifier) {
       message.mainArgument = mainArg.name;
     } else {
-      var err =
-          StringBuffer()
-            ..write(
-              'Error (Invalid argument to plural/gender/select, '
-              'must be simple variable reference) '
-              '\nProcessing <$node>',
-            )
-            ..write(extraction._reportErrorLocation(node));
+      var err = StringBuffer()
+        ..write(
+          'Error (Invalid argument to plural/gender/select, '
+          'must be simple variable reference) '
+          '\nProcessing <$node>',
+        )
+        ..write(extraction._reportErrorLocation(node));
       var errString = err.toString();
       extraction.onMessage(errString);
       extraction.warnings.add(errString);

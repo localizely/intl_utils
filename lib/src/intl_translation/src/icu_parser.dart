@@ -116,12 +116,15 @@ class IcuParser {
   Parser get intlSelect =>
       generalSelect.map((values) => Select.from(values.first, values[3], null));
 
-  Parser get compound => (((parameter | nonIcuMessageText).plus() &
-              pluralOrGenderOrSelect &
-              (pluralOrGenderOrSelect | parameter | nonIcuMessageText).star()) |
-          (pluralOrGenderOrSelect &
-              (pluralOrGenderOrSelect | parameter | nonIcuMessageText).plus()))
-      .map((result) => result.expand((x) => x is List ? x : [x]).toList());
+  Parser get compound =>
+      (((parameter | nonIcuMessageText).plus() &
+                  pluralOrGenderOrSelect &
+                  (pluralOrGenderOrSelect | parameter | nonIcuMessageText)
+                      .star()) |
+              (pluralOrGenderOrSelect &
+                  (pluralOrGenderOrSelect | parameter | nonIcuMessageText)
+                      .plus()))
+          .map((result) => result.expand((x) => x is List ? x : [x]).toList());
 
   Parser get pluralOrGenderOrSelect => intlPlural | intlGender | intlSelect;
 

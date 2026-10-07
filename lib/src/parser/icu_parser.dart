@@ -138,12 +138,15 @@ class IcuParser {
     (result) => SelectElement(result[0], List<Option>.from(result[3])),
   );
 
-  Parser get compound => (((parameter | nonIcuMessageText).plus() &
-              pluralOrGenderOrSelect &
-              (pluralOrGenderOrSelect | parameter | nonIcuMessageText).star()) |
-          (pluralOrGenderOrSelect &
-              (pluralOrGenderOrSelect | parameter | nonIcuMessageText).plus()))
-      .map((result) => result.expand((x) => x is List ? x : [x]).toList());
+  Parser get compound =>
+      (((parameter | nonIcuMessageText).plus() &
+                  pluralOrGenderOrSelect &
+                  (pluralOrGenderOrSelect | parameter | nonIcuMessageText)
+                      .star()) |
+              (pluralOrGenderOrSelect &
+                  (pluralOrGenderOrSelect | parameter | nonIcuMessageText)
+                      .plus()))
+          .map((result) => result.expand((x) => x is List ? x : [x]).toList());
 
   Parser get pluralOrGenderOrSelect => (intlPlural | intlGender | intlSelect);
 
@@ -151,10 +154,9 @@ class IcuParser {
 
   Parser get simpleText =>
       (nonIcuMessageText | parameter | openCurly).plus().map(
-        (result) =>
-            result
-                .map((item) => item is String ? LiteralElement(item) : item)
-                .toList(),
+        (result) => result
+            .map((item) => item is String ? LiteralElement(item) : item)
+            .toList(),
       );
 
   Parser get empty => epsilon().map((_) => LiteralElement(''));

@@ -20,10 +20,9 @@ class CredentialsConfig {
       );
     }
 
-    _apiToken =
-        credentialsYaml['api_token'] is String
-            ? credentialsYaml['api_token']
-            : null;
+    _apiToken = credentialsYaml['api_token'] is String
+        ? credentialsYaml['api_token']
+        : null;
   }
 
   String? get apiToken => _apiToken;

@@ -6667,39 +6667,35 @@ void main() {
     );
 
     // Note: JSON strings are not supported in plural messages with the current parser implementation.
-    test(
-      'Test plural dart getter when content contains a simple json string',
-      () {
-        var label = Label(
-          'labelName',
-          '{count, plural, zero {zero message { "firstName": "John", "lastName": "Doe" }} one {one message { "firstName": "John", "lastName": "Doe" }} two {two message { "firstName": "John", "lastName": "Doe" }} few {few message { "firstName": "John", "lastName": "Doe" }} many {many message { "firstName": "John", "lastName": "Doe" }} other {other message { "firstName": "John", "lastName": "Doe" }}}',
-        );
+    test('Test plural dart getter when content contains a simple json string', () {
+      var label = Label(
+        'labelName',
+        '{count, plural, zero {zero message { "firstName": "John", "lastName": "Doe" }} one {one message { "firstName": "John", "lastName": "Doe" }} two {two message { "firstName": "John", "lastName": "Doe" }} few {few message { "firstName": "John", "lastName": "Doe" }} many {many message { "firstName": "John", "lastName": "Doe" }} other {other message { "firstName": "John", "lastName": "Doe" }}}',
+      );
 
-        expect(
-          label.generateDartGetter(),
-          equals(
-            [
-              '  /// `{count, plural, zero {zero message { "firstName": "John", "lastName": "Doe" }} one {one message { "firstName": "John", "lastName": "Doe" }} two {two message { "firstName": "John", "lastName": "Doe" }} few {few message { "firstName": "John", "lastName": "Doe" }} many {many message { "firstName": "John", "lastName": "Doe" }} other {other message { "firstName": "John", "lastName": "Doe" }}}`',
-              '  String labelName(num count) {',
-              '    return Intl.plural(',
-              '      count,',
-              '      zero: \'zero message { "firstName": "John", "lastName": "Doe" }\',',
-              '      one: \'one message { "firstName": "John", "lastName": "Doe" }\',',
-              '      two: \'two message { "firstName": "John", "lastName": "Doe" }\',',
-              '      few: \'few message { "firstName": "John", "lastName": "Doe" }\',',
-              '      many: \'many message { "firstName": "John", "lastName": "Doe" }\',',
-              '      other: \'other message { "firstName": "John", "lastName": "Doe" }\',',
-              '      name: \'labelName\',',
-              '      desc: \'\',',
-              '      args: [count],',
-              '    );',
-              '  }',
-            ].join('\n'),
-          ),
-        );
-      },
-      skip: true,
-    );
+      expect(
+        label.generateDartGetter(),
+        equals(
+          [
+            '  /// `{count, plural, zero {zero message { "firstName": "John", "lastName": "Doe" }} one {one message { "firstName": "John", "lastName": "Doe" }} two {two message { "firstName": "John", "lastName": "Doe" }} few {few message { "firstName": "John", "lastName": "Doe" }} many {many message { "firstName": "John", "lastName": "Doe" }} other {other message { "firstName": "John", "lastName": "Doe" }}}`',
+            '  String labelName(num count) {',
+            '    return Intl.plural(',
+            '      count,',
+            '      zero: \'zero message { "firstName": "John", "lastName": "Doe" }\',',
+            '      one: \'one message { "firstName": "John", "lastName": "Doe" }\',',
+            '      two: \'two message { "firstName": "John", "lastName": "Doe" }\',',
+            '      few: \'few message { "firstName": "John", "lastName": "Doe" }\',',
+            '      many: \'many message { "firstName": "John", "lastName": "Doe" }\',',
+            '      other: \'other message { "firstName": "John", "lastName": "Doe" }\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [count],',
+            '    );',
+            '  }',
+          ].join('\n'),
+        ),
+      );
+    }, skip: true);
 
     test(
       'Test plural dart getter when placeholder has type DateTime and format is not provided',
@@ -12471,36 +12467,32 @@ void main() {
     );
 
     // Note: JSON strings are not supported in gender messages with the current parser implementation.
-    test(
-      'Test gender dart getter when content contains a simple json string',
-      () {
-        var label = Label(
-          'labelName',
-          '{gender, select, male {male { "firstName": "John", "lastName": "Doe" }} female {female { "firstName": "John", "lastName": "Doe" }} other {other { "firstName": "John", "lastName": "Doe" }}}',
-        );
+    test('Test gender dart getter when content contains a simple json string', () {
+      var label = Label(
+        'labelName',
+        '{gender, select, male {male { "firstName": "John", "lastName": "Doe" }} female {female { "firstName": "John", "lastName": "Doe" }} other {other { "firstName": "John", "lastName": "Doe" }}}',
+      );
 
-        expect(
-          label.generateDartGetter(),
-          equals(
-            [
-              '  /// `{gender, select, male {male { "firstName": "John", "lastName": "Doe" }} female {female { "firstName": "John", "lastName": "Doe" }} other {other { "firstName": "John", "lastName": "Doe" }}}`',
-              '  String labelName(String gender) {',
-              '    return Intl.gender(',
-              '      gender,',
-              '      male: \'male { "firstName": "John", "lastName": "Doe" }\',',
-              '      female: \'female { "firstName": "John", "lastName": "Doe" }\',',
-              '      other: \'other { "firstName": "John", "lastName": "Doe" }\',',
-              '      name: \'labelName\',',
-              '      desc: \'\',',
-              '      args: [gender],',
-              '    );',
-              '  }',
-            ].join('\n'),
-          ),
-        );
-      },
-      skip: true,
-    );
+      expect(
+        label.generateDartGetter(),
+        equals(
+          [
+            '  /// `{gender, select, male {male { "firstName": "John", "lastName": "Doe" }} female {female { "firstName": "John", "lastName": "Doe" }} other {other { "firstName": "John", "lastName": "Doe" }}}`',
+            '  String labelName(String gender) {',
+            '    return Intl.gender(',
+            '      gender,',
+            '      male: \'male { "firstName": "John", "lastName": "Doe" }\',',
+            '      female: \'female { "firstName": "John", "lastName": "Doe" }\',',
+            '      other: \'other { "firstName": "John", "lastName": "Doe" }\',',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [gender],',
+            '    );',
+            '  }',
+          ].join('\n'),
+        ),
+      );
+    }, skip: true);
 
     test(
       'Test gender dart getter when placeholder has type DateTime and format is not provided',
@@ -17857,38 +17849,34 @@ void main() {
     );
 
     // Note: JSON strings are not supported in select messages with the current parser implementation.
-    test(
-      'Test select dart getter when content contains a simple json string',
-      () {
-        var label = Label(
-          'labelName',
-          '{choice, select, foo {foo message { "firstName": "John", "lastName": "Doe" }} bar {bar message { "firstName": "John", "lastName": "Doe" }} other {other message { "firstName": "John", "lastName": "Doe" }}}',
-        );
+    test('Test select dart getter when content contains a simple json string', () {
+      var label = Label(
+        'labelName',
+        '{choice, select, foo {foo message { "firstName": "John", "lastName": "Doe" }} bar {bar message { "firstName": "John", "lastName": "Doe" }} other {other message { "firstName": "John", "lastName": "Doe" }}}',
+      );
 
-        expect(
-          label.generateDartGetter(),
-          equals(
-            [
-              '  /// `{choice, select, foo {foo message { "firstName": "John", "lastName": "Doe" }} bar {bar message { "firstName": "John", "lastName": "Doe" }} other {other message { "firstName": "John", "lastName": "Doe" }}}`',
-              '  String labelName(Object choice) {',
-              '    return Intl.select(',
-              '      choice,',
-              '      {',
-              '        \'foo\': \'foo message { "firstName": "John", "lastName": "Doe" }\',',
-              '        \'bar\': \'bar message { "firstName": "John", "lastName": "Doe" }\',',
-              '        \'other\': \'other message { "firstName": "John", "lastName": "Doe" }\',',
-              '      },',
-              '      name: \'labelName\',',
-              '      desc: \'\',',
-              '      args: [choice],',
-              '    );',
-              '  }',
-            ].join('\n'),
-          ),
-        );
-      },
-      skip: true,
-    );
+      expect(
+        label.generateDartGetter(),
+        equals(
+          [
+            '  /// `{choice, select, foo {foo message { "firstName": "John", "lastName": "Doe" }} bar {bar message { "firstName": "John", "lastName": "Doe" }} other {other message { "firstName": "John", "lastName": "Doe" }}}`',
+            '  String labelName(Object choice) {',
+            '    return Intl.select(',
+            '      choice,',
+            '      {',
+            '        \'foo\': \'foo message { "firstName": "John", "lastName": "Doe" }\',',
+            '        \'bar\': \'bar message { "firstName": "John", "lastName": "Doe" }\',',
+            '        \'other\': \'other message { "firstName": "John", "lastName": "Doe" }\',',
+            '      },',
+            '      name: \'labelName\',',
+            '      desc: \'\',',
+            '      args: [choice],',
+            '    );',
+            '  }',
+          ].join('\n'),
+        ),
+      );
+    }, skip: true);
 
     test(
       'Test select dart getter when placeholder has type DateTime and format is not provided',
