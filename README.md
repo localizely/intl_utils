@@ -3,6 +3,13 @@
 [![pub package](https://img.shields.io/pub/v/intl_utils.svg)](https://pub.dev/packages/intl_utils)
 [![Twitter Follow](https://img.shields.io/twitter/follow/localizely?label=Follow%20us&style=social)](https://twitter.com/intent/follow?screen_name=localizely)
 
+> **⚠️ This package is no longer maintained.**
+>
+> - **No further updates or fixes will be released.** Published versions remain available on pub.dev, but compatibility with future Dart and Flutter releases is not guaranteed.
+> - **Migrating:** Flutter's built-in [gen-l10n](https://docs.flutter.dev/ui/accessibility-and-internationalization/internationalization) now covers everything intl_utils was created for. See [Migrating from Flutter Intl and intl_utils to gen-l10n](https://localizely.com/blog/flutter-intl-to-gen-l10n/) for a step-by-step guide.
+>
+> Thank you to everyone who used this package, reported issues, and contributed over the years.
+
 Dart package that creates a binding between your translations from .arb files and your Flutter app. It generates boilerplate code for official Dart Intl library and adds auto-complete for keys in Dart code.
 
 ## Usage
