@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import '../config/pubspec_config.dart';
 import '../constants/constants.dart';
@@ -75,6 +76,7 @@ class Generator {
 
   /// Generates localization files.
   Future<void> generateAsync() async {
+    await _sortKeysInArbFiles();
     await _updateL10nDir();
     await _updateGeneratedDir();
     await _generateDartFiles();
@@ -171,4 +173,61 @@ class Generator {
     var helper = IntlTranslationHelper(_useDeferredLoading);
     helper.generateFromArb(outputDir, dartFiles, arbFiles);
   }
+
+  Future<void> _sortKeysInArbFiles() async {
+    var arbFiles = getArbFiles(_arbDir).whereType<File>();
+
+    await Future.wait(arbFiles.map((file) => _sortArbFile(file)));
+  }
+
+  Future<void> _sortArbFile(File file) async {
+    final src = file.readAsStringSync();
+    final data = jsonDecode(src);
+    if (data is! Map<String, dynamic>) return;
+
+    final Map<String, _ArbKeyData> groupedByKey = {};
+    for (final entry in data.entries) {
+      final String rawKey = entry.key;
+      final Object value = entry.value;
+
+      final isMetadata = rawKey.startsWith('@');
+      final key = isMetadata ? rawKey.substring(1) : rawKey;
+
+      if (!groupedByKey.containsKey(key)) {
+        groupedByKey[key] = _ArbKeyData(key: key);
+      }
+
+      if (isMetadata) {
+        groupedByKey[key]!.metadataValue = value;
+      } else {
+        groupedByKey[key]!.value = value;
+      }
+    }
+
+    final sortedKeys = groupedByKey.keys.toList();
+    sortedKeys.sort((a, b) => a.compareTo(b));
+
+    final Map<String, Object> sortedData = {};
+    for (final key in sortedKeys) {
+      final arbData = groupedByKey[key]!;
+      if (arbData.value != null) {
+        sortedData[key] = arbData.value!;
+      }
+      if (arbData.metadataValue != null) {
+        sortedData['@$key'] = arbData.metadataValue!;
+      }
+    }
+
+    final JsonEncoder encoder = JsonEncoder.withIndent('  ');
+    final sortedArb = encoder.convert(sortedData);
+    await file.writeAsString(sortedArb);
+  }
+}
+
+class _ArbKeyData {
+  final String key;
+  Object? value;
+  Object? metadataValue;
+
+  _ArbKeyData({required this.key});
 }
